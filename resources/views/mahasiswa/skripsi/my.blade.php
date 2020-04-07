@@ -47,9 +47,6 @@ Skripsi Saya
 <div class="box box-info">
 	<div class="box-header with-border">
 		<h3 class="box-title">Skripsi Saya</h3>
-		<div class="box-tools">
-			<a href="{{ route('skripsi.edit', $mahasiswa -> skripsi -> id) }}" class="btn btn-warning btn-xs btn-flat"><i class="fa fa-pencil-square-o"></i> Edit</a>
-		</div>
 	</div>
 	<div class="box-body">
 		<div class="row">

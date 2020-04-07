@@ -1729,7 +1729,7 @@
 		]);
 		Route::get('/skripsi/{id}/edit', [
 		'as' => 'skripsi.edit',
-		'roles' => ['administrator', 'akademik', 'prodi', 'mahasiswa'], 
+		'roles' => ['administrator', 'akademik', 'prodi'], 
 		'uses' =>'SkripsiController@edit'
 		]);
 		Route::patch('/skripsi/{id}', [
