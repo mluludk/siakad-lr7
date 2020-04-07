@@ -30,6 +30,7 @@
 		public function revisi($skripsi_id)
 		{
 			$skripsi = Skripsi::find($skripsi_id);
+			if(!$skripsi) return Redirect::back() -> withErrors(['NOT_FOUND' => 'Skripsi tidak ditemukan. Harap hubungi Admin untuk perbaikan data.']);
 			$mahasiswa = $skripsi -> pengarang;
 			
 			return view('mahasiswa.skripsi.revisi', compact('skripsi', 'mahasiswa'));
