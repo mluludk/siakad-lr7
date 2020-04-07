@@ -64,7 +64,7 @@
 			'judul_revisi' => $revisi,
 			'similarity2' => $similarity['sim'][0],
 			'similarity2_id' => $similarity['sim'][1],
-			'similarity2_array' => json_encode($similarity['sim_array']),
+			'similarity2_array' => $similarity['sim_array'],
 			'validator' => 'D'
 			];
 			$data_s = [
