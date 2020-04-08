@@ -75,12 +75,13 @@
 			
 			if(!$forced && $rejected)
 			{
-				return Redirect::back() -> with('warning_raw', 'Pemeriksaan oleh sistem kami menunjukkan bahwa Revisi Judul Anda 
-				<strong>"' . $revisi . '"</strong> memiliki kemiripan yang melebihi batas yang diperbolehkan dengan judul Skripsi yang telah ada. 
-				Judul akan otomatis <strong>DITOLAK</strong> oleh sistem. Mohon periksa kembali Revisi Judul Anda. <br/> 
-				Jika Anda tetap ingin mengirimkan Revisi Judul tersebut 
+				return Redirect::back() -> with('warning_raw', 'Pemeriksaan oleh sistem bahwa Revisi Judul Anda 
+				<strong>"' . $revisi . '"</strong> 
+				 <br><span class="label bg-blue"> MEMILIKI KEMIRIPAN MELEBIHI BATAS </span> yang diperbolehkan dengan judul Skripsi yang telah ada. 
+				 <br><span class="label bg-red"> MOHON PERIKSA KEMBALI Revisi Judul Anda.</span><br/> 
+				 <br> Jika Anda tetap ingin<strong> MEMAKSA </strong>mengirimkan Revisi Judul tersebut <br/> 
 				<a href="'. route('skripsi.revisi.post', $skripsi_id) .'?revisi='. $revisi .'&force=true" class="btn btn-danger btn-flat btn-xs">
-				<i class="fa fa-exclamation-triangle"></i> Klik disini.</a>');
+				<i class="fa fa-exclamation-triangle"></i> Klik disini.</a> TAPI JUDUL ANDA AKAN KETOLAK!!');
 			}
 			elseif($forced && $rejected)
 			{
