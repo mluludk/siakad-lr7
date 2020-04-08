@@ -71,7 +71,7 @@
 						<tr><td valign="top">Alamat</td><td valign="top">:</td><td>{{ $data -> alamatMhs }} @if($data -> rtrwMhs != '')RT/RW: {{ $data -> rtrwMhs }}@endif @if($data -> kodePosMhs != '')Kode Pos: {{ $data -> kodePosMhs }}@endif</td></tr>
 						<tr><td>Prodi</td><td>:</td><td>{{ $prodi[$data -> jurusan] -> nama }}</td></tr>
 						<tr><td>Program</td><td>:</td><td>{{ explode(',', $pmb -> tujuan)[$data -> tujuan] }}</td></tr>
-						<tr><td>Jalur</td><td>:</td><td>{{ explode(',', $pmb -> jalur)[$data -> jalur] }} / {{ explode(',', $pmb -> kelas)[$data -> kelas] }}</td></tr>
+						<tr><td>Jalur</td><td>:</td><td>{{ explode(',', $pmb -> jalur)[$data -> jalur] ?? 'Tidak terdaftar' }} / {{ explode(',', $pmb -> kelas)[$data -> kelas] ?? 'Tidak terdaftar' }}</td></tr>
 						<tr><td></td><td></td><td>
 							<div class="foto">
 								@if(isset($data -> foto) and $data -> foto != '') <img src="{{ url('/getimage/' . $data -> foto) }}" />
