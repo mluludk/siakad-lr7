@@ -5,13 +5,11 @@
 	use Redirect;
 	use Illuminate\Http\Request;
 	
-	
 	use Siakad\Nilai;
 	use Siakad\Tugas;
 	use Siakad\TugasDetail;
 	use Siakad\Mahasiswa;
 	use Siakad\MahasiswaTugas;
-	
 	
 	//use Siakad\Http\Requests;
 	use Siakad\Http\Controllers\Controller;
@@ -33,7 +31,7 @@
 		'Selesai'
 		];
 		
-		public function nilai($tugas_id, $mahasiswa_id)
+		public function nilai(Request $request, $tugas_id, $mahasiswa_id)
 		{
 			$input = $request -> all();
 			$skala = $this -> skala($input['prodi_id']);
