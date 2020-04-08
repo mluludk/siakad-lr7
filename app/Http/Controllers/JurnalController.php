@@ -43,33 +43,6 @@
 			return view('matkul.tapel.jurnal.create', compact('data', 'ruang', 'anggota', 'matkul_tapel_id'));
 		}
 		
-		/* 		
-			private function uploadFile($input)
-			{
-			$file = $input['file'];
-			
-			$validator = \Validator::make($input, ['file' => 'mimes:pdf,doc,docx,zip,rar,7z,gz,tar']);
-			if($validator -> fails())
-			{
-			return ['success' => false, 'error' => 'File yang diperbolehkan adalah: pdf, doc, docx, zip, rar, 7z, gz, tar'];	
-			}
-			else
-			{
-			$date = date('Y/m/d/');
-			
-			$filename = str_random(7) . '.' . $file->getClientOriginalExtension();				
-			$storage = \Storage::disk('files');
-			$result = $storage -> put($date . $filename, \File::get($file));
-			
-			if($result)
-			{
-			return ['success' => true, 'filename' => $date . $filename];
-			}
-			return ['success' => false, 'error' => 'An error occured while trying to save data.'];		
-			}
-			} 
-		*/
-		
 		public function uploadFile()
 		{
 			$input = $request -> all();
@@ -157,7 +130,7 @@
 			$jurnal = Jurnal::find($jurnal_id);
 			$jurnal -> update($input);
 			
-			return Redirect::route('matkul.tapel.jurnal.index', $matkul_tapel_id) -> with('message', 'Jurnal berhasil di-update');
+			return Redirect::route('matkul.tapel.jurnal.index', $matkul_tapel_id) -> with('success', 'Jurnal berhasil di-update');
 		}
 		
 		/**
@@ -168,7 +141,9 @@
 		*/
 		public function destroy($matkul_tapel_id, $jurnal_id)
 		{
-			//
+			$jurnal = Jurnal::find($jurnal_id) -> delete();
+			
+			return Redirect::route('matkul.tapel.jurnal.index', $matkul_tapel_id) -> with('success', 'Jurnal berhasil dihapus');
 		}
 		
 		public function printJurnal($matkul_tapel_id)
