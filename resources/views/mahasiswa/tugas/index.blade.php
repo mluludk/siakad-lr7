@@ -41,7 +41,7 @@ Tugas Mahasiswa
 					<th colspan="3" align="center">Kuota</th>
 					<th width="30%">Deskripsi</th>
 					<th>Publikasi</th>
-					<th width="9%"></th>
+					<th width="9.5%"></th>
 				</tr>
 			</thead>
 			<tbody>
