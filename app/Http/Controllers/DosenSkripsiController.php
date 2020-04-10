@@ -76,7 +76,6 @@
 				'validator' => 'D',
 				'keterangan' => 'Pengajuan Judul Skripsi telah diterima Dosen Pembimbing. Lanjutkan proses bimbingan Skripsi.'
 				];
-				$skripsi = Skripsi::find($mahasiswa -> skripsi_id) -> update(['judul' => $pengajuan -> judul_revisi]);
 				break;
 				
 				default:
@@ -86,6 +85,11 @@
 				'keterangan' => 'Pengajuan Judul Skripsi ini ditolak oleh Dosen Pembimbing. Ulangi kembali proses pengajuan Judul Skripsi'
 				];
 				break;				
+			}
+			
+			if($aksi == 'bimbingan')
+			{
+				if($pengajuan -> judul_revisi != '')	Skripsi::find($mahasiswa -> skripsi_id) -> update(['judul' => $pengajuan -> judul_revisi]);	
 			}
 			
 			$result = $pengajuan -> update($input);
@@ -103,13 +107,13 @@
 		
 		private function refreshList($dosen_id, $angkatan_id)
 		{
-			$role = \Auth::user() -> role;
-			$to = $from = $to_array = [];
-			$to = \Siakad\Mahasiswa::join('dosen_skripsi', 'dosen_skripsi.skripsi_id', '=', 'mahasiswa.skripsi_id');
-			if(intval($angkatan_id) > 0) $to = $to -> where('angkatan', $angkatan_id);
-			$to = $to -> where('dosen_id', $dosen_id)
-			-> select('id', 'NIM', 'nama')
-			-> orderBy('NIM')
+		$role = \Auth::user() -> role;
+		$to = $from = $to_array = [];
+		$to = \Siakad\Mahasiswa::join('dosen_skripsi', 'dosen_skripsi.skripsi_id', '=', 'mahasiswa.skripsi_id');
+		if(intval($angkatan_id) > 0) $to = $to -> where('angkatan', $angkatan_id);
+		$to = $to -> where('dosen_id', $dosen_id)
+		-> select('id', 'NIM', 'nama')
+		-> orderBy('NIM')
 		-> get();
 		
 		foreach($to as $t) $to_array[] = $t -> id;
