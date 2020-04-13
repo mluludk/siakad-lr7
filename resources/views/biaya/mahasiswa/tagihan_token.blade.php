@@ -128,6 +128,7 @@ Status Tagihan Mahasiswa
 							<th>No.</th>
 							<th>Jenis Tagihan</th>
 							<th>Nominal</th>
+							<th>Lunas</th>
 							<th>Semester</th>
 							<th>Tahun Akademik</th>
 							<th>Keterangan</th>
@@ -140,14 +141,17 @@ Status Tagihan Mahasiswa
 							<td colspan="8" align="center">Belum ada data</td>
 						</tr>
 						@else
-						<?php $c = 1; ?>
-						
+						<?php $c = 1; ?>						
 						@if(isset($tagihan['her']))
 						@foreach($tagihan['her'] as $t => $d)
+						<?php 
+							$persen = (int)$d['jumlah'] == 0 ? 0 : round((int)$d['bayar'] / (int)$d['jumlah'] * 100, 1);
+						?>	
 						<tr>
 							<td>{{ $c }}</td>
 							<td>Her registrasi</td>
-							<td>{{ formatRupiah($d['jumlah']) }}</td>
+							<td>{{ formatRupiah($d['jumlah'] - $d['bayar']) }}</td>
+							<td>{{ $persen }}%</td>
 							<td>{{ hitungSemester($mahasiswa -> tapelMasuk, $t) }}</td>
 							<td>{{ $t }}</td>
 							<td>Belum lunas</td>
@@ -162,10 +166,14 @@ Status Tagihan Mahasiswa
 						@if(isset($tagihan['spp']))
 						@foreach($tagihan['spp'] as $t => $d)
 						@foreach($d as $e)
+						<?php 
+							$persen = (int)$e['jumlah'] == 0 ? 0 : round((int)$e['bayar'] / (int)$e['jumlah'] * 100, 1);
+						?>	
 						<tr>
 							<td>{{ $c }}</td>
 							<td>{{ $e['nama'] }}</td>
-							<td>{{ formatRupiah($e['jumlah']) }}</td>
+							<td>{{ formatRupiah($e['jumlah'] - $e['bayar']) }}</td>
+							<td>{{ $persen }}%</td>
 							<td colspan="2">
 								@if(isset($e['tgl_cicilan_awal']))
 								<span class="text-danger">Tanggal Bayar</span><br/>
@@ -183,10 +191,14 @@ Status Tagihan Mahasiswa
 						@endif
 						
 						@if(isset($tagihan['bamk']))
+						<?php 
+							$persen = (int)$tagihan['bamk']['jumlah'] == 0 ? 0 : round((int)$tagihan['bamk']['bayar'] / (int)$tagihan['bamk']['jumlah'] * 100, 1);
+						?>	
 						<tr>
 							<td>{{ $c }}</td>
 							<td>BAMK</td>
-							<td>{{ formatRupiah($tagihan['bamk']['jumlah']) }}</td>
+							<td>{{ formatRupiah($tagihan['bamk']['jumlah'] - $tagihan['bamk']['bayar']) }}</td>
+							<td>{{ $persen }}%</td>
 							<td></td>
 							<td></td>
 							<td>
@@ -201,10 +213,14 @@ Status Tagihan Mahasiswa
 						@endif
 						
 						@if(isset($tagihan['bamp']))
+						<?php 
+							$persen = (int)$tagihan['bamp']['jumlah'] == 0 ? 0 : round((int)$tagihan['bamp']['bayar'] / (int)$tagihan['bamp']['jumlah'] * 100, 1);
+						?>	
 						<tr>
 							<td>{{ $c }}</td>
 							<td>BAMP</td>
-							<td>{{ formatRupiah($tagihan['bamp']['jumlah']) }}</td>
+							<td>{{ formatRupiah($tagihan['bamp']['jumlah'] - $tagihan['bamp']['bayar']) }}</td>
+							<td>{{ $persen }}%</td>
 							<td></td>
 							<td></td>
 							<td>
@@ -220,10 +236,14 @@ Status Tagihan Mahasiswa
 						
 						@if(isset($tagihan['kel']))
 						@foreach($tagihan['kel'] as $t)
+						<?php 
+							$persen = (int)$t['jumlah'] == 0 ? 0 : round((int)$t['bayar'] / (int)$t['jumlah'] * 100, 1);
+						?>	
 						<tr>
 							<td>{{ $c }}</td>
 							<td>{{ $t['nama'] }}</td>
-							<td>{{ formatRupiah($t['jumlah']) }}</td>
+							<td>{{ formatRupiah($t['jumlah'] - $t['bayar']) }}</td>
+							<td>{{ $persen }}%</td>
 							<td></td>
 							<td></td>
 							<td>Belum lunas</td>
