@@ -6,13 +6,47 @@
 	use Illuminate\Http\Request;
 	
 	use Siakad\FileEntry;
-	//use Siakad\Http\Requests;
 	use Siakad\Http\Controllers\Controller;
 	
 	class FileEntryController extends Controller
 	{
-		
 		use \Siakad\FileEntryTrait;
+		
+		public function managerUpload(Request $request)
+		{
+			$input = $request -> all();
+			
+			$kategori = $input['kategori'];
+			
+			return $this -> upload($input, $kategori);
+		}
+		public function manager(Request $request, $type='dokumen')
+		{
+			$auth = \Auth::user();
+			$file = FileEntry::where('user_id', $auth -> id);
+			
+			$file -> when($type == 'gambar', function ($q) {
+				return $q -> where('mime', 'like', 'image%');
+			});
+			$file -> when($type == 'video', function ($q) {
+				return $q-> where('mime', 'like', 'video%');
+			});
+			$file -> when($type == 'dokumen', function ($q) {
+				return $q-> where('mime', 'like', 'application%');
+			});
+			
+			$file = $file -> orderBy('created_at', 'desc') -> get();
+			
+			$rand = str_random(10); //prevent submit more than once
+			
+			$icons = [
+			'pdf' => 'fa-file-pdf-o', 'docx' => 'fa-file-word-o', 'doc' => 'fa-file-word-o', 
+			'xls' => 'fa-file-excel-o', 'xlsx' => 'fa-file-excel-o', 'pptx' => 'fa-file-powerpoint-o', 
+			'ppt' => 'fa-file-powerpoint-o', 'mp4' => 'fa-file-video-o', 'ogg' => 'fa-file-video-o'
+			];
+			
+			return view('file.manager', compact('type', 'file', 'rand', 'icons'));
+		}
 		
 		public function index()
 		{
@@ -62,15 +96,19 @@
 			$detail = FileEntry::where('namafile', $filename) -> firstOrFail(); 
 			
 			$a_akses = json_decode($detail -> akses, true);
-			$akses = count($a_akses) < 1 ? [] : $a_akses;
-			if(!in_array(\Auth::user() -> role_id, $akses))
+			if($a_akses != null)
 			{
-				if(\Auth::user() -> role_id > 2)
+				$akses = count($a_akses) < 1 ? [] : $a_akses;
+				if(!in_array(\Auth::user() -> role_id, $akses))
 				{
-					if($detail -> user_id != \Auth::user() -> id)
-					abort(401);
+					if(\Auth::user() -> role_id > 2)
+					{
+						if($detail -> user_id != \Auth::user() -> id)
+						abort(401);
+					}
 				}
 			}
+			
 			$mime = $detail -> mime;
 			
 			$storage = \Storage::disk('files');			
@@ -83,7 +121,7 @@
 			return $response;
 		}
 		
-		public function delete($id)
+		public function delete(Request $request, $id)
 		{
 			$file = FileEntry::find($id);
 			$user_role = \Auth::user() -> role_id;
@@ -97,15 +135,26 @@
 					if($result) 
 					{
 						$file -> delete();
+						
+						if($request -> ajax())
+						return ['success' => true, 'message' => 'File berhasil dihapus.'];
+						else
 						return \Redirect::route('indexfile') -> with('message', 'File berhasil dihapus.');
 					}
 				}
 				else
 				{
 					$file -> delete();
+					
+					if($request -> ajax())
+					return ['success' => false, 'message' => 'File tidak ditemukan.'];
+					else
 					return \Redirect::route('indexfile') -> withErrors('File tidak ditemukan.');
 				}
 			}
+			if($request -> ajax())
+			return ['success' => false, 'message' => 'Anda tidak dapat menghapus file ini.'];
+			else
 			return \Redirect::route('indexfile') -> withErrors('Maaf, Anda tidak dapat menghapus file ini');
 		}
 		
@@ -117,6 +166,4 @@
 			$nama = $request -> get('name');
 			return view('file.create', compact('akses', 'type', 'nama'));
 		}
-		
-		
 	}
