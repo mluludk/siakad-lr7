@@ -3708,6 +3708,7 @@
 	'uses' => 'FileEntryController@upload'
 	]);
 	Route::get('file/delete/{id}', [
+	'as' => 'file.delete',
 	'roles' => ['administrator', 'akademik'],
 	'uses' => 'FileEntryController@delete'
 	]);
