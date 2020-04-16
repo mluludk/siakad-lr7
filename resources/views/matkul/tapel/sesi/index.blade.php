@@ -26,7 +26,7 @@
 				<button class="btn btn-default"><i class="fa fa-navicon"></i></button>
 			</div>
 			<div class="f-box-side" style="width: 100%; border-left: 1px solid #ddd;">
-				<h4 class="box-title-half">Sesi ke {{ $s -> sesi_ke }}</h4>
+				<h4 class="box-title-half"><a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $s -> id]) }}" style="color: white;">Sesi ke {{ $s -> sesi_ke }}</a></h4>
 				<div class="f-box-body">
 					<h4><a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $s -> id]) }}">{{ $s -> judul }}</a></h4>
 					@foreach($kelas -> jadwal as $j)

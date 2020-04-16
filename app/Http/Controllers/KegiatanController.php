@@ -119,6 +119,19 @@
 			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil dihapus.');
 		}
 		
+		public function duplicate(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
+		{
+			$input = $kegiatan -> toArray();
+			unset($input['id']);
+			$input['urutan'] = $this -> getUrutanKegiatan($sesi -> id);
+			$input['created_at'] = date('Y-m-d H:i:s');
+			$input['updated_at'] = date('Y-m-d H:i:s');
+			
+			Kegiatan::create($input);			
+			
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil digandakan.');
+		}
+		
 		public function show(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
 			$media = [];
@@ -142,5 +155,14 @@
 			}
 			
 			return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons'));			
+		}
+		
+		private function getUrutanKegiatan($sesi_id)
+		{
+			$last = Kegiatan::where('sesi_pembelajaran_id', $sesi_id) -> orderBy('urutan', 'desc') -> get('urutan');
+			
+			if($last) return $last[0] -> urutan + 1;
+			
+			return 1;
 		}
 	}

@@ -2936,7 +2936,7 @@
 		'roles' => ['administrator', 'akademik'],
 		'uses' => 'KegiatanController@index'
 		]);
-		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{jenis}/duplicate', [
+		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}/duplicate', [
 		'as' => 'matkul.tapel.sesi.kegiatan.duplicate', 
 		'roles' => ['administrator', 'akademik'],
 		'uses' => 'KegiatanController@duplicate'

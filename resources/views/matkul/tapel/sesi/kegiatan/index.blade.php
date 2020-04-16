@@ -51,6 +51,15 @@
 			<div class="f-box-side" style="width: 100%; border-left: 1px solid #ddd;">
 				<div class="f-box-body">
 					<h4>{{ $k -> topik }} <small><time class="timeago" datetime="{{ $k -> created_at }}"></time></small></h4>
+					<div class="pull-right">
+						@if($k -> dibagikan == 'y')
+						<span class="label label-info label-flat"><i class="fa fa-check"></i> Dibagikan</span>
+						@elseif($k -> dibagikan == 'j')
+						<span class="label label-default label-flat"><i class="fa fa-clock-o"></i> Sesuai jadwal</span>
+						@else
+						<span class="label label-warning label-flat"><i class="fa fa-exclamation-triangle"></i> Belum dibagikan</span>
+						@endif
+					</div>
 					<p>
 						<span class="text-muted">{{ $jenis[$k -> jenis] ?? '-' }}</span>
 					</p>
@@ -63,48 +72,48 @@
 						<i class="fa fa-ellipsis-v"></i>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dm1">
-						<li><a href="{{ route('matkul.tapel.sesi.kegiatan.duplicate', [$kelas -> id, $sesi -> id, $k -> jenis]) }}" onclick="notImplemented();return false;"><i class="fa fa-paste"></i> Duplikat Sesi</a></li>
+						<li><a href="{{ route('matkul.tapel.sesi.kegiatan.duplicate', [$kelas -> id, $sesi -> id, $k -> id]) }}"><i class="fa fa-paste"></i> Duplikat Sesi</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="{{ route('matkul.tapel.sesi.kegiatan.delete', [$kelas -> id, $sesi -> id, $k -> id]) }}" class="has-confirmation"><span class="text-danger"><i class="fa fa-trash"></i> Hapus</span></a></li>
 					</ul>
 				</div>
 			</div>
-			</div>
 		</div>
-		@endforeach
-		@else
-		<div class="f-box">
-			<div class="f-box-body">
-				Belum ada Materi.
-			</div>
-		</div>
-		@endif
 	</div>
-	@endsection
-	
-	@push('scripts')
-	<script src="{{ asset('/js/jquery.timeago.js') }}" type="text/javascript"></script>
-	<script>
-		jQuery.timeago.settings.strings = {
-		prefixAgo: null,
-		prefixFromNow: null,
-		suffixAgo: "yang lalu",
-		suffixFromNow: "dari sekarang",
-		seconds: "kurang dari semenit",
-		minute: "sekitar satu menit",
-		minutes: "%d menit",
-		hour: "sekitar sejam",
-		hours: "sekitar %d jam",
-		day: "sehari",
-		days: "%d hari",
-		month: "sekitar sebulan",
-		months: "%d bulan",
-		year: "sekitar setahun",
-		years: "%d tahun"
-		};
-		
-		$(function () {
-			$("time.timeago").timeago();
-		});
-	</script>
-	@endpush
+	@endforeach
+	@else
+	<div class="f-box">
+		<div class="f-box-body">
+			Belum ada Materi.
+		</div>
+	</div>
+	@endif
+</div>
+@endsection
+
+@push('scripts')
+<script src="{{ asset('/js/jquery.timeago.js') }}" type="text/javascript"></script>
+<script>
+	jQuery.timeago.settings.strings = {
+	prefixAgo: null,
+	prefixFromNow: null,
+	suffixAgo: "yang lalu",
+	suffixFromNow: "dari sekarang",
+	seconds: "kurang dari semenit",
+	minute: "sekitar satu menit",
+	minutes: "%d menit",
+	hour: "sekitar sejam",
+	hours: "sekitar %d jam",
+	day: "sehari",
+	days: "%d hari",
+	month: "sekitar sebulan",
+	months: "%d bulan",
+year: "sekitar setahun",
+years: "%d tahun"
+};
+
+$(function () {
+$("time.timeago").timeago();
+});
+</script>
+@endpush
