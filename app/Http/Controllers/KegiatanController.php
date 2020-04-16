@@ -16,6 +16,12 @@
 	{
 		
 		protected $jenis = [1 => 'Materi', 2 => 'Quiz', 3 => 'Tugas', 4 => 'Video Conference'];
+		protected $icons = [
+		'pdf' => 'fa-file-pdf-o', 'docx' => 'fa-file-word-o', 'doc' => 'fa-file-word-o', 
+		'xls' => 'fa-file-excel-o', 'xlsx' => 'fa-file-excel-o', 'pptx' => 'fa-file-powerpoint-o', 
+		'ppt' => 'fa-file-powerpoint-o', 'mp4' => 'fa-file-video-o', 'ogg' => 'fa-file-video-o'
+		];
+		protected $media_type = ['gambar', 'dokumen', 'video'];
 		
 		public function index(MatkulTapel $kelas, SesiPembelajaran $sesi)
 		{
@@ -49,7 +55,7 @@
 			$input['jenis'] = $jenis_id;
 			$input['sesi_pembelajaran_id'] = $sesi -> id;
 			Kegiatan::create($input);			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Sesi Pembelajaran berhasil dimasukkan.');
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil dimasukkan.');
 		}
 		
 		/**
@@ -58,11 +64,32 @@
 			* @param  int  $id
 			* @return \Illuminate\Http\Response
 		*/
-		public function edit(MatkulTapel $kelas, SesiPembelajaran $sesi)
+		public function edit(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
-			$hari = config('custom.hari');
-			$jadwal = $kelas -> jadwal[0];
-			return view('matkul.tapel.sesi.kegiatan.edit', compact('sesi', 'kelas', 'hari', 'jadwal'));
+			$jenis_id = $kegiatan -> jenis;
+			$jenis = $this -> jenis[$jenis_id];
+			$media = [];
+			$icons = $this -> icons;
+			$media_type = $this -> media_type;
+			
+			foreach($media_type as $t)
+			{
+				if(isset($kegiatan -> isi[$t]))
+				{
+					foreach($kegiatan -> isi[$t] as $g)
+					{
+						$file = FileEntry::find($g);
+						if($file) $media[$t][] = [
+						'id' => $file -> id,
+						'fullpath' => $file -> namafile,
+						'filename' => $file -> nama,
+						'mime' => $file -> mime
+						];
+					}
+				}
+			}
+			
+			return view('matkul.tapel.sesi.kegiatan.edit', compact('sesi', 'kelas', 'kegiatan', 'jenis', 'jenis_id', 'icons', 'media'));
 		}
 		
 		/**
@@ -72,12 +99,12 @@
 			* @param  int  $id
 			* @return \Illuminate\Http\Response
 		*/
-		public function update(Request $request, MatkulTapel $kelas, SesiPembelajaran $sesi)
+		public function update(Request $request, MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
-			$this -> validate($request, $this -> rules);
+			// $this -> validate($request, $this -> rules);
 			$input = $request -> except('_method', 'files');
-			$sesi -> update($input);			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', $kelas -> id) -> with('success', 'Data Sesi Pembelajaran berhasil diperbarui.');
+			$kegiatan -> update($input);			
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil diperbarui.');
 		}
 		
 		/**
@@ -86,21 +113,17 @@
 			* @param  int  $id
 			* @return \Illuminate\Http\Response
 		*/
-		public function destroy(MatkulTapel $kelas, SesiPembelajaran $sesi)
+		public function destroy(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
-			$sesi -> delete();			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', $kelas -> id) -> with('success', 'Data Sesi Pembelajaran berhasil dihapus.');
+			$kegiatan -> delete();			
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil dihapus.');
 		}
 		
 		public function show(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
-		$icons = [
-			'pdf' => 'fa-file-pdf-o', 'docx' => 'fa-file-word-o', 'doc' => 'fa-file-word-o', 
-			'xls' => 'fa-file-excel-o', 'xlsx' => 'fa-file-excel-o', 'pptx' => 'fa-file-powerpoint-o', 
-			'ppt' => 'fa-file-powerpoint-o', 'mp4' => 'fa-file-video-o', 'ogg' => 'fa-file-video-o'
-			];
 			$media = [];
-			$media_type = ['gambar', 'dokumen', 'video'];
+			$icons = $this -> icons;
+			$media_type = $this -> media_type;
 			
 			foreach($media_type as $t)
 			{
@@ -119,6 +142,5 @@
 			}
 			
 			return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons'));			
-			}
 		}
-		
+	}

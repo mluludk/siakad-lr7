@@ -22,7 +22,7 @@
 			
 			<div class="f-box-side pull-right">
 				<a href="{{ route('matkul.tapel.sesi.kegiatan.edit', [$kelas -> id, $sesi -> id, $kegiatan -> id])}}" class="btn btn-warning btn-flat btn-xs"><i class="fa fa-edit"></i> Ubah</a>
-				<a href="{{ route('matkul.tapel.sesi.kegiatan.delete', [$kelas -> id, $sesi -> id, $kegiatan -> id])}}" class="btn btn-danger btn-flat btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+				<a href="{{ route('matkul.tapel.sesi.kegiatan.delete', [$kelas -> id, $sesi -> id, $kegiatan -> id])}}" class="btn btn-danger btn-flat btn-xs has-confirmation"><i class="fa fa-trash"></i> Hapus</a>
 			</div>
 			<div class="clearfix"></div>
 			<h4>Topik</h4>
@@ -31,6 +31,8 @@
 			<p>
 				@if($kegiatan -> dibagikan == 'y')
 				<span class="label label-info label-flat"><i class="fa fa-check"></i> Dibagikan</span>
+				@elseif($kegiatan -> dibagikan == 'j')
+				<span class="label label-default label-flat"><i class="fa fa-clock-o"></i> Sesuai jadwal</span>
 				@else
 				<span class="label label-warning label-flat"><i class="fa fa-exclamation-triangle"></i> Belum dibagikan</span>
 				@endif
