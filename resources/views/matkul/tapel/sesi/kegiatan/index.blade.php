@@ -51,6 +51,16 @@
 			<div class="f-box-side" style="width: 100%; border-left: 1px solid #ddd;">
 				<div class="f-box-body">
 					<h4>{{ $k -> topik }} <small><time class="timeago" datetime="{{ $k -> created_at }}"></time></small></h4>
+					<p>
+						<span class="text-muted">{{ $jenis[$k -> jenis] ?? '-' }}</span>
+					</p>
+					
+					<div class="clearfix"></div>
+					<div class="pull-left">
+						@if(isset($k -> isi['gambar'])) <i class="fa fa-check text-success"></i> <i class="fa fa-image"></i> @endif
+						@if(isset($k -> isi['video'])) <i class="fa fa-check text-success"></i> <i class="fa fa-video-camera"></i> @endif
+						@if(isset($k -> isi['dokumen'])) <i class="fa fa-check text-success"></i> <i class="fa fa-file-text-o"></i> @endif
+					</div>
 					<div class="pull-right">
 						@if($k -> dibagikan == 'y')
 						<span class="label label-info label-flat"><i class="fa fa-check"></i> Dibagikan</span>
@@ -60,9 +70,7 @@
 						<span class="label label-warning label-flat"><i class="fa fa-exclamation-triangle"></i> Belum dibagikan</span>
 						@endif
 					</div>
-					<p>
-						<span class="text-muted">{{ $jenis[$k -> jenis] ?? '-' }}</span>
-					</p>
+					<div class="clearfix"></div>
 					<a href="{{ route('matkul.tapel.sesi.kegiatan.show', [$kelas -> id, $sesi -> id, $k -> id])}}" class="btn btn-link btn-block">Detail Materi</a>
 				</div>
 			</div>
@@ -88,6 +96,11 @@
 		</div>
 	</div>
 	@endif
+	<div class="f-box-side pull-left">
+		<a href="{{ route('matkul.tapel.sesi.index', $kelas -> id)}}" class="btn btn-default btn-flat btn-lg">
+			<i class="fa fa-arrow-left"></i> Kembali
+		</a>
+	</div>
 </div>
 @endsection
 
@@ -100,14 +113,14 @@
 	suffixAgo: "yang lalu",
 	suffixFromNow: "dari sekarang",
 	seconds: "kurang dari semenit",
-	minute: "sekitar satu menit",
-	minutes: "%d menit",
-	hour: "sekitar sejam",
-	hours: "sekitar %d jam",
-	day: "sehari",
-	days: "%d hari",
-	month: "sekitar sebulan",
-	months: "%d bulan",
+minute: "sekitar satu menit",
+minutes: "%d menit",
+hour: "sekitar sejam",
+hours: "sekitar %d jam",
+day: "sehari",
+days: "%d hari",
+month: "sekitar sebulan",
+months: "%d bulan",
 year: "sekitar setahun",
 years: "%d tahun"
 };

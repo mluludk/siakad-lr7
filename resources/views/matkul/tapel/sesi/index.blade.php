@@ -26,17 +26,19 @@
 				<button class="btn btn-default"><i class="fa fa-navicon"></i></button>
 			</div>
 			<div class="f-box-side" style="width: 100%; border-left: 1px solid #ddd;">
-				<h4 class="box-title-half"><a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $s -> id]) }}" style="color: white;">Sesi ke {{ $s -> sesi_ke }}</a></h4>
-				<div class="f-box-body">
-					<h4><a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $s -> id]) }}">{{ $s -> judul }}</a></h4>
-					@foreach($kelas -> jadwal as $j)
-					<div class="text-muted">{{ $hari[$j -> hari] }}, 06 April 2020</div>
-					<span class="text-muted">
-						{{ $j -> jam_mulai }} - {{ $j -> jam_selesai }} &nbsp;&nbsp;
-						<i class="fa fa-building"></i>&nbsp;&nbsp;{{ $j -> ruang -> nama }}
-					</span>
-					@endforeach
-				</div>
+				<a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $s -> id]) }}" style="color: inherit;">
+					<h4 class="box-title-half">Sesi ke {{ $s -> sesi_ke }}</h4>
+					<div class="f-box-body">
+						<h4>{{ $s -> judul }}</h4>
+						@foreach($kelas -> jadwal as $j)
+						<div class="text-muted">{{ $hari[$j -> hari] }}, 06 April 2020</div>
+						<span class="text-muted">
+							{{ $j -> jam_mulai }} - {{ $j -> jam_selesai }} &nbsp;&nbsp;
+							<i class="fa fa-building"></i>&nbsp;&nbsp;{{ $j -> ruang -> nama }}
+						</span>
+						@endforeach
+					</div>
+				</a>
 			</div>
 			<div class="f-box-side" style="width: 58px; padding: 10px;">
 				<div class="dropdown">
