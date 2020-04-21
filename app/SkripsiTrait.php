@@ -4,34 +4,51 @@
 	trait SkripsiTrait{
 		private function similarity($judul, $exclude_id=null)
 		{
+			$judul = strtoupper($judul);
+			// $regenerate_daftar = false;
 			$smg = new \Siakad\SmithWatermanGotoh;
 			$sim_array = []; //18092019
 			$sim = [0, '', ''];
-			\Cache::forget('id_judul_skripsi');
-			$skripsi = \Cache::get('id_judul_skripsi', function() {
-				$c = \Siakad\Skripsi::pluck('judul', 'id');
-				\Cache::put('id_judul_skripsi', $c, 60);
-				return $c;
-			});
+			
+			// $skripsi = \Cache::get('id_judul_skripsi', function() use($judul) {
+				// $c = \Siakad\Skripsi::whereRaw('upper(judul) <> "' . $judul . '"') -> pluck('judul', 'id') -> toArray();
+				// \Cache::put('id_judul_skripsi', $c, 60);
+				// return $c;
+			// });
+			
+			$skripsi = \Siakad\Skripsi::whereRaw('upper(judul) <> "' . $judul . '"') 
+			-> when($exclude_id !== null, function($q) use($exclude_id)
+			{
+				return $q -> where('id', '<>', $exclude_id);
+			})
+			-> pluck('judul', 'id') -> toArray();
+			
+			//mengecualikan judul sendiri
+			// if(array_search($judul, $skripsi) != false) $regenerate_daftar = true;
 			
 			//check if exclusion already listed
-			if($exclude_id !== null)
-			{
-				if(isset($skripsi[$exclude_id]))
-				{
-					\Cache::forget('id_judul_skripsi');
-					
-					$skripsi = \Cache::get('id_judul_skripsi', function() use ($exclude_id){
-						$c = \Siakad\Skripsi::where('id', '<>', $exclude_id) -> pluck('judul', 'id');
-						\Cache::put('id_judul_skripsi', $c, 60);
-						return $c;
-					});
-				}
-			}
+			// if($exclude_id !== null)
+			// {
+				// if(isset($skripsi[$exclude_id]))
+				// {
+					// $regenerate_daftar = true;
+				// }
+			// }
+			
+			// if($regenerate_daftar)
+			// {
+				// \Cache::forget('id_judul_skripsi');	
+				
+				// $skripsi = \Cache::get('id_judul_skripsi', function() use ($judul, $exclude_id){
+					// $c = \Siakad\Skripsi::whereRaw('upper(judul) <> "' . $judul . '"') -> where('id', '<>', $exclude_id) -> pluck('judul', 'id') -> toArray();
+					// \Cache::put('id_judul_skripsi', $c, 60);
+					// return $c;
+				// });
+			// }
 			
 			foreach($skripsi as $i => $j)
 			{
-				$tmp = $smg -> compare(strtolower($judul), strtolower($j));
+				$tmp = $smg -> compare(strtoupper($judul), strtoupper($j));
 				$percent = $tmp * 100;
 				$sim_array[] = ['id' => $i, 'judul' => $j, 'similarity' => $percent]; 
 				if($percent > $sim[0]) $sim = [$percent, $i];
@@ -44,9 +61,8 @@
 		}
 		
 		function sortBySimilarity($x, $y) {
-			// return $x['similarity'] - $y['similarity'];
 			if($x['similarity'] == $y['similarity']) return 0;
 			else if($x['similarity'] > $y['similarity']) return -1;
 			else return 1;
 		}
-	}							
+	}										
