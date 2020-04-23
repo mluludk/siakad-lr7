@@ -12,4 +12,14 @@
 		protected $casts = [
 		'isi' => 'array'
 		];
+		
+		// public function komentar()
+		// {
+		// return $this -> hasMany(Komentar::class, 'kegiatan_pembelajaran_id');	
+		// }
+		
+		public function komentar()
+		{
+			return $this -> morphMany(Komentar::class, 'commentable') -> orderBy('waktu');
+		}
 	}

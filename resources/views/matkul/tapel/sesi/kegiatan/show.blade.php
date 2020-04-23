@@ -88,33 +88,108 @@
 		</div>
 	</div>
 	
+	<div class="f-box">
+		<div class="f-box-body">
+			<h4><i class="fa fa-comments"></i> Komentar</h4>			
+			<div class="box-body chat" id="chat-box" style="overflow-y: auto; width: auto; max-height: 250px;">
+				@if($kegiatan -> komentar -> count())
+				@foreach($kegiatan -> komentar as $m)
+				
+				<?php
+					$userimage = $m -> author -> authable -> foto !== '' ? '/getimage/' . $m -> author -> authable -> foto : '/images/logo.png';
+				?>
+				<div class="item">
+					<img src="{{ url($userimage) }}" alt="{{ $m -> author -> authable -> nama }}" class="online">					
+					<p class="message">
+						<a href="#" class="name">
+							<time class="text-muted pull-right timeago" datetime="{{ $m -> waktu }}"></time>
+							{{ $m -> author -> authable -> nama }}
+						</a>
+						{{ $m -> komentar }}
+					</p>
+				</div>
+				@endforeach
+				@endif
+			</div>
+			
+			<form action="{{ route('komentar.post', ['Kegiatan', $kegiatan -> id]) }}" method="post" id="frm-komentar">
+				{!! csrf_field() !!}
+				<div class="input-group">
+					<input type="text" name="komentar" placeholder="Tambahkan Komentar" class="form-control">
+					<span class="input-group-btn">
+						<button type="button" class="btn btn-default btn-flat" id="btn-komentar"><i class="fa fa-send"></i></button>
+					</span>
+				</div>
+			</form>
+			
+		</div>
+	</div>
+	
 </div>
 
 @endsection
 
 @push('scripts')
+<script src="{{ url('/js/jquery.form.min.js') }}"></script>
+<script>
+	$(document).on('click', '#btn-komentar', function(){		
+	$('form#frm-komentar').submit();
+});
+
+$('form#frm-komentar').ajaxForm({
+	beforeSend: function() {
+		
+	},
+	success: function(data) {
+		if(!data.success)
+		{
+			alert('Terjadi kesalahan: ' + data.error);
+		}
+		else
+		{
+			var item = '<div class="item">'+
+			'<img src="'+ data.image +'" alt="'+ data.user +'" class="'+ data.status +'">'+			
+			'<p class="message">'+
+			'<a href="#" class="name">'+
+			'<time class="text-muted pull-right timeago" datetime="'+ data.waktu +'">Baru saja</time>'+
+			data.user +
+			'</a>'+
+			data.komentar +
+			'</p>'+
+			'</div>';
+			$('.chat').append(item);
+		}
+	},
+	complete: function(xhr) {
+		$('input[name=komentar]').val('');
+	},
+	error: function(XMLHttpRequest, textStatus, errorThrown){
+		alert('Terjadi kesalahan: ' + errorThrown);
+	}
+});  
+</script>
 <script src="{{ asset('/js/jquery.timeago.js') }}" type="text/javascript"></script>
 <script>
 	jQuery.timeago.settings.strings = {
-	prefixAgo: null,
-	prefixFromNow: null,
-	suffixAgo: "yang lalu",
-	suffixFromNow: "dari sekarang",
-	seconds: "kurang dari semenit",
-	minute: "sekitar satu menit",
-	minutes: "%d menit",
-	hour: "sekitar sejam",
-	hours: "sekitar %d jam",
-	day: "sehari",
-	days: "%d hari",
-month: "sekitar sebulan",
-months: "%d bulan",
-year: "sekitar setahun",
-years: "%d tahun"
-};
-
-$(function () {
-$("time.timeago").timeago();
-});
+		prefixAgo: null,
+		prefixFromNow: null,
+		suffixAgo: "yang lalu",
+		suffixFromNow: "dari sekarang",
+		seconds: "kurang dari semenit",
+		minute: "sekitar satu menit",
+		minutes: "%d menit",
+		hour: "sekitar sejam",
+		hours: "sekitar %d jam",
+		day: "sehari",
+		days: "%d hari",
+		month: "sekitar sebulan",
+		months: "%d bulan",
+		year: "sekitar setahun",
+		years: "%d tahun"
+	};
+	
+	$(function () {
+		$("time.timeago").timeago();
+	});
 </script>
 @endpush

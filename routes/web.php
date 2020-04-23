@@ -2930,6 +2930,13 @@
 		'uses' => 'LaporanPembelajaranController@index'
 		]);
 		
+		//KOMENTAR
+		Route::post('komentar/{model}/{id}', [
+		'as' => 'komentar.post', 
+		'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],
+		'uses' => 'KomentarController@store'
+		]);
+		
 		//SESI PEMBELAJARAN	> KEGIATAN	
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan', [
 		'as' => 'matkul.tapel.sesi.kegiatan.index', 

@@ -221,6 +221,9 @@ Data Kelas Kuliah {{ $kelas -> nama }}
 	font-size: 1.6em;
 	text-align: center;
 	}
+	time{
+	font-size: 85%;
+	}
 </style>
 @endpush		
 
