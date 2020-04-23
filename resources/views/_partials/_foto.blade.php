@@ -42,6 +42,7 @@
 <script src="{{ url('/js/jquery.form.min.js') }}"></script>
 @endpush
 
+
 @push('scripts')
 <script>
 	$(document).on('change', '#{{ $file_selector ?? "image" }}', function(){

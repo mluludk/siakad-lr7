@@ -1,0 +1,119 @@
+@extends('app')
+
+@section('title')
+Data Kelas Kuliah {{ $kelas -> nama }}
+@endsection
+
+@section('header')
+<section class="content-header">
+	<h1>
+		Kelas Kuliah
+		<small>Informasi</small>
+	</h1>
+	<ol class="breadcrumb">
+		<li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="{{ url('/matkul/tapel') }}"> Kelas Kuliah</a></li>
+		<li class="active">{{ $kelas -> nama }}</li>
+	</ol>
+</section>
+@endsection
+
+@section('content')
+<div class="row">
+	<div class="col-md-3">
+		<h4><i class="fa fa-align-justify"></i> Menu</h4>
+		<div class="box">
+			<div class="box-body">
+				<a class="btn btn-block btn-social btn-success btn-flat">
+					<i class="fa fa-list"></i> Aktivitas Pembelajaran
+				</a>
+				<a class="btn btn-block btn-social-inactive">
+					<i class="fa fa-comments"></i> Diskusi
+				</a>
+				<a class="btn btn-block btn-social-inactive">
+					<i class="fa fa-users"></i> Anggota
+				</a>
+				<a class="btn btn-block btn-social-inactive">
+					<i class="fa fa-area-chart"></i> Laporan
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-6" style="display: flex;">
+		<h4><i class="fa fa-list"></i> Sesi Pembelajaran</h4>
+		
+		<div class="box">
+			<div class="row box-row">
+				<div class="col box-side">
+					<button class="btn btn-default"><i class="fa fa-navicon"></i></button>
+				</div>
+				<div class="col" style="width: 90%;	border-left: 1px solid #ddd;">
+					<h4 class="box-title-half">Sesi ke 1</h4>
+					1222222222222222222
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	
+	<div class="col-md-3">
+		<h4><i class="fa fa-info"></i> Informasi Kelas Kuliah</h4>
+		<div class="box">
+			<div class="box-body">
+				
+			</div>
+		</div>
+	</div>
+</div>
+@endsection
+
+@push('styles')
+<style>
+	.box{
+	border-top: none;
+	}
+	.box-title-half{
+	margin-top: 0;
+	color: #ffffff;
+	background-color: #00a65a;
+	padding: 10px;
+	width: 18%;
+	border-radius: 0 0 40px 0;
+	}
+	.box-row{
+	margin: 0px;
+	}
+	.col{
+	float: left;
+	}
+	.box-side{
+	padding: 10px;
+	width: 10%;
+	}
+	a.btn-social-inactive{
+	color: black;
+	}
+	a.btn-social-inactive:hover{
+	color: #337ab7;
+	}
+	.btn-social-inactive {
+	position: relative;
+	padding-left: 44px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+	
+	.btn-social-inactive>:first-child {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 32px;
+	line-height: 34px;
+	font-size: 1.6em;
+	text-align: center;
+	}
+</style>
+@endpush							

@@ -20,11 +20,8 @@
 		
 		public function index(MatkulTapel $kelas)
 		{
-			$sesip =SesiPembelajaran::where('matkul_tapel_id', $kelas -> id) 
-			-> orderBy('sesi_ke') 
-			-> get();
-			
-			return view('matkul.tapel.sesi.index', compact('kelas', 'sesip'));
+			$sesi =SesiPembelajaran::where('matkul_tapel_id', $kelas -> id) -> orderBy('sesi_ke') -> get();
+			return view('matkul.tapel.sesi.index', compact('kelas', 'sesi'));
 		}
 		
 		/**

@@ -1,4 +1,18 @@
-<?php	
+<?php
+/* 	function getAcronym($str)
+	{
+		$acronym = '';
+		$str = strtoupper($str);
+		if(strlen($str) < 3) return $str;
+		
+		// https://stackoverflow.com/a/16165234/6934844
+		$expr = '/(?<=\b|^)[a-z]/i';
+		preg_match_all($expr, $str, $matches);
+		$acronym = implode('', $matches[0]);
+		
+		return $acronym;
+	} */
+	
 	function strPad($str, $n=16)
 	{
 		$str = intval($str);

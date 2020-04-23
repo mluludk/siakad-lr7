@@ -2,79 +2,70 @@
 	
 	namespace Siakad;
 	
-	use Illuminate\Http\Request;
-	// use Illuminate\Support\Facades\Input;
+	use Illuminate\Support\Facades\Input;
 	trait FileEntryTrait{
 		
-		public function upload($input, $kategori = 'lain')
+		public function upload($input = null)
 		{
-			// if($input == null)
-			// {
-				// $input = $request -> all();
-			// }
-			// dd($input);
+			if($input == null)
+			{
+				$input = Input::all();
+			}
 			$file = $input['file'];
 			
-			$rules = [
-			'gambar' => 'mimes:jpg,jpeg,png|max:2048',
-			'video' => 'mimes:mp4,ogg|max:20480',
-			'dokumen' => 'mimes:docx,doc,pptx,ppt,xlsx,xls,pdf|max:5120',
-			'lain' => 'mimes:docx,doc,pptx,ppt,xlsx,xls,pdf,jpg,jpeg,png'
-			];
-			
-			$validator = \Validator::make($input, ['file' => $rules[$kategori]]);
+			$validator = \Validator::make($input, ['file' => 'mimes:pdf,doc,docx,jpg,jpeg,png']);
 			if($validator -> fails())
 			{
-				$info = explode('|', $rules[$kategori]);
-				$mimes = substr($info[0], 6, strlen($info[0]));	
-				$max = isset($info[1]) ? ' Maks. ' . $this -> human_filesize(substr($info[1], 4, strlen($info[1])) * 1024) : '';
-				return ['success' => false, 'error' => 'File yang diperbolehkan adalah: ' . $mimes . $max];	
-			}
+				return ['success' => false, 'error' => 'File yang diperbolehkan adalah: PDF, DOC, DOCX, JPG, JPEG, PNG'];	
+				}
 			else
 			{
-				$path = storage_path('app/upload/');
 				$date = date('Y/m/d/');
-				$tipe = isset($input['tipe']) ? $input['tipe'] : '99';
 				
 				if(isset($input['nama'])) 
 				$filename = $input['nama'];
 				else
-				$filename = substr($file -> getClientOriginalName(), 0, -3) . '-' . str_random(3);			
+				$filename = str_random(7);			
 				
-				$filename = str_slug($filename) . '.' . $file -> extension();		
-				$size = $this -> human_filesize($file -> getSize());
-				$mime = $file->getClientMimeType();
-				$result = $file -> move($path . 'files/' . $date, $filename);					
+				$filename = str_slug($filename) . '.' . $file->getClientOriginalExtension();		
+				
+				$size = $file->getClientSize();
+				$storage = \Storage::disk('files');
+				$result = $storage -> put($date . $filename, \File::get($file));
+				
 				if(!$result)
 				{
-					return ['success' => false, 'error' => 'File tidak dapat disimpan.'];			
-				}	
-				
+					return ['success' => false, 'error' => 'An error occured while trying to save data.'];			
+				}				
 				$entry = new FileEntry();
-				$entry -> mime = $mime;
+				$entry -> mime = $file->getClientMimeType();
 				$entry -> namafile = $date . $filename;
-				$entry -> ukuran = $size;
+				$entry -> ukuran = $this -> human_filesize($size);
 				$entry -> nama = $filename;
 				$entry -> user_id = \Auth::user() -> id;
-				$entry -> tipe = $tipe;
+				$entry -> tipe = $input['tipe'] != '' ? $input['tipe'] : '99';
 				
+				/* 	$tipe = $input['tipe'] != '' ? $input['tipe'] : '99';
+					$entry = [
+					'mime' => $file->getClientMimeType(),
+					'namafile' => $date . $filename,
+					'ukuran' => $this -> human_filesize($size),
+					'nama' => $filename,
+					'tipe' => $tipe,
+					'user_id' => \Auth::user() -> id
+				]; */
 				
 				if(isset($input['akses'])) $entry -> akses = json_encode($input['akses']);
+				// if(isset($input['akses'])) $entry['akses'] = json_encode($input['akses']);
 				
+				// $id = FileEntry::insertGetId($entry);
+				// if(isset($id))
 				if($entry->save())
 				{ 
-					return [
-					'success' => true,
-					'id' => $entry -> id, 
-					'filename' => $date . $filename, 
-					'name' => $filename, 
-					'filesize' => $size, 
-					'mime' => $mime, 
-					'created_at' => date('Y-m-d H:i:s')
-					];
+					return ['success' => true, 'id' => $entry -> id, 'filename' => $date . $filename];
+					// return ['success' => true, 'id' => $id, 'filename' => $date . $filename];
 				} 
-				
-				return ['success' => false, 'error' => 'Database Error'];
+				return ['success' => false, 'error' => 'An error occured while trying to save data.'];
 			}
 		}
 		
