@@ -44,7 +44,6 @@
 		}
 		
 		function sortBySimilarity($x, $y) {
-			// return $x['similarity'] - $y['similarity'];
 			if($x['similarity'] == $y['similarity']) return 0;
 			else if($x['similarity'] > $y['similarity']) return -1;
 			else return 1;

@@ -125,8 +125,8 @@
 				
 				$smt = $jenis == 'proposal' ? 6 : 7;
 				$tanggungan = [
-				'keu' => 'Tidak mempunyai tanggungan Keuangan',
-				'daf' => 'Sudah daftar Wisuda',
+				'keu' => 'Tidak mempunyai tanggungan Administrasi Keuangan',
+				'daf' => 'Tidak mempunyai tanggungan Kelulusan',
 				'krs' => 'Sudah melakukan KRS',
 				'sks' => 'Tidak mempunyai tanggungan SKS',
 				'nil' => 'Tidak mempunyai tanggungan nilai semester 1-' . $smt,
