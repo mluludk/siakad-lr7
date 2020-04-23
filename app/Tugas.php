@@ -10,30 +10,6 @@
 		protected $table = 'tugas';
 		public $timestamps = false;
 		
-		/* public function scopeHasilTugasMahasiswa($query, $dosen_id=null)
-		{
-			$query
-			-> join('mahasiswa_tugas', 'mahasiswa_tugas.tugas_id', '=', 'tugas.id')
-			-> join('matkul_tapel', 'matkul_tapel.id', '=', 'tugas.matkul_tapel_id')
-			-> join('kurikulum_matkul', 'kurikulum_matkul.id', '=', 'matkul_tapel.kurikulum_matkul_id')
-			-> join('matkul', 'kurikulum_matkul.matkul_id', '=', 'matkul.id')
-			-> join('tim_dosen', 'tim_dosen.matkul_tapel_id', '=', 'matkul_tapel.id')
-			-> join('prodi', 'matkul_tapel.prodi_id', '=', 'prodi.id')
-			-> join('tapel', 'matkul_tapel.tapel_id', '=', 'tapel.id')
-			-> join('kelas', 'matkul_tapel.kelas', '=', 'kelas.id');
-			
-			if($dosen_id !== null) $query -> where('dosen_id', $dosen_id);
-			
-			$query
-			-> select(
-			'mahasiswa_tugas.status', 'mahasiswa_tugas.nilai',
-			'tugas.id', 'tugas.nama as judul', 'tugas.keterangan', 'tugas.matkul_tapel_id','jenis_tugas',
-			'matkul.nama AS matkul', 'matkul.kode',
-			'semester',
-			'kelas.nama AS program'
-			);
-		} */
-		
 		public function scopeTugasMahasiswa($query, $mahasiswa_id)
 		{
 			$query
@@ -95,6 +71,11 @@
 			sum(if(mahasiswa_tugas.nilai is not null, 1, 0)) AS jml_nilai
 			')
 			);
+		}
+		
+		public function detail()
+		{
+			return $this -> hasMany('Siakad\TugasDetail', 'tugas_id');
 		}
 		
 		public function perkuliahan()

@@ -50,8 +50,8 @@
 				$jumlah += intval($t -> jumlah);
 				$bayar += intval($t -> bayar);
 			}
-			$nominal = $jumlah - $bayar;
-			if($nominal <= 0) return Redirect::back() -> with('message', 'Tagihan sudah Lunas.');
+			$sisa = $jumlah - $bayar;
+			if($sisa <= 0) return Redirect::back() -> with('message', 'Tagihan sudah Lunas.');
 			
 			$status = $bayar > 0 ? 'Belum Lunas' : 'Belum dibayar';
 			
@@ -79,7 +79,7 @@
 			
 			$nama_tagihan = $golongan == null ? $tagihan[0] -> nama : strtoupper($golongan);
 			
-			return view('biaya.mahasiswa.tagihan_token_print', compact('mahasiswa', 'nama_tagihan', 'jumlah', 'status', 'token', 'token_expired_at'));
+			return view('biaya.mahasiswa.tagihan_token_print', compact('mahasiswa', 'nama_tagihan', 'jumlah', 'status', 'token', 'token_expired_at', 'sisa'));
 		}
 		
 		public function tagihanToken()

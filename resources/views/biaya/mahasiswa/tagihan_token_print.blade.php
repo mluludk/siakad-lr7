@@ -52,7 +52,7 @@
 				</tr>
 				<tr><td>Nama</td><td>:</td><td>{{ $mahasiswa -> nama }}</td></tr>			
 				<tr><td>Tagihan</td><td>:</td><td>{{ $nama_tagihan }}</td></tr>			
-				<tr><td>Nominal</td><td>:</td><th>{{ formatRupiah($jumlah) }}</th></tr>			
+				<tr><td>Nominal</td><td>:</td><th>{{ formatRupiah($sisa) }}</th></tr>			
 				<tr><td>Status</td><td>:</td><td>{{ $status }}</td></tr>			
 				<tr><td>Kode Bayar</td><td></td><td></td></tr>	
 				<tr><td></td><td></td><td style="font-weight:bold; font-size: 33px;">{{ substr_replace($token, ' ', 3, 0) }}</td></tr>	
@@ -72,7 +72,7 @@
 			</tbody>
 		</table>
 		<script>
-			// window.print();
+			window.print();
 		</script>
 	</body>
 </html>									

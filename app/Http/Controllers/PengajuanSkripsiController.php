@@ -25,21 +25,37 @@
 			$c = 0;
 			foreach($pengajuan as $p)
 			{
-				if($p -> id == $id && $p -> diterima == 'y') break;
+				//?? if($p -> id == $id && $p -> diterima == 'y') break; 
 				$data = [];
-				$similarity = $this -> similarity($p -> judul);
 				
-				if($p -> similarity != $similarity['sim'][0] or $p -> similar_id != $similarity['sim'][1])
+				// if ada Revisi
+				if($p -> judul_revisi != '')
 				{
-					$data['similarity'] = $similarity['sim'][0];
-					$data['similar_id'] = $similarity['sim'][1];
-					$data['similarity_array'] = $similarity['sim_array'];
-					
-					PengajuanSkripsi::find($p -> id) -> update($data);
-					$c++;
+					$similarity = $this -> similarity($p -> judul_revisi, null, $p -> judul);
+					if($p -> similarity != $similarity['sim'][0] or $p -> similar_id != $similarity['sim'][1])
+					{
+						$data['similarity2'] = $similarity['sim'][0];
+						$data['similarity2_id'] = $similarity['sim'][1];
+						$data['similarity2_array'] = $similarity['sim_array'];
+						
+						PengajuanSkripsi::find($p -> id) -> update($data);
+						$c++;
+					}
 				}
+				else
+				{
+					$similarity = $this -> similarity($p -> judul);				
+					if($p -> similarity != $similarity['sim'][0] or $p -> similar_id != $similarity['sim'][1])
+					{
+						$data['similarity'] = $similarity['sim'][0];
+						$data['similar_id'] = $similarity['sim'][1];
+						$data['similarity_array'] = $similarity['sim_array'];
+						
+						PengajuanSkripsi::find($p -> id) -> update($data);
+						$c++;
+					}					
+				}				
 			}
-			
 			return $id == null ? view('mahasiswa.skripsi.pengajuan.index2', compact('pengajuan')) -> with('message', 'Tingkat kesamaan judul telah dihitung ulang. ' . $c . ' data telah diperbarui.') : Redirect::route('mahasiswa.skripsi.pengajuan.edit', $id) -> with('message', 'Tingkat kesamaan judul telah dihitung ulang. ' . $c . ' data telah diperbarui.');
 		}
 		

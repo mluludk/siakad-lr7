@@ -46,7 +46,7 @@ Deskripsi Tugas Mahasiswa
 					@endif
 					{{ $jenis[$tugas -> jenis_tugas] }}
 				</td>
-				<th valign="top">Deskripsi Tugas</th><th valign="top">:</th><td valign="top">{!! $tugas -> keterangan !!}</td>
+				<!-- <th valign="top">Deskripsi Tugas</th><th valign="top">:</th><td valign="top">{!! $tugas -> keterangan !!}</td> -->
 			</tr>
 			<tr>
 				<th>Tanggal Tugas</th><th>:</th><td>{{ $tugas -> tanggal }}</td>
@@ -73,6 +73,9 @@ Deskripsi Tugas Mahasiswa
 				</td>
 			</tr>
 		</table>
+		<h3>DESKRIPSI TUGAS MAHASISWA</h3>
+			<ol style="padding-left: 18px;">
+			<td valign="top">{!! $tugas -> keterangan !!}</td>
 	</div>
 </div>
 <div class="box box-primary">

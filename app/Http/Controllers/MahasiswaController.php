@@ -1317,9 +1317,9 @@
 			$pembiayaan_awal = config('custom.pilihan.jenisPembiayaanAwal');
 			$mahasiswa = Mahasiswa::find($id);
 			$hasAccount = \Siakad\User::where('authable_id', $mahasiswa ->id) -> where('authable_type', 'Siakad\\Mahasiswa') -> exists();
-			$prodi = \Siakad\Prodi::pluck('nama', 'id');
 			$kelas = \Siakad\Kelas::pluck('nama', 'id');
 			
+			$prodi = $this -> getProdiSelection('id', 'asc', false);
 			$dosen = $this -> getDosenSelection();
 			
 			// $tapel = \Siakad\Tapel::orderBy('nama2') -> pluck('nama', 'nama2');	

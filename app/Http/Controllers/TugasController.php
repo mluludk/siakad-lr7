@@ -5,9 +5,7 @@
 	use Redirect;
 	use Illuminate\Http\Request;
 	
-	
 	use Siakad\Tugas;
-	//use Siakad\Http\Requests;
 	use Siakad\Http\Controllers\Controller;
 	
 	class TugasController extends Controller
@@ -109,8 +107,6 @@
 		*/
 		public function edit($id)
 		{
-			// $tapel_id = false !== $request -> get('tapel_id') ? $request -> get('tapel_id') : null;
-			// $matkul_tapel_id = false !== $request -> get('mt_id') ? $request -> get('mt_id') : null;
 			$edit = true;
 			$tugas = Tugas::find($id);
 			
@@ -124,10 +120,6 @@
 				$jenis_nilai = $this -> getJenisNilaiList($matkul_tapel_id);
 				
 				$user = \Auth::user();
-				// $matkul = $this -> getMatkulList($user, $perkuliahan -> tapel_id, null);
-				
-				// $tapel = $user -> authable_id > 2 ? null : $this -> getTapelSelection('desc');
-				// $tapel = $this -> getTapelSelection('desc')[$perkuliahan -> tapel_id];
 				$matkul = $tapel = [];
 				$jenis = $this -> jenis;
 				
@@ -152,9 +144,14 @@
 			return Redirect::route('mahasiswa.tugas.index') -> with('message', 'Data Tugas Mahasiswa berhasil diperbarui.');
 		}
 		
-		public function publish($id, $type='y')
+		public function publish(Tugas $tugas, $type='y')
 		{
-			Tugas::find($id) -> update(['published' => $type]);			
+			if($type == 'y') //check Tugas detail, apakah sudah ada?
+			{
+				if($tugas -> detail -> count() < 1);
+				return Redirect::back() -> with('warning', 'Anda belum meng-upload File / Membuat Pertanyaan. Tugas belum bisa di-Publikasikan.');
+			}
+			$tugas -> update(['published' => $type]);			
 			return Redirect::route('mahasiswa.tugas.index') -> with('message', 'Data Tugas Mahasiswa berhasil diperbarui.');
 		}
 		
@@ -174,10 +171,6 @@
 			}
 			return Redirect::route('mahasiswa.tugas.index') -> withErrors(['Maaf, anda tidak berhak menghapus Tugas Mahasiswa ini.']);
 		}
-		
-		
-		
-		
 		
 		
 		//////////////////////PRIVATE PROPERTY///////////////////////////////////////////PRIVATE PROPERTY/////////////////////////PRIVATE PROPERTY////////////////////
@@ -233,9 +226,8 @@
 				
 				$matkul[$mk -> mtid] = $mk -> prodi .  ' - '  . $mk -> program . ' Kelas ' . $mk -> kelas . ' - ' . 
 				$mk -> kode . ' - ' . $mk -> matkul .' - ' . $dosen . ' - Smt ' . $mk -> semester . ' - '. $mk -> sks . ' SKS';
-				}	
-				
-				return $matkul;
-				}
-				}
-								
+			}	
+			
+			return $matkul;
+		}
+	}

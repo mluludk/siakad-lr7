@@ -116,33 +116,28 @@
 			cursor: default;
 			}
 			
-			.blinking{
-			animation:blinkingText 0.8s infinite;
-			}
-			@keyframes blinkingText{
-			0%{     color: #000;    }
-			49%{    color: transparent; }
-			50%{    color: transparent; }
-			99%{    color:transparent;  }
-			100%{   color: #000;    }
+			.pace {
+			-webkit-pointer-events: none;
+			pointer-events: none;
+			
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
 			}
 			
-			#headerPanel-body {
-			background: linear-gradient(-45deg, #ee7752, #fa3954, #3f4e99, #627f91) !important;
-			background-size: 400% 400% !important;
-			animation: gradientBG 15s ease infinite;
+			.pace-inactive {
+			display: none;
 			}
-			@keyframes gradientBG {
-			0% {
-			background-position: 0% 50%;
-			}
-			50% {
-			background-position: 100% 50%;
-			}
-			100% {
-			background-position: 0% 50%;
-			}
-			}
+			
+			.pace .pace-progress {
+			background: #37c86a;
+			position: fixed;
+			z-index: 2000;
+			top: 0;
+			right: 100%;
+			width: 100%;
+			height: 2px;
+			}			
 		</style>
 		@stack('styles')		
 		<!--[if lt IE 9]>
@@ -166,7 +161,7 @@
 		{!! isOnmaintenis() !!}
 		
 		<div class="wrapper">
-		
+			
 			@if(!$guest)			
 			<header class="main-header">
 				<nav class="navbar navbar-static-top" role="navigation">
@@ -314,27 +309,28 @@
 		<script src="{{ asset('/js/app.min.js') }}"></script>
 		<script src="{{ asset('/js/fastclick.min.js') }}"></script>
 		<script src="{{ asset('/js/ddmenu.js') }}" type="text/javascript"></script>
+		<script src="{{ asset('/js/pace.min.js') }}" type="text/javascript"></script>
 		
 		@stack('scripts')
 		
 		<script>
 			$(document).on('click', '.has-confirmation', function(){
-			var message = $(this).attr('data-message') != undefined ? $(this).attr('data-message') : 'Apakah anda yakin akan menghapus data ini?';
-			if(!confirm(message)) return false;
-		});
-	</script>
-	<div class="modal fade modal-info" id="about" tabindex="-1" role="dialog" aria-labelledby="about-title" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
+				var message = $(this).attr('data-message') != undefined ? $(this).attr('data-message') : 'Apakah anda yakin akan menghapus data ini?';
+				if(!confirm(message)) return false;
+			});
+		</script>
+		<div class="modal fade modal-info" id="about" tabindex="-1" role="dialog" aria-labelledby="about-title" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				</div>
 			</div>
 		</div>
-	</div>
-	
-	@if(!$guest)	
-	@if(Auth::user() ->isImpersonating())
-<a href="{{ action('UsersController@stopImpersonate') }}" style="position: fixed !important; bottom: 10px; right: 5px;" class="btn btn-success btn-flat btn-img"  title="Kembali ke halaman Admin"><img src="{{ url('/getimage/' . \Session::get('orig_user_avatar')) }}" /> Kembali ke halaman Admin</a>
-@endif
-@endif
-
-</body>
-</html>																																																																																																																																																																																																																																																																																																																																																																																																																																																																		
+		
+		@if(!$guest)	
+		@if(Auth::user() ->isImpersonating())
+		<a href="{{ action('UsersController@stopImpersonate') }}" style="position: fixed !important; bottom: 10px; right: 5px;" class="btn btn-success btn-flat btn-img"  title="Kembali ke halaman Admin"><img src="{{ url('/getimage/' . \Session::get('orig_user_avatar')) }}" /> Kembali ke halaman Admin</a>
+		@endif
+		@endif
+		
+	</body>
+</html>																																																																																																																																																																																																																																																																																																																																																																																																																																																																			

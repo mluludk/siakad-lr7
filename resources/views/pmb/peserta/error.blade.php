@@ -58,7 +58,7 @@ Pendaftaran Mahasiswa Baru Online - {{ config('local.profil.singkatan') }}
 			<address class="center-block">
 				{{ $config['profil']['alamat']['jalan'] }} {{ $config['profil']['alamat']['kabupaten'] }}</br>
 				<strong>Telepon:</strong><br/>{{ $config['profil']['telepon'] }}</br>
-				<strong>Email:</strong><br/>{!! HTML::mailto($config['profil']['email']) !!}</br>
+				<strong>Email:</strong><br/>@foreach(explode(',', $config['profil']['email']) as $email) <a href="mailto:{{ trim($email) }}">{{ trim($email) }}</a> &nbsp; @endforeach</br>
 				<strong>Website:</strong><br/>{!! link_to($config['profil']['website'], $config['profil']['website']) !!}</br>
 				<strong>Fabecook:</strong><br/>{!! link_to($config['profil']['facebook'], $config['profil']['facebook'], ['title' => 'Facebook ' . $config['profil']['singkatan']]) !!}</br>
 				<strong>Twtiter:</strong><br/>{!! link_to($config['profil']['twitter'], $config['profil']['twitter'], ['title' => 'Twitter ' . $config['profil']['singkatan']]) !!}</br>

@@ -143,106 +143,106 @@ Peserta {{ $gelombang -> ujian -> nama }} {{ $gelombang -> nama }}
 <script>
 	var loader = '<i class="fa fa-spinner fa-spin loader"></i>';
 	$(document).on('click', '.edit-a', function(e){
-	e.preventDefault();
-	var me = $(this);
-	$('#select-' + me.attr('id')).removeClass('hidden');
-	me.addClass('hidden');
+		e.preventDefault();
+		var me = $(this);
+		$('#select-' + me.attr('id')).removeClass('hidden');
+		me.addClass('hidden');
 	});
 	
 	$(document).on('click', '.edit-a-t', function(e){
-	e.preventDefault();
-	var me = $(this);
-	$('#text-' + me.attr('id')).removeClass('hidden');
-	me.addClass('hidden');
+		e.preventDefault();
+		var me = $(this);
+		$('#text-' + me.attr('id')).removeClass('hidden');
+		me.addClass('hidden');
 	});
 	
 	$(document).on('change', '.edit-select', function(){
-	var me = $(this);
-	var id = me.attr('id').split('-');
-	var val = me.val();
-	var txt = $("#" + me.attr('id') + " option:selected" ).text();
-	
-	if($('#tanggal-' + id[2] + '-' + id[3]).text() == ''
-	|| $('#mulai-' + id[2] + '-' + id[3]).text() == ''
-	|| $('#selesai-' + id[2] + '-' + id[3]).text() == '') {alert('Tanggal dan Waktu harus diisi terlebih dahulu. Data belum tersimpan'); return;}
-	
-	send(id[1], id[2], id[3], val, txt, 'select');
+		var me = $(this);
+		var id = me.attr('id').split('-');
+		var val = me.val();
+		var txt = $("#" + me.attr('id') + " option:selected" ).text();
+		
+		if($('#tanggal-' + id[2] + '-' + id[3]).text() == ''
+		|| $('#mulai-' + id[2] + '-' + id[3]).text() == ''
+		|| $('#selesai-' + id[2] + '-' + id[3]).text() == '') {alert('Tanggal dan Waktu harus diisi terlebih dahulu. Data belum tersimpan'); return;}
+		
+		send(id[1], id[2], id[3], val, txt, 'select');
 	});
 	
 	$(document).on('change', '.edit-text', function(){
-	var me = $(this);
-	var id = me.attr('id').split('-');
-	var val = me.val();
-	
-	send(id[1], id[2], id[3], val, val, 'text');
+		var me = $(this);
+		var id = me.attr('id').split('-');
+		var val = me.val();
+		
+		send(id[1], id[2], id[3], val, val, 'text');
 	});
 	
 	function send(t, jid, mid, val, txt, inp)
 	{
-	$.ajax({
-	url: '{{ url("/ujian/skripsi/peserta/edit") }}',
-	type: "post",
-	data: {
-	'tipe': t,
-	'jusg_id': jid,
-	'mahasiswa_id': mid,
-	'value': val,
-	'_token': '{{ csrf_token() }}'
-	},
-	success: function(data){
-	if(data.success)
-	{
-	$('#' + inp + '-' + t + '-' + jid + '-' + mid).addClass('hidden');
-	$('#' + t + '-' + jid + '-' + mid).text(txt);
-	$('#' + t + '-' + jid + '-' + mid).removeClass('hidden');
-	}
-	else
-	{
-	alert(data.message);
-	}
-	$('.loader').remove();
-	},
-	beforeSend: function()
-	{
-	$('#' + inp + '-' + t + '-' + jid + '-' + mid).after(loader);
-	}
-	}); 	
-	}
-	
-	$(function(){
-	$(".time").clockTimePicker();
-	
-	$(".date").datepicker({
-	format:"dd-mm-yyyy", 
-	autoHide:true,
-	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
-	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-});
-$(".chosen-select").chosen({
-	no_results_text: "Tidak ditemukan hasil pencarian untuk: "
-	});
-	});
-</script>
-@endpush
-
-@push('styles')
-<link rel="stylesheet" href="{{ asset('/css/datepicker.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/css/chosen.min.css') }}">
-<style>
-	.chosen-container{
-	font-size: inherit;
-	}
-	.chosen-single{
-	padding: 6px 10px !important;
-	box-shadow: none !important;
-	border-color: #d2d6de !important;
-	background: white !important;
-	height: 34px !important;
-	border-radius: 0px !important;
-	}
-	.chosen-drop{
-	border-color: #d2d6de !important;	
-	box-shadow: none;
-	}
-</style>
-@endpush		
+		$.ajax({
+			url: '{{ url("/ujian/skripsi/peserta/edit") }}',
+			type: "post",
+			data: {
+				'tipe': t,
+				'jusg_id': jid,
+				'mahasiswa_id': mid,
+				'value': val,
+				'_token': '{{ csrf_token() }}'
+			},
+			success: function(data){
+				if(data.success)
+				{
+					$('#' + inp + '-' + t + '-' + jid + '-' + mid).addClass('hidden');
+					$('#' + t + '-' + jid + '-' + mid).text(txt);
+					$('#' + t + '-' + jid + '-' + mid).removeClass('hidden');
+				}
+				else
+				{
+				alert(data.message);
+				}
+				$('.loader').remove();
+				},
+				beforeSend: function()
+				{
+				$('#' + inp + '-' + t + '-' + jid + '-' + mid).after(loader);
+				}
+				}); 	
+				}
+				
+				$(function(){
+				$(".time").clockTimePicker();
+				
+				$(".date").datepicker({
+				format:"dd-mm-yyyy", 
+				autoHide:true,
+				daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+				monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+				});
+				$(".chosen-select").chosen({
+				no_results_text: "Tidak ditemukan hasil pencarian untuk: "
+				});
+				});
+				</script>
+				@endpush
+				
+				@push('styles')
+				<link rel="stylesheet" href="{{ asset('/css/datepicker.min.css') }}">
+				<link rel="stylesheet" href="{{ asset('/css/chosen.min.css') }}">
+				<style>
+				.chosen-container{
+				font-size: inherit;
+				}
+				.chosen-single{
+				padding: 6px 10px !important;
+				box-shadow: none !important;
+				border-color: #d2d6de !important;
+				background: white !important;
+				height: 34px !important;
+				border-radius: 0px !important;
+				}
+				.chosen-drop{
+				border-color: #d2d6de !important;	
+				box-shadow: none;
+				}
+				</style>
+				@endpush						

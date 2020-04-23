@@ -2,36 +2,30 @@
 	namespace Siakad;
 	
 	trait SkripsiTrait{
-		private function similarity($judul, $exclude_id=null)
+		private function similarity($judul, $exclude_id=null, $exclude_judul=null)
 		{
+			$judul = strtoupper($judul);
 			$smg = new \Siakad\SmithWatermanGotoh;
 			$sim_array = []; //18092019
 			$sim = [0, '', ''];
-			\Cache::forget('id_judul_skripsi');
-			$skripsi = \Cache::get('id_judul_skripsi', function() {
-				$c = \Siakad\Skripsi::pluck('judul', 'id');
-				\Cache::put('id_judul_skripsi', $c, 60);
-				return $c;
-			});
 			
-			//check if exclusion already listed
-			if($exclude_id !== null)
+			//clean table
+			\Siakad\Skripsi::whereRaw('id NOT IN (SELECT skripsi_id FROM mahasiswa WHERE skripsi_id IS NOT NULL)') -> delete();
+			
+			$skripsi = \Siakad\Skripsi::whereRaw('upper(judul) <> ? ', $judul) 
+			-> when($exclude_id !== null, function($q) use($exclude_id)
 			{
-				if(isset($skripsi[$exclude_id]))
-				{
-					\Cache::forget('id_judul_skripsi');
-					
-					$skripsi = \Cache::get('id_judul_skripsi', function() use ($exclude_id){
-						$c = \Siakad\Skripsi::where('id', '<>', $exclude_id) -> pluck('judul', 'id');
-						\Cache::put('id_judul_skripsi', $c, 60);
-						return $c;
-					});
-				}
-			}
+				return $q -> where('id', '<>', $exclude_id);
+			})
+			-> when($exclude_judul !== null, function($q) use($exclude_judul)
+			{
+				return $q -> whereRaw('upper(judul) <> ?', strtoupper($exclude_judul));
+			})
+			-> pluck('judul', 'id') -> toArray();
 			
 			foreach($skripsi as $i => $j)
 			{
-				$tmp = $smg -> compare(strtolower($judul), strtolower($j));
+				$tmp = $smg -> compare(strtoupper($judul), strtoupper($j));
 				$percent = $tmp * 100;
 				$sim_array[] = ['id' => $i, 'judul' => $j, 'similarity' => $percent]; 
 				if($percent > $sim[0]) $sim = [$percent, $i];
@@ -48,4 +42,4 @@
 			else if($x['similarity'] > $y['similarity']) return -1;
 			else return 1;
 		}
-	}							
+	}										
