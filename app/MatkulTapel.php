@@ -294,7 +294,7 @@
 		
 		public function sesi()
 		{
-			return $this-> hasMany('Siakad\SesiPembelajaran', 'matkul_tapel_id');	
+			return $this-> hasMany('Siakad\SesiPembelajaran', 'matkul_tapel_id') -> orderBy('sesi_ke');	
 		}
 		
 		public function meeting()

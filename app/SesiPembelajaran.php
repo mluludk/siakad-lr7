@@ -8,6 +8,10 @@
 	{
 		protected $table = 'sesi_pembelajaran';
 		protected $guarded = [];
-		// public $timestamps = false;
+		
+		public function kegiatan()
+		{
+			return $this -> hasMany(Kegiatan::class, 'sesi_pembelajaran_id');	
+		}
 		
 	}
