@@ -117,9 +117,13 @@
 		
 		private function check($data = null, $ip, $key = null, $nik=null)
 		{
-			$pmb = ($data == null) ? Pmb::whereBuka('y') -> first() : $data;
+			// $pmb = ($data == null) ? Pmb::whereBuka('y') -> first() : $data;
+			// if(!$pmb or $pmb == null) return view('pmb.peserta.error', ['error' => null]) -> render();
 			
-			if(!$pmb or $pmb == null) return view('pmb.peserta.error', ['error' => null]) -> render();
+			//check waktu
+			$today = strtotime(date('Y-m-d'));
+			if($today < strtotime($pmb -> mulai . ' 00:00:00') or $today > strtotime($pmb -> selesai . ' 23:59:59'))  return view('pmb.peserta.error', 
+			['error' => null, 'message' => 'Pendaftaran Mahasiswa Baru dibuka mulai tanggal ' . formatTanggal($pmb -> mulai) . ' - ' . formatTanggal($pmb -> selesai)]) -> render();
 			
 			//check NIK
 			if($nik != null)
@@ -146,10 +150,6 @@
 				-> render(); 
 			*/
 			
-			//check waktu
-			$today = strtotime(date('Y-m-d'));
-			if(strtotime($pmb -> mulai . ' 00:00:00') > $today or strtotime($pmb -> selesai . ' 00:00:00') < $today)  return view('pmb.peserta.error', 
-			['error' => null, 'message' => 'Pendaftaran Mahasiswa Baru dibuka mulai tanggal ' . formatTanggal($pmb -> mulai) . ' - ' . formatTanggal($pmb -> selesai)]) -> render();
 			
 			//check kuota
 			/* 

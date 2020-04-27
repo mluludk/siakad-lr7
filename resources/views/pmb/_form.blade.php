@@ -64,17 +64,7 @@
 		{!! Form::textarea('kelas', null, array('class' => 'form-control', 'placeholder' => 'Pilihan Kelas (pisahkan dengan tanda koma ",")', 'required' => 'required', 'rows' => '3')) !!}
 	</div>
 </div>
-<div class="form-group">
-	{!! Form::label('buka', 'Status :', array('class' => 'col-sm-2 control-label')) !!}
-	<div class="col-sm-8">
-		<label class="radio-inline">
-			{!! Form::radio('buka', 'y') !!} Buka
-		</label>
-		<label class="radio-inline">
-			{!! Form::radio('buka', 'n') !!} Ditutup
-		</label>
-	</div>
-</div>
+
 <div class="form-group">
 	<div class="col-sm-offset-2 col-sm-9">
 		<button class="btn {{ $btn_type }} btn-flat" type="submit"><i class="fa fa-floppy-o"></i> Simpan</button>

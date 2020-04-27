@@ -27,11 +27,6 @@
 			text-align:center;
 			}
 			.foto{
-			/* 			display: -webkit-box;
-			display: -moz-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
-			display: flex;   */
 			align-items: center;
 			justify-content: center;
 			text-align:center;
