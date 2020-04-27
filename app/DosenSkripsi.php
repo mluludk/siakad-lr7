@@ -70,7 +70,7 @@
 			$query
 			-> orderBy('NIM', 'desc')
 			-> select(
-			'NIM', 'mahasiswa.nama', 'mahasiswa.jenisKelamin', 'hp','telp',
+			'NIM', 'mahasiswa.nama', 'mahasiswa.jenisKelamin', 'hp','telp', 'angkatan',
 			'strata', 'singkatan',
 			'kelas.nama AS program',
 			'skripsi.judul', 'skripsi.id AS skripsi_id', 'validasi_proposal', 'validasi_kompre',

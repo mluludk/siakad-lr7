@@ -28,6 +28,7 @@ Bimbingan Skripsi
 				<tr style="background-image: -webkit-gradient(linear,3 top,0 bottom,from(#3A8341),to(#609C40)); background-image: -moz-linear-gradient(#3A8341,#054a10);color: #fff;">
 					<th rowspan="2">No.</th>
 					<th rowspan="2">NIM</th>
+					<th rowspan="2">Angkatan</th>
 					<th rowspan="2">Nama</th>
 					<th rowspan="2">No. HP</th>
 					<th rowspan="2">L/P</th>
@@ -53,6 +54,7 @@ Bimbingan Skripsi
 				<tr>
 					<td>{{ $c }}</td>
 					<td>{{ $bim -> NIM }}</td>
+					<td>{{ $bim -> angkatan }}</td>
 					<td>{{ $bim -> nama }}</td>
 					<td>{{ $bim -> hp ?? $bim -> telp }}</td>
 					<td>{{ $bim -> jenisKelamin }}</td>

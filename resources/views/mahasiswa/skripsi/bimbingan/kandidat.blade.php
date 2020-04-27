@@ -28,6 +28,7 @@ Kandidat Bimbingan Skripsi
 				<tr style="background-image: -webkit-gradient(linear,3 top,0 bottom,from(#3A8341),to(#609C40)); background-image: -moz-linear-gradient(#3A8341,#054a10);color: #fff;">
 					<th>No.</th>
 					<th>NIM</th>
+					<th>Angkatan</th>
 					<th>Nama</th>
 					<th>No. HP</th>
 					<th>L/P</th>
@@ -48,6 +49,7 @@ Kandidat Bimbingan Skripsi
 				<tr>
 					<td>{{ $c }}</td>
 					<td>{{ $k -> NIM }}</td>
+					<td>{{ $k -> angkatan }}</td>
 					<td>{{ $k -> nama }}</td>
 					<td>{{ $k -> hp ?? $k -> telp }}</td>
 					<td>{{ $k -> jenisKelamin }}</td>
