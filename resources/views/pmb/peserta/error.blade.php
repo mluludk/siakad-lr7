@@ -37,7 +37,7 @@ Pendaftaran Mahasiswa Baru Online - {{ config('local.profil.singkatan') }}
 				@elseif($error == 'data_not_found')
 				Maaf, Kode tidak ditemukan. Pastikan anda telah memasukkan kode dengan benar.
 				@else
-				Maaf, Pendaftaran Mahasiswa Baru tidak bisa dilakukan pada saat ini.
+				Maaf, Pendaftaran Mahasiswa Baru belum dibuka. 
 				@endif
 			</h3>
 			@if(isset($message))
