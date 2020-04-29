@@ -117,11 +117,12 @@
 		
 		private function check($data = null, $ip, $key = null, $nik=null)
 		{
-			// $pmb = ($data == null) ? Pmb::whereBuka('y') -> first() : $data;
-			// if(!$pmb or $pmb == null) return view('pmb.peserta.error', ['error' => null]) -> render();
+			$date = date('Y-m-d');
+			$pmb = ($data == null) ? Pmb::whereRaw($date . ' BETWEEN mulai AND selesai') -> first() : $data;
+			if(!$pmb or $pmb == null) return view('pmb.peserta.error', ['error' => null]) -> render();
 			
 			//check waktu
-			$today = strtotime(date('Y-m-d'));
+			$today = strtotime($date);
 			if($today < strtotime($pmb -> mulai . ' 00:00:00') or $today > strtotime($pmb -> selesai . ' 23:59:59'))  return view('pmb.peserta.error', 
 			['error' => null, 'message' => 'Pendaftaran Mahasiswa Baru dibuka mulai tanggal ' . formatTanggal($pmb -> mulai) . ' - ' . formatTanggal($pmb -> selesai)]) -> render();
 			
