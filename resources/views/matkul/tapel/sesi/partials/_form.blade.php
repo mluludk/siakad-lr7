@@ -1,60 +1,40 @@
 
 <div class="form-group">
-	{!! Form::label('', 'Mata Kuliah:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-10">
-		<p class="form-control-static">{{ $kelas -> kurikulum -> matkul -> nama }}</p>
-	</div>
+	{!! Form::label('', 'Mata Kuliah:') !!}
+	<p class="form-control-static">{{ $kelas -> kurikulum -> matkul -> nama }}</p>
 </div>
 
 <div class="form-group">
-	{!! Form::label('', 'Kelas:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-10">
-		<p class="form-control-static">{{ $kelas -> kurikulum -> semester }} {{ $kelas -> kelas2 }}</p>
-	</div>
+	{!! Form::label('', 'Kelas:') !!}
+	<p class="form-control-static">{{ $kelas -> kurikulum -> semester }} {{ $kelas -> kelas2 }}</p>
 </div>
 
 <div class="form-group">
-	{!! Form::label('sesi_ke', 'Sesi Ke:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-1">
-		{!! Form::select('sesi_ke', array_combine($r=range(1, 15), $r), null, array('class' => 'form-control')) !!}
-	</div>
+	{!! Form::label('sesi_ke', 'Sesi Ke:') !!}
+	{!! Form::select('sesi_ke', array_combine($r=range(1, 15), $r), null, array('class' => 'form-control')) !!}
 </div>
 <div class="form-group">
-	{!! Form::label('judul', 'Judul:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-9">
-		{!! Form::text('judul', null, array('class' => 'form-control', 'placeholder' => 'Judul Sesi')) !!}
-	</div>
+	{!! Form::label('judul', 'Judul:') !!}
+	{!! Form::text('judul', null, array('class' => 'form-control', 'placeholder' => 'Judul Sesi')) !!}
 </div>
-<div class="form-group">
-	<label for="summernote" class="col-md-2 control-label">Tujuan:</label>
-	<div class="col-md-10">
-		<div id="summernote">{!! $sesi -> tujuan ?? '' !!}</div>
-	</div>
+<div class="form-group" style="max-width: 500px;">
+	<label for="summernote">Tujuan:</label>
+			<div id="summernote">{!! $sesi -> tujuan ?? '' !!}</div>
 </div>
 <input type="hidden" name="tujuan" id="isi" >
 <div class="form-group">
-	{!! Form::label('', 'Hari:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-10">
-		<p class="form-control-static">{{ $hari[$jadwal -> hari] }}</p>
-	</div>
+	{!! Form::label('', 'Hari:') !!}
+	<p class="form-control-static">{{ $hari[$jadwal -> hari] }}</p>
 </div>
 <div class="form-group">
-	{!! Form::label('tanggal', 'Tanggal:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-2">
-		{!! Form::text('tanggal', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal')) !!}
-	</div>
+	{!! Form::label('tanggal', 'Tanggal:') !!}
+	{!! Form::text('tanggal', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal')) !!}
 </div>
 <div class="form-group">
-	{!! Form::label('', 'Waktu:', array('class' => 'col-md-2 control-label')) !!}
-	<div class="col-md-10">
-		<p class="form-control-static">{{ $jadwal -> jam_mulai }} - {{ $jadwal -> jam_selesai }}</p>
-	</div>
+	{!! Form::label('', 'Waktu:') !!}
+	<p class="form-control-static">{{ $jadwal -> jam_mulai }} - {{ $jadwal -> jam_selesai }}</p>
 </div>
-<div class="form-group">
-	<div class="col-md-offset-2 col-md-6">
-		<button class="btn btn-primary btn-flat {{ $btn_type }}" type="button" id="post"><i class="fa fa-floppy-o"></i> Simpan</button>
-	</div>		
-</div>		
+<button class="btn btn-primary btn-flat {{ $btn_type }}" type="button" id="post"><i class="fa fa-floppy-o"></i> Simpan</button>	
 
 @push('scripts')
 <script src="{{ asset('/js/datepicker.min.js') }}"></script>
@@ -102,4 +82,4 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('/css/datepicker.min.css') }}">
 <link href="{{ asset('/summernote/summernote.css') }}" rel="stylesheet">
-@endpush
+@endpush		
