@@ -19,6 +19,7 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 @endsection
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
 <style>
 	.percent{font-weight: bold;}
 </style>
@@ -51,7 +52,7 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 		<h3 class="box-title">Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -> nama ?? '' }}</h3>
 	</div>
 	<div class="box-body">
-		<table class="table table-bordered">
+		<table class="table table-bordered" id="table">
 			<thead>
 				<tr style="background-image: -webkit-gradient(linear,0 top,0 bottom,from(#3A8341),to(#609C40)); background-image: -moz-linear-gradient(#3A8341,#054a10);color: #fff;">
 					<th width="20px" rowspan="2">No</th>
@@ -69,7 +70,7 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 					<th class="ctr" style="background-color: #00a65a">Pembimbing</th>
 					<th class="ctr" style="background-color: #ddd;">Keterangan</th>
 					<th class="ctr" style="background-color: #a2f5a6;">Aksi</th>
-			</tr>
+				</tr>
 			</thead>
 			<tbody>
 				@if(!$mahasiswa -> count())
@@ -141,13 +142,17 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 @endsection		
 
 @push('scripts')
+<script src="{{ asset('js/datatables.min.js') }}"></script>
 <script>
 	$(function () {
-		$('[data-toggle="popover"]').popover({
-			html: true,
-			placement: 'auto top',
-			trigger: 'hover'
-		})
+	$('#table').DataTable({
+		"lengthMenu": [10,50,100,250,300]
+	});
+	$('[data-toggle="popover"]').popover({
+		html: true,
+		placement: 'auto top',
+		trigger: 'hover'
 	})
+})
 </script>
 @endpush																																							
