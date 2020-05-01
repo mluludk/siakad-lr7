@@ -17,8 +17,8 @@
 				<div class="tab-content">
 					
 					<div role="tabpanel" class="tab-pane active" id="file" style="min-height: 75px; max-height: 350px;overflow-y: scroll;overflow-x: hidden;">
-						@if($file -> count())
-						<table id="file-table" style="width:100%" class="compact">
+						
+						<table id="file-table" style="width:100%" class="compact @if(!$file -> count()) hidden @endif">
 							<thead>
 								<tr>
 									<td></td>
@@ -29,6 +29,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								@if($file -> count())
 								@foreach($file as $f)
 								<?php
 									$file = explode('/', $f -> namafile);
@@ -62,10 +63,19 @@
 									</td>
 								</tr>
 								@endforeach
+								@else
+								<tr class="no-file">
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td></td>
+								</tr>
+								@endif
 							</tbody>
 						</table>
-						@else
-						<div>Belum ada file</div>
+						@if(!$file -> count())
+						<div class="no-file">Belum ada file</div>
 						@endif					
 					</div>
 					
@@ -157,91 +167,95 @@
 		}
 		else{
 		$('form#upload-{{ $rand }}').submit();
-		}
-		});
-		
-		$(document).on('click', '#btn-pilih-{{ $type }}-{{ $rand }}', function(){
-		var cb = $('.cb-file:checked');
-		if(cb.length < 1) {toastr.info('Pilih File terlebih dahulu', 'Informasi'); return false;}
-		
-		if('{{ $type }}' == 'gambar')
-		{
+	}
+});
+
+$(document).on('click', '#btn-pilih-{{ $type }}-{{ $rand }}', function(){
+	var cb = $('.cb-file:checked');
+	if(cb.length < 1) {toastr.info('Pilih File terlebih dahulu', 'Informasi'); return false;}
+	
+	if('{{ $type }}' == 'gambar')
+	{
 		cb.each(function(i){
-		var img = $(this).closest('td').next('td').html();
-		addImage($(this).val(), img);
+			var src = $(this).closest('td').next('td').children('img').attr('src');
+			addImage($(this).val(), src);
 		});
-		}
-		else if('{{ $type }}' == 'video')
-		{
+	}
+	else if('{{ $type }}' == 'video')
+	{
 		cb.each(function(i){
-		var icon = $(this).closest('td').next('td').children('i');
-		addVideo($(this).val(), icon.attr('data-href'), icon.attr('data-mime'));
+			var icon = $(this).closest('td').next('td').children('i');
+			addVideo($(this).val(), icon.attr('data-href'), icon.attr('data-mime'));
 		});
 		
 		$('.btn-video').addClass('hidden');	
-		}
-		else if('{{ $type }}' == 'dokumen')
-		{
+	}
+	else if('{{ $type }}' == 'dokumen')
+	{
 		cb.each(function(i){
-		var icon = $(this).closest('td').next('td').children('i');
-		addLink($(this).val(), icon.attr('class').split(' ')[1], icon.attr('data-href'), icon.attr('data-label'));
+			var icon = $(this).closest('td').next('td').children('i');
+			addLink($(this).val(), icon.attr('class').split(' ')[1], icon.attr('data-href'), icon.attr('data-label'));
 		});
-		}
+	}
+	
+	$('#myModal').modal('hide');
+});
+
+$('form#upload-{{ $rand }}').ajaxForm({
+	beforeSend: function() {
 		
-		$('#myModal').modal('hide');
-		});
-		
-		$('form#upload-{{ $rand }}').ajaxForm({
-		beforeSend: function() {
-		
-		},
-		success: function(data) {
+	},
+	success: function(data) {
 		if(!data.success)
 		{
-		$('.result').html('<span class="text-danger">Upload File gagal: '+ data.error +'</span>');
-	}
-	else
-	{
-		var row = '<tr>' +
-		'<td valign="middle">' +
-		'<input type="checkbox" value="'+ data.id +'"  class="cb-file"/>' +
-		'</td><td>' +
-		
-		@if($type == 'gambar')
-		'<img width="100px" src="{{ url('/getfile') }}/' + data.filename +'"></img>' +
-		@else
-		'<i class="fa '+ getIcon(data.filename.split('.')[1]) +' fa-3x" data-href="{{ url('/getfile') }}/' + data.filename +'" data-mime="'+ data.mime +'" data-label="'+ data.name +'"></i>' +
-		@endif
-		
-		'</td><td>' +
-		'<span class="name">'+ data.name +'</span><br/>' +
-		'<span class="text-muted">'+ data.filesize +'</span>' +
-		'</td><td>' +
-		'Baru saja' +
-		'</td><td>'+
-		'<button class="btn btn-danger btn-xs btn-flat btn-del-file-{{ $rand }}" id="file-'+ data.id +'" type="button"><i class="fa fa-times"></i></button>' +
-		'</td></tr>';
-		
-		$('#file-table tbody').prepend(row);
-		$('.result').html('<span class="text-success">File berhasil di-upload</span>');
-		
-		$('ul.nav-tabs li').removeClass('active');
-		$('ul.nav-tabs li:first').addClass('active');					
-		$('div.tab-content > div').removeClass('active');
-		$('div.tab-content > div:first').addClass('active');
-		
-		$('#upload-{{ $rand }} input[type=text]').val('');
-		
-		// $('input[type="checkbox"]').iCheck({
+			$('.result').html('<span class="text-danger">Upload File gagal: '+ data.error +'</span>');
+		}
+		else
+		{
+			
+			var row = '<tr>' +
+			'<td valign="middle">' +
+			'<input type="checkbox" value="'+ data.id +'"  class="cb-file"/>' +
+			'</td><td>' +
+			
+			@if($type == 'gambar')
+			'<img width="100px" src="{{ url('/getfile') }}/' + data.filename +'"></img>' +
+			@else
+			'<i class="fa '+ getIcon(data.filename.split('.')[1]) +' fa-3x" data-href="{{ url('/getfile') }}/' + data.filename +'" data-mime="'+ data.mime +'" data-label="'+ data.name +'"></i>' +
+			@endif
+			
+			'</td><td>' +
+			'<span class="name">'+ data.name +'</span><br/>' +
+			'<span class="text-muted">'+ data.filesize +'</span>' +
+			'</td><td>' +
+			'Baru saja' +
+			'</td><td>'+
+			'<button class="btn btn-danger btn-xs btn-flat btn-del-file-{{ $rand }}" id="file-'+ data.id +'" type="button"><i class="fa fa-times"></i></button>' +
+			'</td></tr>';
+			
+			$('#file-table tbody').prepend(row);
+			$('#file-table').removeClass('hidden');
+			$('.no-file').remove();
+			
+			$('.result').html('<span class="text-success">File berhasil di-upload</span>');
+			
+			$('ul.nav-tabs li').removeClass('active');
+			$('ul.nav-tabs li:first').addClass('active');					
+			$('div.tab-content > div').removeClass('active');
+			$('div.tab-content > div:first').addClass('active');
+			
+			$('#upload-{{ $rand }} input[type=text]').val('');
+			
+			// $('input[type="checkbox"]').iCheck({
 			// checkboxClass: 'icheckbox_flat-blue'
-		// });
+			// });
+		}
+	},
+	complete: function(xhr) {
+	},
+	error: function(XMLHttpRequest, textStatus, errorThrown){
+		console.log('Terjadi kesalahan: ' + errorThrown);
 	}
-},
-complete: function(xhr) {
-},
-error: function(XMLHttpRequest, textStatus, errorThrown){
-	console.log('Terjadi kesalahan: ' + errorThrown);
-}
 });  
 
 function getIcon(ext)
@@ -250,12 +264,12 @@ function getIcon(ext)
 		@foreach($icons as $e => $i) case '{{ $e }}': return '{{ $i }}'; break; @endforeach default: return '<i class="fa fa-file-o fa-3x"></i>';
 	}
 }
-function addImage(id, img)
+function addImage(id, src)
 {
 	//return if gambar already appended
 	if($('input-gambar-' + id).length) return;
 	
-	var img_block = '<div class="col-sm-2"><div class="thumbnail">' + img + 
+	var img_block = '<div class="col-sm-6"><div class="thumbnail"><img src="' + src + '" style="max-width:500px;" />' +
 	'<div class="caption">'+
 	'<button type="button" id="btn-gambar-' + id + '" class="btn btn-danger btn-xs btn-flat btn-del-gambar"><i class="fa fa-trash"></i> Hapus</button>';
 	$('.gambar-preview').append(img_block + '<input type="hidden" name="isi[gambar][]" id="input-gambar-'+ id +'" value="'+ id +'" /></div></div></div>');
@@ -264,12 +278,12 @@ function addVideo(id, url, mime)
 {
 	if($('input-video-' + id).length) return;
 	
-	var vid_block = '<div class="col-sm-6"><div class="thumbnail"><video width="320" height="240" controls>' +  
+	var vid_block = '<div class="thumbnail"><video style="display: block; margin: 0px auto;" controls>' +  
 	'<source src="'+ url +'" type="'+ mime +'">'+
 	'Your browser does not support the video tag.</video>' +
 	'<div class="caption">'+
 	'<button type="button" id="btn-video-' + id + '" class="btn btn-danger btn-xs btn-flat btn-del-video"><i class="fa fa-trash"></i> Hapus</button>';
-	$('.video-preview').append(vid_block + '<input type="hidden"  name="isi[video][]" id="input-video-'+ id +'" value="'+ id +'" /></div></div></div>');
+	$('.video-preview').append(vid_block + '<input type="hidden"  name="isi[video][]" id="input-video-'+ id +'" value="'+ id +'" /></div></div>');
 }
 function addLink(id, fa, url, label)
 {
@@ -302,14 +316,14 @@ function addLink(id, fa, url, label)
 		months: "%d bulan",
 		year: "sekitar setahun",
 		years: "%d tahun"
-		};
-		
-		$(function () {
+	};
+	
+	$(function () {
 		$('#file-table').DataTable({
-		dom: 'ft',
-		drawCallback: function( settings ) {
-		$("#file-table thead").remove(); 
-		}
+			dom: 'ft',
+			drawCallback: function( settings ) {
+				$("#file-table thead").remove(); 
+			}
 		});
 		// $('input[type="checkbox"]').iCheck({
 		// checkboxClass: 'icheckbox_flat-blue'
@@ -317,26 +331,26 @@ function addLink(id, fa, url, label)
 		$("time.timeago").timeago();
 		
 		$(document).on('change', ':file', function() {
-		var input = $(this),
-		numFiles = input.get(0).files ? input.get(0).files.length : 1,
-		label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-		input.trigger('fileselect', [numFiles, label]);
+			var input = $(this),
+			numFiles = input.get(0).files ? input.get(0).files.length : 1,
+			label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+			input.trigger('fileselect', [numFiles, label]);
 		});
 		
 		$(document).ready( function() {
-		$(':file').on('fileselect', function(event, numFiles, label) {
-		
-		var input = $(this).parents('.input-group').find(':text'),
-		log = numFiles > 1 ? numFiles + ' files selected' : label;
-		
-		if( input.length ) {
-		input.val(log);
-		} else {
-		if( log ) alert(log);
-		}
-		
+			$(':file').on('fileselect', function(event, numFiles, label) {
+				
+				var input = $(this).parents('.input-group').find(':text'),
+				log = numFiles > 1 ? numFiles + ' files selected' : label;
+				
+				if( input.length ) {
+					input.val(log);
+					} else {
+					if( log ) alert(log);
+				}
+				
+			});
 		});
-		});
-		});
-		</script>	
-		</div>																												
+	});
+</script>	
+</div>																																				

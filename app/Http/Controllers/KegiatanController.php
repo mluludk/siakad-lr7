@@ -14,7 +14,9 @@
 	
 	class KegiatanController extends Controller
 	{
-		
+		protected $rules= [
+		'topik' => 'required',
+		];
 		protected $jenis = [1 => 'Materi', 2 => 'Quiz', 3 => 'Tugas', 4 => 'Video Conference'];
 		protected $icons = [
 		'pdf' => 'fa-file-pdf-o', 'docx' => 'fa-file-word-o', 'doc' => 'fa-file-word-o', 
@@ -22,6 +24,17 @@
 		'ppt' => 'fa-file-powerpoint-o', 'mp4' => 'fa-file-video-o', 'ogg' => 'fa-file-video-o'
 		];
 		protected $media_type = ['gambar', 'dokumen', 'video'];
+		
+		public function createPertanyaan()
+		{
+			$rnd = str_random('13');
+			return view('matkul.tapel.sesi.kegiatan.pertanyaan.create', compact('rnd'));
+		}
+		public function storePertanyaan(Request $request)
+		{
+			return $request -> all();
+			// return view('matkul.tapel.sesi.kegiatan.pertanyaan.create');
+		}
 		
 		public function index(MatkulTapel $kelas, SesiPembelajaran $sesi)
 		{
@@ -50,12 +63,42 @@
 		*/
 		public function store(Request $request, MatkulTapel $kelas, SesiPembelajaran $sesi, $jenis_id)
 		{
+			$this -> validate($request, $this -> rules);
 			$input = $request -> except('_token', 'files');
+			
+			if($jenis_id == 2)
+			{
+				foreach($input['soal'] as $k => $v)
+				{
+					$jwb = explode(';', rtrim($input['pilihan'][$k], ';'));
+					$input['isi'][$k] = [
+					'soal' => $v,
+					'bobot' => $input['bobot'][$k],
+					'pilihan' => $jwb,
+					'benar' => $input['benar'][$k]
+					];
+				}
+				if(isset($input['batas1'])) 
+				{
+					$input['batas_waktu'] = $input['batas1'];
+					
+					if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
+					else $input['batas_waktu'] .= ' 00:00:00';
+					
+				}
+				unset($input['soal']);
+				unset($input['bobot']);
+				unset($input['pilihan']);
+				unset($input['benar']);
+				unset($input['batas1']);
+				unset($input['batas2']);				
+			}
 			
 			$input['jenis'] = $jenis_id;
 			$input['sesi_pembelajaran_id'] = $sesi -> id;
+			
 			Kegiatan::create($input);			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil dimasukkan.');
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data '. $this -> jenis[$jenis_id] .' berhasil dimasukkan.');
 		}
 		
 		/**
@@ -101,10 +144,40 @@
 		*/
 		public function update(Request $request, MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
-			// $this -> validate($request, $this -> rules);
+			$this -> validate($request, $this -> rules);
 			$input = $request -> except('_method', 'files');
+			
+			// dd($input);
+			if($kegiatan -> jenis == 2)
+			{
+				foreach($input['soal'] as $k => $v)
+				{
+					$jwb = explode(';', rtrim($input['pilihan'][$k], ';'));
+					$input['isi'][$k] = [
+					'soal' => $v,
+					'bobot' => $input['bobot'][$k],
+					'pilihan' => $jwb,
+					'benar' => $input['benar'][$k]
+					];
+				}
+				if(isset($input['batas1'])) 
+				{
+					$input['batas_waktu'] = $input['batas1'];
+					
+					if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
+					else $input['batas_waktu'] .= ' 00:00:00';
+					
+				}
+				unset($input['soal']);
+				unset($input['bobot']);
+				unset($input['pilihan']);
+				unset($input['benar']);
+				unset($input['batas1']);
+				unset($input['batas2']);				
+			}
+			
 			$kegiatan -> update($input);			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil diperbarui.');
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data  '. $this -> jenis[$kegiatan -> jenis] .'  berhasil diperbarui.');
 		}
 		
 		/**
@@ -116,7 +189,7 @@
 		public function destroy(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 		{
 			$kegiatan -> delete();			
-			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data Materi berhasil dihapus.');
+			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data  '. $this -> jenis[$kegiatan -> jenis] .'  berhasil dihapus.');
 		}
 		
 		public function duplicate(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
@@ -136,33 +209,36 @@
 		{
 			$media = [];
 			$icons = $this -> icons;
-			$media_type = $this -> media_type;
+			$jenis = $this -> jenis;
 			
-			foreach($media_type as $t)
+			if($kegiatan -> jenis == 1 or $kegiatan -> jenis == 3)
 			{
-				if(isset($kegiatan -> isi[$t]))
+				foreach($this -> media_type as $t)
 				{
-					foreach($kegiatan -> isi[$t] as $g)
+					if(isset($kegiatan -> isi[$t]))
 					{
-						$file = FileEntry::find($g);
-						if($file) $media[$t][] = [
-						'fullpath' => $file -> namafile,
-						'filename' => $file -> nama,
-						'mime' => $file -> mime
-						];
+						foreach($kegiatan -> isi[$t] as $g)
+						{
+							$file = FileEntry::find($g);
+							if($file) $media[$t][] = [
+							'fullpath' => $file -> namafile,
+							'filename' => $file -> nama,
+							'mime' => $file -> mime
+							];
+						}
 					}
 				}
 			}
 			
-			return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons'));			
+			return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons', 'jenis'));			
 		}
 		
 		private function getUrutanKegiatan($sesi_id)
 		{
 			$last = Kegiatan::where('sesi_pembelajaran_id', $sesi_id) -> orderBy('urutan', 'desc') -> get('urutan');
 			
-			if($last) return $last[0] -> urutan + 1;
-			
-			return 1;
+		if($last) return $last[0] -> urutan + 1;
+		
+		return 1;
 		}
 	}

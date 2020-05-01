@@ -1,34 +1,45 @@
-@extends('app')
+<?php
+	$active = null;
+	$id = $kelas -> id;
+	$sesi_side = $kelas -> sesi;
+?>
+@extends('matkul.tapel.sesi.layout')
 
-@section('title')
-Input Kegiatan Pembelajaran
-@endsection
-
-@section('header')
-<section class="content-header">
-	<h1>
-		Kegiatan
-		<small>Input Data</small>
-	</h1>
-	<ol class="breadcrumb">
-		<li><a href="{{ url('/') }}"><i class="fa fa-dashboard"></i> Home</a></li>
-		<li><a href="{{ route('matkul.tapel.index') }}"> Kelas Kuliah</a></li>
-		<li><a href="{{ route('matkul.tapel.sesi.index', $kelas -> id) }}"> Sesi Pembelajaran</a></li>
-		<li><a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi -> id]) }}"> Kegiatan</a></li>
-		<li class="active">Input Data</li>
-	</ol>
-</section>
-@endsection
-
-@section('content')
-<div class="box box-primary">
-	<div class="box-header with-border">
-		<h3 class="box-title">Input Kegiatan</h3>
+@section('tengah')
+{!! Form::model(new Siakad\Kegiatan, ['id' => 'post-form', 'files' => true, 'class' => 'form', 'role' => 'form', 'route' => ['matkul.tapel.sesi.kegiatan.store', $kelas -> id, $sesi -> id, $jenis_id]]) !!}
+<div class="f-col-2">
+	
+	<div class="f-box-row">
+		<div class="f-box-side" style="flex-grow:3;">
+			<h4><i class="fa fa-list"></i> Sesi ke {{ $sesi -> sesi_ke }}</h4>
+		</div>
 	</div>
-	<div class="box-body">
-		{!! Form::model(new Siakad\Kegiatan, ['id' => 'post-form', 'files' => true, 'class' => 'form-horizontal', 'role' => 'form', 'route' => ['matkul.tapel.sesi.kegiatan.store', $kelas -> id, $sesi -> id, $jenis_id]]) !!}
-		@include('matkul/tapel/sesi/kegiatan/partials/_form', ['btn_type' => 'btn-primary'])
-		{!! Form::close() !!}
+	
+	<div class="f-box">
+		<div class="f-box-body">
+			<div class="f-box-side pull-left">
+				<h4>Input {{ $jenis }}</h4>
+			</div>
+			
+			<div class="f-box-side pull-right">
+				<button class="btn btn-flat btn-primary" type="button" id="post"><i class="fa fa-floppy-o"></i> Simpan</button>
+			</div>
+			<div class="clearfix"></div>			
+			@include('matkul/tapel/sesi/kegiatan/partials/_form')
+		</div>
+	</div>
+	
+	@if($jenis_id == 2)
+	@include('matkul/tapel/sesi/kegiatan/pertanyaan/index')
+	@endif
+	
+	@include('matkul/tapel/sesi/kegiatan/partials/_catatan', ['catatan' => $kegiatan -> catatan ?? ''])
+	
+	<div class="f-box-side pull-left">
+		<a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi -> id])}}" class="btn btn-default btn-flat btn-lg">
+			<i class="fa fa-arrow-left"></i> Kembali
+		</a>
 	</div>
 </div>
+{!! Form::close() !!}
 @endsection

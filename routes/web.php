@@ -2937,6 +2937,23 @@
 		'uses' => 'KomentarController@store'
 		]);
 		
+		//PERTANYAAN QUIZ
+		Route::get('kegiatan/{kegiatan}/pertanyaan/{key}/edit', [
+		'as' => 'kegiatan.pertanyaan.edit', 
+		'roles' => ['administrator', 'akademik'],
+		'uses' => 'KegiatanController@editPertanyaan'
+		]);
+		Route::get('kegiatan/pertanyaan/create', [
+		'as' => 'kegiatan.pertanyaan.create', 
+		'roles' => ['administrator', 'akademik'],
+		'uses' => 'KegiatanController@createPertanyaan'
+		]);
+		Route::post('kegiatan/pertanyaan/store', [
+		'as' => 'kegiatan.pertanyaan.store', 
+		'roles' => ['administrator', 'akademik'],
+		'uses' => 'KegiatanController@storePertanyaan'
+		]);
+		
 		//SESI PEMBELAJARAN	> KEGIATAN	
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan', [
 		'as' => 'matkul.tapel.sesi.kegiatan.index', 

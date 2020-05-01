@@ -27,7 +27,7 @@
 			<div class="clearfix"></div>
 			<h4>Topik</h4>
 			<p>{{ $kegiatan -> topik }}</p>
-			<h4>Bagikan Materi</h4>
+			<h4>Bagikan {{ $jenis[$kegiatan -> jenis] }}</h4>
 			<p>
 				@if($kegiatan -> dibagikan == 'y')
 				<span class="label label-info label-flat"><i class="fa fa-check"></i> Dibagikan</span>
@@ -37,6 +37,8 @@
 				<span class="label label-warning label-flat"><i class="fa fa-exclamation-triangle"></i> Belum dibagikan</span>
 				@endif
 			</p>
+			
+			@if($kegiatan -> jenis == 1 or $kegiatan -> jenis == 3)
 			
 			<h4>Gambar</h4>
 			@if(isset($media['gambar']))
@@ -78,8 +80,62 @@
 			@else
 			<p class="text-muted">Tidak ada dokumen</p>
 			@endif
+			
+			@elseif($kegiatan -> jenis == 2)
+			<h4>Tanggal & Waktu Selesai</h4>
+			<p>
+				@if($kegiatan -> batas_waktu != '')
+				{{ formatTanggalWaktu($kegiatan -> batas_waktu) }}
+				<span class="pull-right" id="cd"></span>
+				@else
+				-
+				@endif
+			</p>			
+			@endif
+			
+			@if($kegiatan -> jenis == 2)
+			<h4>Tampilkan laporan kepada peserta setelah quiz selesai?</h4>
+			<p>
+				@if($kegiatan -> laporan == 'y')
+				<span class="label label-info label-flat"><i class="fa fa-check"></i> Ditampilkan</span>
+				@else
+				<span class="label label-default label-flat"><i class="fa fa-exclamation-triangle"></i> Tidak Ditampilkan</span>
+				@endif
+			</p>			
+			@endif
+			
 		</div>
 	</div>
+	
+	@if($kegiatan -> jenis == 2)
+	<div class="f-box">
+		<div class="f-box-body">
+			<h4>Pertanyaan Quiz</h4>
+			@if(isset($kegiatan -> isi))
+			<table width="100%" id="tbl-soal">
+				<tbody>
+					<?php $c = 1; ?>
+					@foreach($kegiatan -> isi as $isi)
+					<tr class="tr-soal">
+						<td width="30px">{{ $c }}.</td>
+						<td>{!! $isi['soal'] !!}</td>
+						<td width="30px" class="text-info">{{ $isi['bobot'] }}</td>
+					</tr>
+					<?php $c++; ?>
+					@endforeach
+				</tbody>
+			</table>
+			@endif
+		</div>
+	</div>
+	
+	<div class="f-box">
+		<div class="f-box-body">
+			<h4><i class="fa fa-area-chart"></i> Laporan Quiz</h4>
+			<p></p>
+		</div>
+	</div>	
+	@endif
 	
 	<div class="f-box" style="border-left: 4px solid #ffdd57;">
 		<div class="f-box-body">
@@ -129,67 +185,111 @@
 
 @endsection
 
+<style>
+	#tbl-soal tr{
+	border-bottom: 1px solid #eee;
+	}
+	#tbl-soal td{
+	padding: 5px;
+	}
+	td > p{
+	margin: 0;
+	}
+</style>
+
 @push('scripts')
 <script src="{{ url('/js/jquery.form.min.js') }}"></script>
+
+@if($kegiatan -> batas_waktu != '')
+<script>
+	// https://www.w3schools.com/howto/howto_js_countdown.asp
+	var dt = new Date("{{ $kegiatan -> batas_waktu }}").getTime();
+	var x = setInterval(function() {
+	var now = new Date().getTime();
+	var dst = dt - now;
+	var cd = '<span class="text-info">';
+	
+	var hr = Math.floor(dst / (1000 * 60 * 60 * 24));
+	var jm = Math.floor((dst % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	var mn = Math.floor((dst % (1000 * 60 * 60)) / (1000 * 60));
+	var dtk = Math.floor((dst % (1000 * 60)) / 1000);
+	
+	if(hr > 0) cd += hr + " Hari ";
+	if(jm > 0) cd += jm + " Jam ";
+	if(mn > 0) cd += mn + " Menit ";
+	
+	if(dtk > 0) cd += dtk + " Detik";
+	
+	$("#cd").html(cd);
+	cd += '</span>';
+	
+	if (dst < 0) {
+	clearInterval(x);
+	$("#cd").html('<span class="text-success">Selesai</span>');
+	}
+	}, 1000);
+</script>
+@endif
+
 <script>
 	$(document).on('click', '#btn-komentar', function(){		
-	$('form#frm-komentar').submit();
-});
-
-$('form#frm-komentar').ajaxForm({
-	beforeSend: function() {
-		
-	},
-	success: function(data) {
-		if(!data.success)
-		{
-			alert('Terjadi kesalahan: ' + data.error);
+		$('form#frm-komentar').submit();
+	});
+	
+	$('form#frm-komentar').ajaxForm({
+		beforeSend: function() {
+			
+		},
+		success: function(data) {
+			if(!data.success)
+			{
+				alert('Terjadi kesalahan: ' + data.error);
+			}
+			else
+			{
+				var item = '<div class="item">'+
+				'<img src="'+ data.image +'" alt="'+ data.user +'" class="'+ data.status +'">'+			
+				'<p class="message">'+
+				'<a href="#" class="name">'+
+				'<time class="text-muted pull-right timeago" datetime="'+ data.waktu +'">Baru saja</time>'+
+				data.user +
+				'</a>'+
+				data.komentar +
+				'</p>'+
+				'</div>';
+				$('.chat').append(item);
+			}
+		},
+		complete: function(xhr) {
+			$('input[name=komentar]').val('');
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			alert('Terjadi kesalahan: ' + errorThrown);
 		}
-		else
-		{
-			var item = '<div class="item">'+
-			'<img src="'+ data.image +'" alt="'+ data.user +'" class="'+ data.status +'">'+			
-			'<p class="message">'+
-			'<a href="#" class="name">'+
-			'<time class="text-muted pull-right timeago" datetime="'+ data.waktu +'">Baru saja</time>'+
-			data.user +
-			'</a>'+
-			data.komentar +
-			'</p>'+
-			'</div>';
-			$('.chat').append(item);
-		}
-	},
-	complete: function(xhr) {
-		$('input[name=komentar]').val('');
-	},
-	error: function(XMLHttpRequest, textStatus, errorThrown){
-		alert('Terjadi kesalahan: ' + errorThrown);
-	}
-});  
+	});  
 </script>
 <script src="{{ asset('/js/jquery.timeago.js') }}" type="text/javascript"></script>
 <script>
 	jQuery.timeago.settings.strings = {
-		prefixAgo: null,
-		prefixFromNow: null,
-		suffixAgo: "yang lalu",
-		suffixFromNow: "dari sekarang",
-		seconds: "kurang dari semenit",
-		minute: "sekitar satu menit",
-		minutes: "%d menit",
-		hour: "sekitar sejam",
-		hours: "sekitar %d jam",
-		day: "sehari",
-		days: "%d hari",
-		month: "sekitar sebulan",
-		months: "%d bulan",
-		year: "sekitar setahun",
-		years: "%d tahun"
+	prefixAgo: null,
+	prefixFromNow: null,
+	suffixAgo: "yang lalu",
+	suffixFromNow: "dari sekarang",
+	seconds: "kurang dari semenit",
+	minute: "sekitar satu menit",
+	minutes: "%d menit",
+	hour: "sekitar sejam",
+	hours: "sekitar %d jam",
+	day: "sehari",
+	days: "%d hari",
+	month: "sekitar sebulan",
+	months: "%d bulan",
+	year: "sekitar setahun",
+	years: "%d tahun"
 	};
 	
 	$(function () {
-		$("time.timeago").timeago();
+	$("time.timeago").timeago();
 	});
 </script>
 @endpush
