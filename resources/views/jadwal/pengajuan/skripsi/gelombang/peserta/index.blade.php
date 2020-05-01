@@ -18,13 +18,6 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 </section>
 @endsection
 
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
-<style>
-	.percent{font-weight: bold;}
-</style>
-@endpush
-
 @section('content')
 
 @if($prodi !== null and $gelombang !== null)
@@ -139,14 +132,57 @@ Pengajuan Judul Skripsi {{ $gelombang -> jadwal -> nama ?? '' }} {{ $gelombang -
 		</table>
 	</div>
 </div>
-@endsection		
+@endsection	
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+<style>
+	.percent{font-weight: bold;}
+		div.dataTables_info, div.dataTables_filter{
+	float:left;
+	}
+	div.dataTables_length{
+	text-align:right;
+	}
+	div.dataTables_filter{
+	text-align:left !important;
+	}
+	div.dataTables_filter input{
+	width: 500px !important;
+	}
+	#div_button{
+	display: none;
+	}
+</style>
+@endpush	
 
 @push('scripts')
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script>
 	$(function () {
 	$('#table').DataTable({
-		"lengthMenu": [10,50,100,250,300]
+		dom: 'fl<"toolbar">tip',
+		pageLength: 25,
+		lengthMenu: [25, 50, 75, 100, 250, 300],
+		ordering: false,
+		language: 	{
+			"sEmptyTable":   "Tidak ada data yang tersedia pada tabel ini",
+			"sProcessing":   "Sedang memproses...",
+			"sLengthMenu":   "Tampilkan _MENU_",
+			"sZeroRecords":  "Tidak ditemukan data yang sesuai",
+			"sInfo":         "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+			"sInfoEmpty":    "Menampilkan 0 sampai 0 dari 0 entri",
+			"sInfoFiltered": "(disaring dari _MAX_ entri keseluruhan)",
+			"sInfoPostFix":  "",
+			"sSearch":       "Cari:",
+			"sUrl":          "",
+			"oPaginate": 	{
+				"sFirst":    "Pertama",
+				"sPrevious": "Sebelumnya",
+				"sNext":     "Selanjutnya",
+				"sLast":     "Terakhir"
+			}
+		}
 	});
 	$('[data-toggle="popover"]').popover({
 		html: true,
