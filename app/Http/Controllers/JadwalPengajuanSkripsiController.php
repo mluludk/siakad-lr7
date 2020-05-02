@@ -87,7 +87,7 @@
 			
 			if($user -> role_id > 60 and $user -> role_id < 128)
 			{
-				$prodi_id = \Siakad\Prodi::whereSingkatan($user -> role -> sub) -> pluck('id');
+				$prodi_id = \Siakad\Prodi::whereSingkatan($user -> role -> sub) -> first() -> id;
 				$disabled = 'disabled';
 			}
 			$pengajuan = JadwalPengajuanSkripsi::find($id);
