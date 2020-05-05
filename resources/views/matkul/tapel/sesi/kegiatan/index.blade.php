@@ -57,6 +57,8 @@
 					
 					<div class="clearfix"></div>
 					<div class="pull-left">
+						@if($k -> jenis == 2) <i class="fa fa-check text-success"></i> <i class="fa fa-pencil-square"></i> @endif
+						@if($k -> jenis == 4) <i class="fa fa-check text-success"></i> <i class="fa fa-video-camera"></i> @endif
 						@if(isset($k -> isi['gambar'])) <i class="fa fa-check text-success"></i> <i class="fa fa-image"></i> @endif
 						@if(isset($k -> isi['video'])) <i class="fa fa-check text-success"></i> <i class="fa fa-video-camera"></i> @endif
 						@if(isset($k -> isi['dokumen'])) <i class="fa fa-check text-success"></i> <i class="fa fa-file-text-o"></i> @endif

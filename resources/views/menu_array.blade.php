@@ -148,8 +148,6 @@
 		[["Riwayat Dosen"],["Riwayat Pendidikan","\/dosen\/pendidikan"],["Riwayat Sertifikasi","\/dosen\/sertifikasi"],["Riwayat Penugasan","\/dosen\/penugasan"],["Riwayat Fungsional","\/dosen\/fungsional"],["Riwayat Kepangkatan","\/dosen\/kepangkatan"]]]],
 		["AKADEMIK",[[
 		["Akademik"], ["Daftar Prodi","\/prodi"],["Daftar Program","\/kelas"],["Daftar Tahun Akademik","\/tapel"],
-		["Kalender Akademik","\/kalender"],["Daftar Ruang Kuliah","\/ruangan"],
-		["Online"], ["Daftar Prodi","\/prodi"],["Daftar Program","\/kelas"],["Daftar Tahun Akademik","\/tapel"],
 		["Kalender Akademik","\/kalender"],["Daftar Ruang Kuliah","\/ruangan"]
 		],
 		[

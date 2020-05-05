@@ -33,6 +33,10 @@
 	@include('matkul/tapel/sesi/kegiatan/pertanyaan/index')
 	@endif
 	
+	@if($jenis_id == 3)
+	@include('matkul/tapel/sesi/kegiatan/tugas/index')
+	@endif
+	
 	@include('matkul/tapel/sesi/kegiatan/partials/_catatan', ['catatan' => $kegiatan -> catatan ?? ''])
 	<div class="f-box-side pull-left">
 		<a href="{{ route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi -> id])}}" class="btn btn-default btn-flat btn-lg">

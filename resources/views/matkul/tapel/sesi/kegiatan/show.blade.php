@@ -81,7 +81,9 @@
 			<p class="text-muted">Tidak ada dokumen</p>
 			@endif
 			
-			@elseif($kegiatan -> jenis == 2)
+			@endif
+			
+			@if($kegiatan -> jenis == 2 or $kegiatan -> jenis == 3)
 			<h4>Tanggal & Waktu Selesai</h4>
 			<p>
 				@if($kegiatan -> batas_waktu != '')
@@ -90,7 +92,7 @@
 				@else
 				-
 				@endif
-			</p>			
+			</p>	
 			@endif
 			
 			@if($kegiatan -> jenis == 2)
@@ -135,6 +137,81 @@
 			<p></p>
 		</div>
 	</div>	
+	@endif
+	
+	@if($kegiatan -> jenis == 3)
+	<div class="f-box">
+		<div class="f-box-body">
+			<h4>Tugas</h4>
+			@if(isset($kegiatan -> isi['tugas']))
+			<table width="100%" id="tbl-soal">
+				<tbody>
+					<?php $c = 1; ?>
+					@foreach($kegiatan -> isi['tugas'] as $isi)
+					<tr class="tr-soal">
+						<td width="30px">{{ $c }}.</td>
+						<td width="30px">
+							@switch($isi['jenis'])
+							@case(0)
+							<i class="fa fa-align-left" title="Isian" data-toggle="tooltip" data-placement="top" ></i>
+							@break
+							
+							@case(1)
+							<i class="fa fa-check-square-o" data-toggle="tooltip" data-placement="top" title="Pilihan Ganda"></i>
+							@break
+							
+							@case(2)
+							<i class="fa fa-upload" data-toggle="tooltip" data-placement="top" title="Upload File"></i>
+							@break
+							
+							@endswitch
+						</td>
+						<td>{!! $isi['soal'] !!}</td>
+					</tr>
+					
+					@if($isi['jenis'] == 1)
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>
+							<ol type="A" style="padding-left:15px">
+								@foreach($isi['pilihan'] as $p)
+								<li>{{ $p }}</li>
+								@endforeach
+							</ol>
+						</td>
+					</tr>
+					@endif
+					
+					@if($isi['jenis'] == 2)
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>
+							@switch($isi['file'])
+							@case('gbr')
+							<button class="btn btn-default" title="Upload Gambar" data-toggle="tooltip" data-placement="top"><i class="fa fa-file-photo-o" ></i> Gambar</button>
+							@break
+							
+							@case('dok')
+							<button class="btn btn-default" title="Upload Dokumen" data-toggle="tooltip" data-placement="top"><i class="fa fa-file-o" ></i> Dokumen</button>
+							@break
+							
+							@case('vid')
+							<button class="btn btn-default" title="Upload Video" data-toggle="tooltip" data-placement="top"><i class="fa fa-file-movie-o" ></i> Video</button>
+							@break							
+							@endswitch
+						</td>
+					</tr>
+					@endif
+					
+					<?php $c++; ?>
+					@endforeach
+				</tbody>
+			</table>
+			@endif
+		</div>
+	</div>
 	@endif
 	
 	<div class="f-box" style="border-left: 4px solid #ffdd57;">
@@ -195,6 +272,9 @@
 	td > p{
 	margin: 0;
 	}
+	#cd{
+	font-size: 20px;
+	}
 </style>
 
 @push('scripts')
@@ -225,7 +305,7 @@
 	
 	if (dst < 0) {
 	clearInterval(x);
-	$("#cd").html('<span class="text-success">Selesai</span>');
+	$("#cd").html('<button class="btn btn-success"><i class="fa fa-check"></i> Selesai</button>');
 	}
 	}, 1000);
 </script>
@@ -268,6 +348,7 @@
 		}
 	});  
 </script>
+
 <script src="{{ asset('/js/jquery.timeago.js') }}" type="text/javascript"></script>
 <script>
 	jQuery.timeago.settings.strings = {
@@ -290,6 +371,7 @@
 	
 	$(function () {
 	$("time.timeago").timeago();
+	$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
 @endpush

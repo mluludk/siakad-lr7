@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-@if($jenis_id == 1 || $jenis_id == 3)
+@if($jenis_id == 1 or $jenis_id == 3)
 <div class="form-group">
 	{!! Form::label('gambar', 'Gambar:') !!}
 	<div class="gambar-preview" style="width: 100%;">
@@ -97,8 +97,9 @@
 		<i class="fa fa-file-word-o"></i> Tambahkan Dokumen
 	</button>
 </div>
+@endif
 
-@elseif($jenis_id == 2 || $jenis_id == 3)
+@if($jenis_id == 2 or $jenis_id == 3)
 <div class="form-group">
 	{!! Form::label('batas1', 'Tanggal & Waktu Selesai:') !!}
 	<?php
@@ -112,8 +113,11 @@
 		{!! Form::text('batas1', $batas[0], ['class' => 'form-control date2', 'placeholder' => 'Tanggal', 'style' => 'display: inline-block; width: 200px;']) !!}
 		{!! Form::text('batas2', $batas[1], ['class' => 'form-control time', 'placeholder' => 'Waktu', 'style' => 'display: inline-block; width: 200px;']) !!}
 	</div>
+	@if($jenis_id == 3)<div class="clearfix"></div>@endif
 </div>
-@elseif($jenis_id == 2)
+@endif
+
+@if($jenis_id == 2)
 <div class="form-group">
 	{!! Form::label('laporan', 'Tampilkan laporan kepada peserta setelah quiz selesai?') !!}
 	<div class="col-md-12" style="padding-left:0px; margin-bottom: 15px;">

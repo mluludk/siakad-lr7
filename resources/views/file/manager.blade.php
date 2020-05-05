@@ -32,8 +32,8 @@
 								@if($file -> count())
 								@foreach($file as $f)
 								<?php
-									$file = explode('/', $f -> namafile);
-									$name = end($file);
+									$fn = explode('/', $f -> namafile);
+									$name = end($fn);
 									$ext = explode('.', $name)[1];
 								?>
 								<tr>

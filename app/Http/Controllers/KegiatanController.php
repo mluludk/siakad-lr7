@@ -66,7 +66,9 @@
 			$this -> validate($request, $this -> rules);
 			$input = $request -> except('_token', 'files');
 			
-			if($jenis_id == 2)
+			// dd($input);
+			
+			if($jenis_id == 2) // QUIZ
 			{
 				foreach($input['soal'] as $k => $v)
 				{
@@ -77,22 +79,33 @@
 					'pilihan' => $jwb,
 					'benar' => $input['benar'][$k]
 					];
-				}
-				if(isset($input['batas1'])) 
-				{
-					$input['batas_waktu'] = $input['batas1'];
-					
-					if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
-					else $input['batas_waktu'] .= ' 00:00:00';
-					
-				}
-				unset($input['soal']);
-				unset($input['bobot']);
-				unset($input['pilihan']);
-				unset($input['benar']);
-				unset($input['batas1']);
-				unset($input['batas2']);				
+				}	
 			}
+			
+			if($jenis_id == 3) // TUGAS
+			{
+				$c=0;
+				foreach($input['soal'] as $k => $v)
+				{
+					$input['isi']['tugas'][$c] = [
+					'jenis' => $input['jenis_soal'][$k],
+					'soal' => $v,
+					'pilihan' => $input['pilihan'][$k] ?? null,
+					'file' => $input['file'][$k] ?? null,
+					];
+					
+					$c++;
+				}
+			}
+			
+			if(isset($input['batas1'])) 
+			{
+				$input['batas_waktu'] = $input['batas1'];
+				
+				if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
+				else $input['batas_waktu'] .= ' 00:00:00';
+			}
+			$input = $this -> discardVariables($input);
 			
 			$input['jenis'] = $jenis_id;
 			$input['sesi_pembelajaran_id'] = $sesi -> id;
@@ -147,7 +160,6 @@
 			$this -> validate($request, $this -> rules);
 			$input = $request -> except('_method', 'files');
 			
-			// dd($input);
 			if($kegiatan -> jenis == 2)
 			{
 				foreach($input['soal'] as $k => $v)
@@ -160,21 +172,34 @@
 					'benar' => $input['benar'][$k]
 					];
 				}
-				if(isset($input['batas1'])) 
-				{
-					$input['batas_waktu'] = $input['batas1'];
-					
-					if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
-					else $input['batas_waktu'] .= ' 00:00:00';
-					
-				}
-				unset($input['soal']);
-				unset($input['bobot']);
-				unset($input['pilihan']);
-				unset($input['benar']);
-				unset($input['batas1']);
-				unset($input['batas2']);				
 			}
+			
+			if($kegiatan -> jenis == 3) // TUGAS
+			{
+				$c=0;
+				foreach($input['soal'] as $k => $v)
+				{
+					$input['isi']['tugas'][$c] = [
+					'jenis' => $input['jenis_soal'][$k],
+					'soal' => $v,
+					'pilihan' => $input['pilihan'][$k] ?? null,
+					'file' => $input['file'][$k] ?? null,
+					];
+					
+					$c++;
+				}
+			}
+			
+			if(isset($input['batas1'])) 
+			{
+				$input['batas_waktu'] = $input['batas1'];
+				
+				if(isset($input['batas2'])) $input['batas_waktu'] .= ' ' . $input['batas2'] . ':00';
+				else $input['batas_waktu'] .= ' 00:00:00';
+				
+			}
+			$input = $this -> discardVariables($input);
+			
 			
 			$kegiatan -> update($input);			
 			return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas -> id, $sesi->id]) -> with('success', 'Data  '. $this -> jenis[$kegiatan -> jenis] .'  berhasil diperbarui.');
@@ -233,12 +258,19 @@
 			return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons', 'jenis'));			
 		}
 		
+		private function discardVariables($input)
+		{
+			$vars = ['soal','jenis_soal','bobot','pilihan','benar','batas1','batas2', 'file'];
+			foreach($vars as $var) if(isset($input[$var])) unset($input[$var]);	
+			
+			return $input;
+		}
 		private function getUrutanKegiatan($sesi_id)
 		{
 			$last = Kegiatan::where('sesi_pembelajaran_id', $sesi_id) -> orderBy('urutan', 'desc') -> get('urutan');
 			
-		if($last) return $last[0] -> urutan + 1;
-		
-		return 1;
+			if($last) return $last[0] -> urutan + 1;
+			
+			return 1;
 		}
 	}
