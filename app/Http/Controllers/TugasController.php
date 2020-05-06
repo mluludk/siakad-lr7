@@ -148,7 +148,7 @@
 		{
 			if($type == 'y') //check Tugas detail, apakah sudah ada?
 			{
-				if($tugas -> detail -> count() < 1);
+				if($tugas -> detail -> count() < 1)
 				return Redirect::back() -> with('warning', 'Anda belum meng-upload File / Membuat Pertanyaan. Tugas belum bisa di-Publikasikan.');
 			}
 			$tugas -> update(['published' => $type]);			

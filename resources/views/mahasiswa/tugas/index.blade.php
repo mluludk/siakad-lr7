@@ -97,6 +97,15 @@ Tugas Mahasiswa
 						@endif
 					</td>
 					<td width="125px">
+						<div class="btn-group" role="group" aria-label="Group button">
+							<a href="{{ route('mahasiswa.tugas.detail.index', $g -> id) }}" class="btn btn-info btn-flat btn-xs" title="Detail Tugas"><i class="fa fa-search"></i></a>
+							<a href="{{ route('mahasiswa.tugas.hasil.index', $g -> id) }}" class="btn btn-success btn-flat btn-xs" title="Hasil Tugas"><i class="fa fa-inbox"></i></a>
+							<a href="{{ route('mahasiswa.tugas.edit', $g->id) }}" class="btn btn-warning btn-flat btn-xs" title="Edit data Tugas"><i class="fa fa-pencil-square-o"></i></a>
+							<a href="{{ route('mahasiswa.tugas.delete', $g->id) }}" class="btn btn-danger btn-flat btn-xs has-confirmation" title="Hapus Tugas"><i class="fa fa-trash"></i></a>
+						</div>
+					</td>
+					<!--
+					<td width="125px">
 						@if($g -> published == 'n')
 						<div class="btn-group" role="group" aria-label="Group button">
 							<a href="{{ route('mahasiswa.tugas.detail.index', $g -> id) }}" class="btn btn-info btn-flat btn-xs" title="Detail Tugas"><i class="fa fa-search"></i></a>
@@ -109,6 +118,7 @@ Tugas Mahasiswa
 						<a href="{{ route('mahasiswa.tugas.hasil.index', $g -> id) }}" class="btn btn-success btn-flat btn-xs" title="Hasil Tugas"><i class="fa fa-inbox"></i> Hasil</a>
 						@endif
 					</td>
+					-->
 				</tr>
 				<?php $c++; ?>
 				@endif
