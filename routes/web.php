@@ -2936,6 +2936,11 @@
 		'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],
 		'uses' => 'KomentarController@store'
 		]);
+		Route::get('komentar/{model}/{id}/{last_id?}', [
+		'as' => 'komentar.get', 
+		'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],
+		'uses' => 'KomentarController@getKomentar'
+		]);
 		
 		//PERTANYAAN QUIZ
 		Route::get('kegiatan/{kegiatan}/pertanyaan/{key}/edit', [
