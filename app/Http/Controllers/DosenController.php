@@ -17,7 +17,7 @@
 		use \Siakad\MahasiswaTrait;		
 		
 		protected $rules = [
-		'NIP' => ['digits:18'],		
+		'NIP' => ['nullable', 'digits:18'],		
 		'NIDN' => ['digits:10'],		
 		'NIK' => ['required', 'digits_between:16,17'],		
 		];
