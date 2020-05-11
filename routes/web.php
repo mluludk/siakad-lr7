@@ -281,40 +281,7 @@
 	});
 	
 	Route::group(['middleware' => ['web', 'auth', 'roles', 'maintenis', 'profil', 'nilai']], function()
-	{	
-		//ZOOM
-		// Route::get('/matkul/tapel/{matkul_tapel_id}/meeting', [
-		// 'as' => 'matkul.tapel.meeting',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'MatkulTapelMeetingController@index'
-		// ]);
-		// Route::get('/matkul/tapel/{matkul_tapel_id}/meeting/create', [
-		// 'as' => 'matkul.tapel.meeting.create',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'MatkulTapelMeetingController@create'
-		// ]);
-		// Route::post('/matkul/tapel/{matkul_tapel_id}/meeting', [
-		// 'as' => 'matkul.tapel.meeting.store',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'MatkulTapelMeetingController@store'
-		// ]);
-		
-		// Route::get('/zoom/meeting/create', [
-		// 'as' => 'zoom.meeting.create',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'ZoomController@createMeeting'
-		// ]);
-		// Route::get('/zoom/user/create', [
-		// 'as' => 'zoom.user.create',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'ZoomController@createUser'
-		// ]);
-		// Route::get('/zoom/user/list', [
-		// 'as' => 'zoom.user.list',
-		// 'roles' => ['administrator', 'dosen'],
-		// 'uses' => 'ZoomController@listAllUsers'
-		// ]);
-		
+	{			
 		// Validasi krs
 		Route::get('/validasi/krs/', [
 		'as' => 'krs.validasi',
