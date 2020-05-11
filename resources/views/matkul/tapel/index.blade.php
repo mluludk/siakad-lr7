@@ -179,7 +179,9 @@ Daftar Kelas Perkuliahan
 					<a href="{{ url('/kelaskuliah/'. $mk->mtid .'/absensi/cetak') }}" class="btn btn-xs btn-warning btn-flat" title="Cetak Absensi Sesuai Jurnal" target="_blank"><i class="fa fa-print"></i></a>
 					<a href="{{ route('matkul.tapel.jurnal.print', [$mk->mtid]) }}" class="btn btn-info btn-xs btn-flat" title="Cetak Jurnal" target="_blank"><i class="fa fa-print"></i></a>
 					<a href="{{ route('matkul.tapel.export', [$mk->mtid]) }}" class="btn btn-success btn-xs btn-flat" title="Export ke MS Excel"><img src="../images/excl.png"></i></a>
+					<!--
 					<a href="{{ route('matkul.tapel.meeting', $mk -> mtid) }}" class="btn btn-xs btn-success btn-flat" title="Video Conference"><i class="fa fa-video-camera"></i></a>
+					-->
 					<a href="{{ route('matkul.tapel.edit', $mk->mtid) }}" class="btn btn-xs btn-warning btn-flat" title="Ubah data"><i class="fa fa-edit"></i></a>
 					<a href="{{ url('/matkul/tapel/' . $mk -> mtid . '/delete') }}" class="btn btn-xs btn-danger btn-flat has-confirmation" title="Hapus data"><i class="fa fa-trash"></i></a>
 					</td>

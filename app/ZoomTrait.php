@@ -7,8 +7,7 @@
 	trait ZoomTrait{
 		public function sendRequest($uri='/v2/users/me/meetings', $data) 
 		{			
-			$data = json_encode($data);
-			$options = [
+			$client = new Client([
             'base_uri' => 'https://api.zoom.us/',
 			'verify' => false,
             'headers' => 
@@ -17,12 +16,15 @@
 			'Content-Type' => 'application/json',
 			'Accept' => 'application/json',
 			],
-			];
-			$client = new Client($options);
-			$response = $client -> post($uri, ['body' => $data]);
+			]);
+			$response = $client -> post($uri, ['body' => json_encode($data)]);
 			
 			if($response -> getStatusCode() == 201)			
 			return json_decode($response -> getBody() -> getContents());
+			
+			//regenerate token
+			// if($response -> getStatusCode() == 401)
+			
 			
 			return false;
 		}
@@ -37,4 +39,4 @@
             );
             return JWT::encode( $token, $secret );
 		}
-	}							
+	}									

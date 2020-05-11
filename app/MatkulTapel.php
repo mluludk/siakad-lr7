@@ -43,7 +43,6 @@
 			$query -> where('matkul_tapel.prodi_id', $prodi_id);
 			
 			$query
-			// -> where('tapel.aktif', 'y')
 			-> where('semester', 7)
 			-> distinct()
 			-> select(
@@ -132,7 +131,6 @@
 			-> join('kurikulum_matkul', 'kurikulum_matkul.id', '=', 'matkul_tapel.kurikulum_matkul_id')
 			-> join('matkul', 'kurikulum_matkul.matkul_id', '=', 'matkul.id')
 			
-			// -> join('dosen', 'dosen.id', '=', 'matkul_tapel.dosen_id')
 			-> join('tim_dosen', 'tim_dosen.matkul_tapel_id', '=', 'matkul_tapel.id')
 			-> join('dosen', 'dosen.id', '=', 'tim_dosen.dosen_id')
 			
@@ -160,7 +158,6 @@
 			
 			-> groupBy('matkul_tapel.id')
 			-> groupBy('matkul_tapel.kelas')
-			// -> groupBy('dosen.id')
 			
 			-> orderBy('kurikulum_matkul.semester')
 			-> orderBy('kelas.id')		
@@ -179,7 +176,6 @@
 			
 			`prodi`.`singkatan` as `prodi`,
 			`kelas`.`nama` as `program`, `matkul_tapel`.`id`'));
-			//`dosen`.`nama` as `dosen`,
 		}
 		
 		public function scopeMatkulAktif($query, $prodi = false)
@@ -192,7 +188,7 @@
 			-> join('prodi', 'matkul_tapel.prodi_id', '=', 'prodi.id')
 			-> join('tim_dosen', 'tim_dosen.matkul_tapel_id', '=', 'matkul_tapel.id')
 			-> join('dosen', 'dosen.id', '=', 'tim_dosen.dosen_id')
-			// -> join('dosen', 'matkul_tapel.dosen_id', '=', 'dosen.id')
+			
 			-> join('kelas', 'matkul_tapel.kelas', '=', 'kelas.id')
 			-> where('tapel.aktif', 'y');
 			
@@ -217,7 +213,7 @@
 			-> join('matkul', 'kurikulum_matkul.matkul_id', '=', 'matkul.id')
 			-> join('tim_dosen', 'tim_dosen.matkul_tapel_id', '=', 'matkul_tapel.id')
 			-> join('dosen', 'dosen.id', '=', 'tim_dosen.dosen_id')
-			// -> join('dosen', 'dosen_id', '=', 'dosen.id')
+			
 			-> join('tapel', 'tapel_id', '=', 'tapel.id')
 			-> join('prodi', 'matkul_tapel.prodi_id', '=', 'prodi.id');
 			

@@ -3,6 +3,14 @@
 	{!! Form::label('topik', 'Topik:') !!}
 	{!! Form::text('topik', null, array('class' => 'form-control', 'placeholder' => 'Topik')) !!}
 </div>
+
+@if($jenis_id == 4)
+<div class="form-group">
+	{!! Form::label('password', 'Password:') !!}
+	{!! Form::text('password', null, array('class' => 'form-control', 'placeholder' => 'Password Video Conference (boleh dikosongkan)')) !!}
+</div>
+@endif
+
 <div class="form-group">
 	{!! Form::label('dibagikan', 'Bagikan ' . $jenis . ':') !!}
 	<div class="col-md-12" style="padding-left:0px; margin-bottom: 15px;">
@@ -16,7 +24,7 @@
 		</label>
 		<label class="radio-inline">
 			{!! Form::radio('dibagikan', 'j', null) !!}
-			Sesuai Jadwal
+			Sesuai jadwal perkuliahan terdekat
 		</label>
 	</div>
 </div>
@@ -123,16 +131,30 @@
 	<div class="col-md-12" style="padding-left:0px; margin-bottom: 15px;">
 		<label class="radio-inline">
 			{!! Form::radio('laporan', 'y', null) !!}
-		Tampilkan
+			Tampilkan
 		</label>
 		<label class="radio-inline">
-		{!! Form::radio('laporan', 'n', null) !!}
-		Tidak
+			{!! Form::radio('laporan', 'n', null) !!}
+			Tidak
+		</label>
+	</div>
+</div>
+@endif
+
+<div class="form-group">
+	{!! Form::label('diskusi', 'Tampilkan laman diskusi?') !!}
+	<div class="col-md-12" style="padding-left:0px; margin-bottom: 15px;">
+		<label class="radio-inline">
+			{!! Form::radio('diskusi', 'y', null) !!}
+			Tampilkan
+		</label>
+		<label class="radio-inline">
+			{!! Form::radio('diskusi', 'n', null) !!}
+			Tidak
 		</label>
 	</div>
 </div>
 <br/>
-@endif
 
 @if($jenis_id <= 3)
 <div class="modal-container"></div>
@@ -157,25 +179,25 @@
 @if($jenis_id == 1 || $jenis_id == 3)
 @push('scripts')
 <script>
-	$(document).on('click', '.btn-del-gambar', function(){
-		if(confirm('Apakah anda yakin akan menghapus Gambar ini?'))
-		{
-			$(this).closest('.thumbnail').remove();			
-		}
-	});
-	$(document).on('click', '.btn-del-video', function(){
-		if(confirm('Apakah anda yakin akan menghapus Video ini?'))
-		{
-			$(this).closest('.col-sm-6').remove();			
-			$('.btn-video').removeClass('hidden');			
-		}
-	});
-	$(document).on('click', '.btn-del-dokumen', function(){
-		if(confirm('Apakah anda yakin akan menghapus Dokumen ini?'))
-		{
-			$(this).closest('tr').remove();			
-		}
-	});
+$(document).on('click', '.btn-del-gambar', function(){
+if(confirm('Apakah anda yakin akan menghapus Gambar ini?'))
+{
+$(this).closest('.thumbnail').remove();			
+}
+});
+$(document).on('click', '.btn-del-video', function(){
+if(confirm('Apakah anda yakin akan menghapus Video ini?'))
+{
+$(this).closest('.col-sm-6').remove();			
+$('.btn-video').removeClass('hidden');			
+}
+});
+$(document).on('click', '.btn-del-dokumen', function(){
+if(confirm('Apakah anda yakin akan menghapus Dokumen ini?'))
+{
+$(this).closest('tr').remove();			
+}
+});
 </script>
 @endpush
 @endif
@@ -185,43 +207,43 @@
 <script src="{{ asset('/js/jquery-clock-timepicker.min.js') }}"></script>
 <script src="{{ asset('/summernote/summernote.min.js') }}"></script>
 <script>	
-	$(document).on('click', '#post', function(){
-	var content = $('#summernote').summernote('code');
-	$('#isi').val(content);
-	$('#post-form').submit();
+$(document).on('click', '#post', function(){
+var content = $('#summernote').summernote('code');
+$('#isi').val(content);
+$('#post-form').submit();
 });
 $(function(){
-	
-	$('#summernote').summernote({
-		minHeight: 100, 
-		maxHeight: null, 
-		toolbar: [
-		['style', ['bold', 'italic', 'underline', 'clear']],
-		['font', ['strikethrough', 'superscript', 'subscript']],
-		['fontsize', ['fontname', 'fontsize']],
-		['color', ['color']],
-		['para', ['ul', 'ol', 'paragraph']],
-		['height', ['height']],
-		['insert', ['link']]
-		]
-	});
-	
-	$(".time").clockTimePicker();
-	$(".date").datepicker({
-		format:"dd-mm-yyyy", 
-		autoHide:true,
-		daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
-		daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
-		monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-	});
-	$(".date2").datepicker({
-		format:"yyyy-mm-dd", 
-		startDate: "{{ date('Y-m-d') }}",
-		autoHide:true,
-		daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
-		daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
-		monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-	});
+
+$('#summernote').summernote({
+minHeight: 100, 
+maxHeight: null, 
+toolbar: [
+['style', ['bold', 'italic', 'underline', 'clear']],
+['font', ['strikethrough', 'superscript', 'subscript']],
+['fontsize', ['fontname', 'fontsize']],
+['color', ['color']],
+['para', ['ul', 'ol', 'paragraph']],
+['height', ['height']],
+['insert', ['link']]
+]
+});
+
+$(".time").clockTimePicker();
+$(".date").datepicker({
+format:"dd-mm-yyyy", 
+autoHide:true,
+daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+});
+$(".date2").datepicker({
+format:"yyyy-mm-dd", 
+startDate: "{{ date('Y-m-d') }}",
+autoHide:true,
+daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+});
 });
 </script>
 @endpush

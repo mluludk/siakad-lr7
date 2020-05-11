@@ -108,12 +108,7 @@
 	'as' => 'pmb.peserta.print',
 	'uses' =>'PmbPesertaController@printing'
 	]);
-	/* 
-		Route::get('/pmb/kartu/{kode}/print', [
-		'as' => 'pmb.peserta.kartu.print',
-		'uses' =>'PmbPesertaController@printCard'
-		]); 
-	*/
+
 	Route::get('/pmb/formulir/{kode}', [
 	'as' => 'pmb.peserta.stored',
 	'uses' =>'PmbPesertaController@stored'
@@ -288,26 +283,21 @@
 	Route::group(['middleware' => ['web', 'auth', 'roles', 'maintenis', 'profil', 'nilai']], function()
 	{	
 		//ZOOM
-		Route::get('/matkul/tapel/{matkul_tapel_id}/meeting', [
-		'as' => 'matkul.tapel.meeting',
-		'roles' => ['administrator', 'dosen'],
-		'uses' => 'MatkulTapelMeetingController@index'
-		]);
-		Route::get('/matkul/tapel/{matkul_tapel_id}/meeting/create', [
-		'as' => 'matkul.tapel.meeting.create',
-		'roles' => ['administrator', 'dosen'],
-		'uses' => 'MatkulTapelMeetingController@create'
-		]);
-		Route::post('/matkul/tapel/{matkul_tapel_id}/meeting', [
-		'as' => 'matkul.tapel.meeting.store',
-		'roles' => ['administrator', 'dosen'],
-		'uses' => 'MatkulTapelMeetingController@store'
-		]);
-		Route::get('/meeting/{meeting}/start', [
-		'as' => 'meeting.start',
-		'roles' => ['administrator', 'dosen'],
-		'uses' => 'MatkulTapelMeetingController@start'
-		]);
+		// Route::get('/matkul/tapel/{matkul_tapel_id}/meeting', [
+		// 'as' => 'matkul.tapel.meeting',
+		// 'roles' => ['administrator', 'dosen'],
+		// 'uses' => 'MatkulTapelMeetingController@index'
+		// ]);
+		// Route::get('/matkul/tapel/{matkul_tapel_id}/meeting/create', [
+		// 'as' => 'matkul.tapel.meeting.create',
+		// 'roles' => ['administrator', 'dosen'],
+		// 'uses' => 'MatkulTapelMeetingController@create'
+		// ]);
+		// Route::post('/matkul/tapel/{matkul_tapel_id}/meeting', [
+		// 'as' => 'matkul.tapel.meeting.store',
+		// 'roles' => ['administrator', 'dosen'],
+		// 'uses' => 'MatkulTapelMeetingController@store'
+		// ]);
 		
 		// Route::get('/zoom/meeting/create', [
 		// 'as' => 'zoom.meeting.create',
@@ -2943,21 +2933,22 @@
 		]);
 		
 		//PERTANYAAN QUIZ
-		Route::get('kegiatan/{kegiatan}/pertanyaan/{key}/edit', [
-		'as' => 'kegiatan.pertanyaan.edit', 
-		'roles' => ['administrator', 'akademik'],
-		'uses' => 'KegiatanController@editPertanyaan'
-		]);
-		Route::get('kegiatan/pertanyaan/create', [
-		'as' => 'kegiatan.pertanyaan.create', 
-		'roles' => ['administrator', 'akademik'],
-		'uses' => 'KegiatanController@createPertanyaan'
-		]);
-		Route::post('kegiatan/pertanyaan/store', [
-		'as' => 'kegiatan.pertanyaan.store', 
-		'roles' => ['administrator', 'akademik'],
-		'uses' => 'KegiatanController@storePertanyaan'
-		]);
+		// Route::get('kegiatan/{kegiatan}/pertanyaan/{key}/edit', [
+		// 'as' => 'kegiatan.pertanyaan.edit', 
+		// 'roles' => ['administrator', 'akademik'],
+		// 'uses' => 'KegiatanController@editPertanyaan'
+		// ]);
+		// Route::get('kegiatan/pertanyaan/create', [
+		// 'as' => 'kegiatan.pertanyaan.create', 
+		// 'roles' => ['administrator', 'akademik'],
+		// 'uses' => 'KegiatanController@createPertanyaan'
+		// ]);
+		// Route::post('kegiatan/pertanyaan/store', [
+		// 'as' => 'kegiatan.pertanyaan.store', 
+		// 'roles' => ['administrator', 'akademik'],
+		// 'uses' => 'KegiatanController@storePertanyaan'
+		// ]); 
+		//  ???
 		
 		//SESI PEMBELAJARAN	> KEGIATAN	
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan', [
@@ -3000,6 +2991,12 @@
 		'roles' => ['administrator', 'akademik'],
 		'uses' => 'KegiatanController@show'
 		]);
+		
+		Route::get('meeting/{meeting}/start', [
+			'as' => 'meeting.start',
+			'roles' => ['administrator', 'dosen'],
+			'uses' => 'KegiatanController@startMeeting'
+			]);
 		
 		//SESI PEMBELAJARAN		
 		Route::get('matkul/tapel/{kelas}/sesi', [
