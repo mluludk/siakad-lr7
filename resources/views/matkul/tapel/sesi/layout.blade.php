@@ -19,9 +19,9 @@ Data Kelas Kuliah {{ $kelas -> nama }}
 @endsection
 
 @section('content')
-<div class="f-row">
+<div class="row">
 
-	<div class="f-col-1">
+	<div class="col-md-3">
 		<h4><i class="fa fa-align-justify"></i> Menu</h4>
 		<div class="f-box">
 			<div class="f-box-body">
@@ -81,9 +81,11 @@ Data Kelas Kuliah {{ $kelas -> nama }}
 
 	</div>
 
-	@yield('tengah')
+	<div class="col-md-6">
+		@yield('tengah')
+	</div>
 
-	<div class="f-col-1">
+	<div class="col-md-3">
 		<h4><i class="fa fa-info"></i> Informasi Kelas Kuliah</h4>
 		<div class="f-box">
 			<div class="f-box-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
@@ -121,32 +123,6 @@ Data Kelas Kuliah {{ $kelas -> nama }}
 
 @push('styles')
 <style>
-	.f-row {
-		margin: 0 -15px;
-		display: flex;
-		flex-direction: row;
-		align-content: space-between;
-		flex-wrap: wrap;
-	}
-
-	.f-col-1 {
-		flex-grow: 1;
-		margin: 15px;
-	}
-
-	.f-col-2 {
-		flex-grow: 2;
-		flex-basis: 40%;
-		margin: 15px;
-	}
-
-	@media all and (max-width: 700px) {
-		.f-row {
-			flex-direction: column;
-			align-content: stretch;
-		}
-	}
-
 	.f-box {
 		background-color: #ffffff;
 		margin-bottom: 15px;
