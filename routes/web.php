@@ -2899,63 +2899,45 @@
 		'uses' => 'KomentarController@getKomentar'
 		]);
 		
-		//PERTANYAAN QUIZ
-		// Route::get('kegiatan/{kegiatan}/pertanyaan/{key}/edit', [
-		// 'as' => 'kegiatan.pertanyaan.edit', 
-		// 'roles' => ['administrator', 'akademik'],
-		// 'uses' => 'KegiatanController@editPertanyaan'
-		// ]);
-		// Route::get('kegiatan/pertanyaan/create', [
-		// 'as' => 'kegiatan.pertanyaan.create', 
-		// 'roles' => ['administrator', 'akademik'],
-		// 'uses' => 'KegiatanController@createPertanyaan'
-		// ]);
-		// Route::post('kegiatan/pertanyaan/store', [
-		// 'as' => 'kegiatan.pertanyaan.store', 
-		// 'roles' => ['administrator', 'akademik'],
-		// 'uses' => 'KegiatanController@storePertanyaan'
-		// ]); 
-		//  ???
-		
 		//SESI PEMBELAJARAN	> KEGIATAN	
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan', [
 		'as' => 'matkul.tapel.sesi.kegiatan.index', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@index'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}/duplicate', [
 		'as' => 'matkul.tapel.sesi.kegiatan.duplicate', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@duplicate'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}/delete', [
 		'as' => 'matkul.tapel.sesi.kegiatan.delete', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@destroy'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}/edit', [
 		'as' => 'matkul.tapel.sesi.kegiatan.edit', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@edit'
 		]);
 		Route::patch('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}', [
 		'as' => 'matkul.tapel.sesi.kegiatan.update', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@update'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{jenis}/create', [
 		'as' => 'matkul.tapel.sesi.kegiatan.create', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@create'
 		]);
 		Route::post('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{jenis}', [
 		'as' => 'matkul.tapel.sesi.kegiatan.store', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@store'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/kegiatan/{kegiatan}', [
 		'as' => 'matkul.tapel.sesi.kegiatan.show', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'KegiatanController@show'
 		]);
 		
@@ -2968,37 +2950,37 @@
 		//SESI PEMBELAJARAN		
 		Route::get('matkul/tapel/{kelas}/sesi', [
 		'as' => 'matkul.tapel.sesi.index', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@index'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/create', [
 		'as' => 'matkul.tapel.sesi.create', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@create'
 		]);
 		Route::post('matkul/tapel/{kelas}/sesi', [
 		'as' => 'matkul.tapel.sesi.store', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@store'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/edit', [
 		'as' => 'matkul.tapel.sesi.edit', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@edit'
 		]);
 		Route::patch('matkul/tapel/{kelas}/sesi/{sesi}', [
 		'as' => 'matkul.tapel.sesi.update', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@update'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/delete', [
 		'as' => 'matkul.tapel.sesi.delete', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@destroy'
 		]);
 		Route::get('matkul/tapel/{kelas}/sesi/{sesi}/duplicate', [
 		'as' => 'matkul.tapel.sesi.duplicate', 
-		'roles' => ['administrator', 'akademik'],
+		'roles' => ['administrator', 'akademik', 'dosen'],
 		'uses' => 'SesiPembelajaranController@duplicate'
 		]);
 		

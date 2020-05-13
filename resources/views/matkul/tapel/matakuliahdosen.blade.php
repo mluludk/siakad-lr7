@@ -47,7 +47,8 @@ Aktifitas Mengajar
 				<tr>
 					<td>{{ $c }}</td>
 					<td>{{ $mk -> ta }}</td>
-					<td>{{ $mk -> matkul}} ({{ $mk -> kode }})</td>
+					<td>
+					<a href='{{ url("/matkul/tapel/" . $mk -> id ."/sesi") }}' title='Aktivitas Pembelajaran'>{{ $mk -> matkul}} ({{ $mk -> kode }})</a></td>
 					<td>{{ $mk -> keterangan }}</td>
 					<td>{{ $mk -> strata }} {{ $mk -> prodi }}</td>
 					<td>{{ $mk -> program -> nama }}</td>
@@ -59,6 +60,7 @@ Aktifitas Mengajar
 						<a href='{{ url("/kelaskuliah/" . $mk -> id ."/jurnal") }}' class='btn btn-xs btn-flat btn-warning' title='Jurnal'><i class='fa fa-book'></i></a>
 						<a href='{{ url("/kelaskuliah/" . $mk -> id ."/absensi") }}' class='btn btn-xs btn-flat btn-danger' title='Absensi'><i class='fa fa-font'></i></a>
 						<a href='{{ url("/matkul/tapel/" . $mk -> id ."/nilai") }}' class='btn btn-xs btn-flat btn-success' title='Nilai'><i class='fa fa-bar-chart'></i></a>
+						<a href='{{ url("/matkul/tapel/" . $mk -> id ."/sesi") }}' class='btn btn-xs btn-flat btn-info' title='Aktivitas Pembelajaran'><i class='fa fa-sitemap'></i></a>
 					</td>
 				</tr>
 				<?php $c++; $total_sks += $mk -> sks; ?>

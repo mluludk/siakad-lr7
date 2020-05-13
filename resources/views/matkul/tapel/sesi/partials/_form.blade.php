@@ -11,7 +11,7 @@
 
 <div class="form-group">
 	{!! Form::label('sesi_ke', 'Sesi Ke:') !!}
-	{!! Form::select('sesi_ke', array_combine($r=range(1, 15), $r), null, array('class' => 'form-control')) !!}
+	{!! Form::select('sesi_ke', array_combine($r=range(1, 16), $r), null, array('class' => 'form-control')) !!}
 </div>
 <div class="form-group">
 	{!! Form::label('judul', 'Judul:') !!}

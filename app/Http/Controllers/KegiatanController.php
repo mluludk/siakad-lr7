@@ -26,20 +26,25 @@ class KegiatanController extends Controller
 	];
 	protected $media_type = ['gambar', 'dokumen', 'video'];
 
-	/* public function createPertanyaan()
-		{
-			$rnd = str_random('13');
-			return view('matkul.tapel.sesi.kegiatan.pertanyaan.create', compact('rnd'));
+	private function checkDosen($kelas) //Check Jika dosen tidak mengajar Kelas Kuliah
+	{
+		$authorized = false;
+		$user = \Auth::user();
+
+		if ($user->role_id <= 8) return true;
+
+		$dosen_id = $user->authable->id;
+		foreach ($kelas->tim_dosen as $d) {
+			if ($d->id == $dosen_id) $authorized = true;
 		}
-		public function storePertanyaan(Request $request)
-		{
-			return $request -> all();
-			// return view('matkul.tapel.sesi.kegiatan.pertanyaan.create');
-		} 
-		*/
+		if (!$authorized) return abort(401);
+
+		return true;
+	}
 
 	public function index(MatkulTapel $kelas, SesiPembelajaran $sesi)
 	{
+		$this->checkDosen($kelas);
 		$kegiatan = Kegiatan::where('sesi_pembelajaran_id', $sesi->id)->orderBy('urutan')->get();
 
 		$jenis = $this->jenis;
@@ -53,6 +58,7 @@ class KegiatanController extends Controller
 	 */
 	public function create(MatkulTapel $kelas, SesiPembelajaran $sesi, $jenis_id)
 	{
+		$this->checkDosen($kelas);
 		$jenis = $this->jenis[$jenis_id];
 		return view('matkul.tapel.sesi.kegiatan.create',  compact('kelas', 'sesi', 'jenis', 'jenis_id'));
 	}
@@ -139,20 +145,21 @@ class KegiatanController extends Controller
 
 		$created = Kegiatan::create($input);
 		// return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas->id, $sesi->id])->with('success', 'Data ' . $this->jenis[$jenis_id] . ' berhasil dimasukkan.');
-		return Redirect::route('matkul.tapel.sesi.kegiatan.show', [$kelas->id, $sesi->id, $created -> id])
-		->with('success', 'Data ' . $this->jenis[$jenis_id] . ' berhasil disimpan.');
+		return Redirect::route('matkul.tapel.sesi.kegiatan.show', [$kelas->id, $sesi->id, $created->id])
+			->with('success', 'Data ' . $this->jenis[$jenis_id] . ' berhasil disimpan.');
 	}
 
 	public function startMeeting(Kegiatan $meeting)
 	{
-		if(isset($meeting -> isi['started'])) return Redirect::back() -> with('warning', 'Conference sudah dimulai');
-		
-		$isi = $meeting -> isi;
+		$this->checkDosen($kelas);
+		if (isset($meeting->isi['started'])) return Redirect::back()->with('warning', 'Conference sudah dimulai');
+
+		$isi = $meeting->isi;
 		$isi['started'] = true;
-		$meeting -> update(['isi' => $isi]);
+		$meeting->update(['isi' => $isi]);
 		return Redirect::to($isi['start_url']);
 	}
-	
+
 	private function createMeeting($data)
 	{
 		$create_data = [];
@@ -200,6 +207,7 @@ class KegiatanController extends Controller
 	 */
 	public function edit(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 	{
+		$this->checkDosen($kelas);
 		$jenis_id = $kegiatan->jenis;
 		$jenis = $this->jenis[$jenis_id];
 		$media = [];
@@ -226,7 +234,7 @@ class KegiatanController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
-			// * @param  \Illuminate\Http\Request  $request
+	 * @param  \Illuminate\Http\Request  $request
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
@@ -283,12 +291,14 @@ class KegiatanController extends Controller
 	 */
 	public function destroy(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 	{
+		$this->checkDosen($kelas);
 		$kegiatan->delete();
 		return Redirect::route('matkul.tapel.sesi.kegiatan.index', [$kelas->id, $sesi->id])->with('success', 'Data  ' . $this->jenis[$kegiatan->jenis] . '  berhasil dihapus.');
 	}
 
 	public function duplicate(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 	{
+		$this->checkDosen($kelas);
 		$input = $kegiatan->toArray();
 		unset($input['id']);
 		$input['urutan'] = $this->getUrutanKegiatan($sesi->id);
@@ -302,6 +312,7 @@ class KegiatanController extends Controller
 
 	public function show(MatkulTapel $kelas, SesiPembelajaran $sesi, Kegiatan $kegiatan)
 	{
+		$this->checkDosen($kelas);
 		$media = [];
 		$icons = $this->icons;
 		$jenis = $this->jenis;
