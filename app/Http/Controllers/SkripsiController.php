@@ -64,8 +64,6 @@
 		private function cleanUnusedSkripsi()
 		{
 			Skripsi::whereRaw('id NOT IN (SELECT skripsi_id FROM mahasiswa WHERE skripsi_id IS NOT NULL)') -> delete();	
-			// $deleted = Skripsi::whereRaw('id NOT IN (SELECT skripsi_id FROM mahasiswa WHERE skripsi_id IS NOT NULL)') -> delete();				
-			// if($deleted > 0) \Cache::forget('id_judul_skripsi');
 		}
 		
 		public function revisiPost(Request $request, $skripsi_id)
@@ -198,10 +196,10 @@
 			
 			$total_sks = \Siakad\Aktivitas::where('mahasiswa_id', $mahasiswa -> id) -> where('semester', $mahasiswa -> semesterMhs) -> pluck('total_sks');
 			
-			$data = \Siakad\PesertaUjianSkripsi::where('mahasiswa_id', $mahasiswa -> id) -> first();
-			if(!$data)
-			{
-				// \Siakad\PesertaUjianSkripsi::where('mahasiswa_id', $mahasiswa -> id) -> delete();			
+			$terdaftar = \Siakad\PesertaUjianSkripsi::checkPeserta($mahasiswa -> id, $this -> jenis[$jenis]);
+			
+			if(!$terdaftar -> count())
+			{		
 				$gelombang = \Siakad\JadwalUjianSkripsiGelombang::selectGelombangBuka($this -> jenis[$jenis], $mahasiswa -> prodi_id) -> first();
 				if(!$gelombang) return Redirect::back() -> with('warning', 'Maaf, Gelombang Pendaftaran belum dibuka');
 				
