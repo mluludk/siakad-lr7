@@ -1,10 +1,15 @@
 <div class="box box-default">
     <div class="box-header with-border">
-        <h3 class="box-title"> Pertanyaan Quiz</h3>
+        <h3 class="box-title"> Pertanyaan Quiz @if($hasil) <small>(Pertanyaan tidak bisa di-edit karena sudah ada Mahasiswa yang mengerjakan.)</small>@endif</h3>
     </div>
     <div class="box-body">
+        @if ($hasil)
+        <button class="btn btn-info modal-link btn-flat" type="button" id="btn-tambah-pertanyaan" disabled>Tambah
+            Pertanyaan</button>
+        @else
         <button class="btn btn-info modal-link btn-flat" type="button" id="btn-tambah-pertanyaan" data-toggle="modal"
             href="#modal">Tambah Pertanyaan</button>
+        @endif
         <hr />
         <table width="100%" id="tbl-soal">
             <tbody>
@@ -16,10 +21,12 @@
                     <td width="550px">{!! $isi['soal'] !!}</td>
                     <td width="30px" class="text-info">{{ $isi['bobot'] }}</td>
                     <td width="100px">
+                        @if (!$hasil)
                         <button class="btn btn-warning btn-sm btn-flat btn-edit-soal" type="button" id="edt-{{ $c }}"><i
                                 class="fa fa-edit"></i></button>
                         <button class="btn btn-danger btn-sm btn-flat btn-del-soal" type="button" id="del-{{ $c }}"><i
                                 class="fa fa-trash"></i></button>
+                        @endif
                         <input type="hidden" name="soal[]" value="{{ $isi['soal'] }}" id="soa-{{ $c }}" />
                         <input type="hidden" name="bobot[]" value="{{ $isi['bobot'] }}" id="bob-{{ $c }}" />
                         <input type="hidden" name="pilihan[]" value="{{ implode(';', $isi['pilihan']) }};"

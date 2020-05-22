@@ -6,7 +6,8 @@
 
 <div class="box box-default">
     <div class="box-header with-border">
-        <h3 class="box-title"><i class="fa fa-paste"></i> Tugas</h3>
+        <h3 class="box-title"><i class="fa fa-paste"></i> Tugas @if($hasil) <small>(Pertanyaan tidak bisa di-edit karena
+                sudah ada Mahasiswa yang mengerjakan.)</small>@endif</h3>
     </div>
     <div class="box-body">
         <table width="100%" id="tbl-soal">
@@ -14,6 +15,7 @@
                 @if(isset($kegiatan -> isi['tugas']))
                 <?php
 					$c = 1;
+                    $disabled = !$hasil ? '' : 'disabled';
 				?>
                 @foreach($kegiatan -> isi['tugas'] as $isi)
                 <?php
@@ -24,11 +26,11 @@
                 <tr class="tr-soal" id="soal-{{ $rand }}">
                     <td rowspan="3" valign="top">{{ $c }}.</td>
                     <td width="500px">
-                        <input type="text" name="soal[{{ $rand }}]" class="form-control" placeholder="Pertanyaan"
-                            value="{{ $isi['soal'] }}" />
+                        <input {{ $disabled }} type="text" name="soal[{{ $rand }}]" class="form-control"
+                            placeholder="Pertanyaan" value="{{ $isi['soal'] }}" />
                     </td>
                     <td>
-                        <select name="jenis_soal[{{ $rand }}]" class="form-control jenis_soal">
+                        <select {{ $disabled }} name="jenis_soal[{{ $rand }}]" class="form-control jenis_soal">
                             @foreach($pil as $k => $p)
                             <option value="{{ $k }}" @if($k==$sel) selected @endif>{{ $p }}</option>
                             @endforeach
@@ -47,14 +49,16 @@
                         @foreach($isi['pilihan'] as $p)
                         <div class="input-group" style="width:100%;">
                             <span class="input-group-addon">{{ $abc[$i] }}</span>
-                            <input type="text" class="form-control" aria-label="..." placeholder="Pilihan jawaban"
-                                name="pilihan[{{ $rand }}][]" value="{{ $p }}" />
+                            <input {{ $disabled }} type="text" class="form-control" aria-label="..."
+                                placeholder="Pilihan jawaban" name="pilihan[{{ $rand }}][]" value="{{ $p }}" />
+                            @if (!$hasil)
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-add-pil" type="button"><i
                                         class="fa fa-plus"></i></button>
                                 <button class="btn btn-default btn-del-pil" type="button"><i
                                         class="fa fa-times"></i></button>
                             </span>
+                            @endif
                         </div>
                         <?php
 							$i++;
@@ -68,7 +72,7 @@
                                 @foreach($file as $k => $v)
                                 <div class="radio">
                                     <label>
-                                        <input type="radio" name="file[{{ $rand }}]" value="{{ $k }}"
+                                        <input {{ $disabled }} type="radio" name="file[{{ $rand }}]" value="{{ $k }}"
                                             @if($k==$isi['file']) checked @endif> {{ $v }}
                                     </label>
                                 </div>
@@ -81,12 +85,14 @@
                 <tr class="tr-aksi" id="aksi-{{ $rand }}">
                     <td>&nbsp;</td>
                     <td align="right">
+                        @if (!$hasil)
                         <div class="btn-group" role="group" aria-label="Aksi">
                             <button type="button" class="btn btn-info btn-flat btn-xs btn-dup-soal"
                                 id="dup-{{ $rand }}"><i class="fa fa-clone"></i> Duplikat</button>
                             <button type="button" class="btn btn-danger btn-flat btn-xs btn-del-soal"
                                 id="del-{{ $rand }}"><i class="fa fa-trash"></i> Hapus</button>
                         </div>
+                        @endif
                     </td>
                 </tr>
                 <?php
@@ -120,12 +126,14 @@
                 <tr class="tr-aksi" id="aksi-{{ $rand }}">
                     <td>&nbsp;</td>
                     <td align="right">
+                        @if (!$hasil)
                         <div class="btn-group" role="group" aria-label="Aksi">
                             <button type="button" class="btn btn-info btn-flat btn-xs btn-dup-soal"
                                 id="dup-{{ $rand }}"><i class="fa fa-clone"></i> Duplikat</button>
                             <button type="button" class="btn btn-danger btn-flat btn-xs btn-del-soal"
                                 id="del-{{ $rand }}"><i class="fa fa-trash"></i> Hapus</button>
                         </div>
+                        @endif
                     </td>
                 </tr>
                 @endif
@@ -133,8 +141,10 @@
             </tbody>
         </table>
         <hr />
+        @if (!$hasil)
         <button class="btn btn-primary btn-flat" type="button" id="btn-tambah-pertanyaan"><i class="fa fa-plus"></i>
             Tambah Pertanyaan</button>
+        @endif
     </div>
 </div>
 

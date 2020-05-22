@@ -10,8 +10,10 @@ $id = $kelas->id;
 		<h4><i class="fa fa-list"></i> Sesi Pembelajaran</h4>
 	</div>
 	<div class="f-box-side" style="flex-grow:1;  text-align: right; padding-top: 11px;">
+		@if(in_array($user -> role_id, $allowed))
 		<a href="{{ route('matkul.tapel.sesi.create', $kelas -> id) }}" class="btn btn-success btn-xs btn-flat"><i class="fa fa-plus"></i> Tambah</a>&nbsp;&nbsp;
 		<a href="#" class="btn btn-info btn-xs btn-flat"><i class="fa fa-cog"></i> Pengaturan</a>
+		@endif
 	</div>
 </div>
 @if($sesip -> count())
@@ -40,6 +42,7 @@ $hari = config('custom.hari');
 			</a>
 		</div>
 		<div class="f-box-side" style="width: 58px; padding: 10px;">
+			@if(in_array($user -> role_id, $allowed))
 			<div class="dropdown">
 				<button class="btn btn-default dropdown-toggle" type="button" id="dm1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					<i class="fa fa-ellipsis-v"></i>
@@ -52,6 +55,7 @@ $hari = config('custom.hari');
 					<li><a href="{{ route('matkul.tapel.sesi.delete', [$kelas -> id, $s -> id]) }}" class="has-confirmation"><span class="text-danger"><i class="fa fa-trash"></i> Hapus</span></a></li>
 				</ul>
 			</div>
+			@endif
 		</div>
 	</div>
 </div>

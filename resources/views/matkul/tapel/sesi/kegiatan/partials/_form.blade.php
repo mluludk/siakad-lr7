@@ -1,4 +1,3 @@
-
 <div class="form-group">
 	{!! Form::label('topik', 'Topik:') !!}
 	{!! Form::text('topik', null, array('class' => 'form-control', 'placeholder' => 'Topik')) !!}
@@ -34,9 +33,9 @@
 	{!! Form::label('gambar', 'Gambar:') !!}
 	<div class="gambar-preview" style="width: 100%;">
 		@if(isset($media['gambar']))
-		@foreach($media['gambar'] as $g)	
+		@foreach($media['gambar'] as $g)
 		<div class="thumbnail">
-			<img src="{{ url('/getfile/' . $g['fullpath']) }}" alt="{{ $g['filename'] }}" style="max-width: 500px;"/>			
+			<img src="{{ url('/getfile/' . $g['fullpath']) }}" alt="{{ $g['filename'] }}" style="max-width: 500px;"/>
 			<div class="caption">
 				<button type="button" id="btn-gambar-{{$g['id'] }}" class="btn btn-danger btn-xs btn-flat btn-del-gambar">
 					<i class="fa fa-trash"></i> Hapus
@@ -56,7 +55,7 @@
 	{!! Form::label('video', 'Video:') !!}
 	<div class="video-preview">
 		@if(isset($media['video']))
-		@foreach($media['video'] as $g)	
+		@foreach($media['video'] as $g)
 		<div class="thumbnail">
 			<video controls style="display: block; margin: 0px auto;">
 				<source src="{{ url('/getfile/' . $g['fullpath']) }}" type="{{ $g['mime'] }}">
@@ -84,7 +83,7 @@
 				$file = explode('/', $g['fullpath']);
 				$name = end($file);
 				$ext = explode('.', $name)[1];
-			?>				
+			?>
 			<tr id="tr-dokumen-'+ id +'" width="80%">
 				<td>
 					<a href="{{ url('/getfile/' . $g['fullpath']) }}" class="btn btn-default btn-xs btn-flat"><i class="fa {{ $icons[$ext] }}"></i> {{ $g['filename'] }}</a>
@@ -167,7 +166,7 @@
 				$('#myModal').modal({show:true});
 			});
 		});
-		
+
 		$(document).on('hidden.bs.modal', '#myModal',function (e) {
 			$('#myModal').remove();
 		});
@@ -182,20 +181,20 @@
 $(document).on('click', '.btn-del-gambar', function(){
 if(confirm('Apakah anda yakin akan menghapus Gambar ini?'))
 {
-$(this).closest('.thumbnail').remove();			
+$(this).closest('.thumbnail').remove();
 }
 });
 $(document).on('click', '.btn-del-video', function(){
 if(confirm('Apakah anda yakin akan menghapus Video ini?'))
 {
-$(this).closest('.col-sm-6').remove();			
-$('.btn-video').removeClass('hidden');			
+$(this).closest('.col-sm-6').remove();
+$('.btn-video').removeClass('hidden');
 }
 });
 $(document).on('click', '.btn-del-dokumen', function(){
 if(confirm('Apakah anda yakin akan menghapus Dokumen ini?'))
 {
-$(this).closest('tr').remove();			
+$(this).closest('tr').remove();
 }
 });
 </script>
@@ -206,7 +205,7 @@ $(this).closest('tr').remove();
 <script src="{{ asset('/js/datepicker.min.js') }}"></script>
 <script src="{{ asset('/js/jquery-clock-timepicker.min.js') }}"></script>
 <script src="{{ asset('/summernote/summernote.min.js') }}"></script>
-<script>	
+<script>
 $(document).on('click', '#post', function(){
 var content = $('#summernote').summernote('code');
 $('#isi').val(content);
@@ -215,8 +214,8 @@ $('#post-form').submit();
 $(function(){
 
 $('#summernote').summernote({
-minHeight: 100, 
-maxHeight: null, 
+minHeight: 100,
+maxHeight: null,
 toolbar: [
 ['style', ['bold', 'italic', 'underline', 'clear']],
 ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -230,14 +229,14 @@ toolbar: [
 
 $(".time").clockTimePicker();
 $(".date").datepicker({
-format:"dd-mm-yyyy", 
+format:"dd-mm-yyyy",
 autoHide:true,
 daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
 daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
 monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
 });
 $(".date2").datepicker({
-format:"yyyy-mm-dd", 
+format:"yyyy-mm-dd",
 startDate: "{{ date('Y-m-d') }}",
 autoHide:true,
 daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
@@ -251,4 +250,4 @@ monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Ok
 @push('styles')
 <link rel="stylesheet" href="{{ asset('/css/datepicker.min.css') }}">
 <link href="{{ asset('/summernote/summernote.css') }}" rel="stylesheet">
-@endpush																								
+@endpush

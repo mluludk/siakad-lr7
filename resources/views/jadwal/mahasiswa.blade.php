@@ -4,79 +4,6 @@
 Jadwal Perkuliahan
 @endsection
 
-@push('styles')
-<style>
-	#preview{
-	width: 166px;
-	height: 220px;
-	padding: 5px;
-	margin: 15px auto;
-	border: 1px solid #999;
-	position: relative;
-	overflow: hidden;
-	}
-	
-	#preview img {
-	max-width: 100%;
-	max-height: 100%;
-	width: auto;
-	height: auto;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	-webkit-transform: translate(-50%, -50%);
-	-moz-transform: translate(-50%, -50%);
-	-ms-transform: translate(-50%, -50%);
-	transform: translate(-50%, -50%);
-	}
-	
-	
-	.status{
-	width: 100%;
-	text-align: center;
-	margin-bottom: 10px;
-	}
-	.sidebar-menu-small h5{
-	text-align: center;
-	background-color: #023355;
-	color: white;
-	padding: 5px;
-	}
-	.sidebar-menu-small {
-    list-style: none;
-    margin: 0;
-    padding: 0
-	}
-	.sidebar-menu-small > li {
-    position: relative;
-    margin: 0;
-    padding: 0
-	}
-	.sidebar-menu-small > li > a {
-    padding: 5px 2px 5px 12px;
-    display: block
-	}
-	.sidebar-menu-small > li > a > .fa{
-    width: 20px
-	}
-	
-	.sidebar-menu-small > li > a {
-    border-left: 3px solid transparent;
-	color: #120101;
-	border-bottom: 1px solid #bbb;
-	}
-	.sidebar-menu-small > li:hover > a,
-	.sidebar-menu-small > li.active > a {
-    color: #3c8dbc;
-    background: #f5f9fc;
-    border-left-color: #3c8dbc
-	}
-	
-/* 	.table td, th{
-	border-top-width: 0px !important;
-	} */
-</style>
-@endpush
 @section('header')
 <section class="content-header">
 	<h1>
@@ -96,9 +23,9 @@ Jadwal Perkuliahan
 		<h3 class="box-title">Jadwal Perkuliahan</h3>
 	</div>
 	<div class="box-body">
-		<?php 
-			$c = 1; 
-			$today = date('N');
+		<?php
+		$c = 1;
+		$today = date('N');
 		?>
 		<table class="table table-bordered table-hover">
 			<thead>
@@ -117,13 +44,15 @@ Jadwal Perkuliahan
 			</thead>
 			<tbody>
 				@if(!$data -> count())
-				<td colspan="9" align="center">Belum ada data</td>
+				<td colspan="10" align="center">Belum ada data</td>
 				@else
 				@foreach($data as $mk)
 				<tr @if($mk -> hari == $today)class="info" @endif >
 					<td>{{ $c }}</td>
 					<td>@if(isset($mk -> hari)){{ config('custom.hari')[$mk -> hari] }}, {{ $mk -> jam_mulai }} - {{ $mk -> jam_selesai }}@else<span>-</span>@endif</td>
-					<td>{{ $mk -> matkul }} ({{ $mk -> kd }})</td>
+					<td>
+					<a href="{{ url('/matkul/tapel/' . $mk -> mtid . '/sesi') }}">{{ $mk -> matkul }} ({{ $mk -> kd }})</a>
+					</td>
 					<td>{{ formatTimDosen($mk -> matkul_tapel -> tim_dosen) }}</td>
 					<td>{{ $mk -> semester }}</td>
 					<td>{{ $mk -> program }}</td>
@@ -139,4 +68,4 @@ Jadwal Perkuliahan
 		</table>
 	</div>
 </div>
-@endsection																			
+@endsection

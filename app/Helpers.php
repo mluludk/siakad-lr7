@@ -1,4 +1,11 @@
-<?php	
+<?php
+function getThumbnail($fn)
+{
+    $part = explode('/', $fn);
+    $part[count($part) - 1] = 'thumb_' . $part[count($part) - 1];
+    return implode('/', $part);
+}
+
 	function strPad($str, $n=16)
 	{
 		$str = intval($str);
@@ -6,12 +13,12 @@
 		elseif(strlen($str) == $n) return "".$str;
 		else return "".substr($str, 0, $n);
 	}
-	
+
 	function cekTanggungan($mahasiswa_id, $jenis, $batas_semester=null, $jenis_biaya_id=null, $golongan=null)
 	{
 		$valid = true;
 		$mahasiswa = \Siakad\Mahasiswa::find($mahasiswa_id);
-		
+
 		if($jenis == 'nil')
 		{
 			$nilai = \Siakad\Nilai::transkrip($mahasiswa -> id, true) -> get();
@@ -24,7 +31,7 @@
 				}
 			}
 		}
-		
+
 		elseif($jenis == 'sks')
 		{
 			$sks_wajib = \Cache::get(
@@ -37,7 +44,7 @@
 			$sks = \Siakad\KurikulumMatkul::jumlahSKS($mahasiswa -> id) -> first();
 			if($sks -> jumlah < $sks_wajib) $valid = false;
 		}
-		
+
 		elseif($jenis == 'krs')
 		{
 			$krs = \DB::select('
@@ -55,12 +62,12 @@
 			'mahasiswa_id2' => $mahasiswa -> id,
 			'batas_semester' => $batas_semester
 			]);
-			
+
 			//check for double KRS <<< ???
 			// if(!$krs or $krs[0] -> approved != 'y') $valid = false;
 			if(!$krs) $valid = false;
 		}
-		
+
 		elseif($jenis == 'keu')
 		{
 			if($jenis_biaya_id == null) $valid = false;
@@ -93,7 +100,7 @@
 				}
 			}
 		}
-		
+
 		//filter golongan
 		elseif($jenis == 'gol')
 		{
@@ -105,7 +112,7 @@
 				-> where('mahasiswa_id', $mahasiswa -> id)
 				-> where('jenis_biaya.golongan', $golongan)
 				-> get(['tagihan.id', 'tagihan.jumlah', 'tagihan.bayar', 'tagihan.privilege']);
-				
+
 				if($tagihan)
 				{
 					$tanggungan = 0;
@@ -123,7 +130,7 @@
 		}
 		return $valid;
 	}
-	
+
 	function rating($rate)
 	{
 		$s = 1;
@@ -133,45 +140,45 @@
 			case 1:
 			$cls = 'success';
 			break;
-			
+
 			case 2:
 			case 3:
 			case 4:
 			$cls = 'warning';
 			break;
-			
+
 			case 5:
 			$cls = 'danger';
 			break;
-			
+
 			default:
 			$cls = 'default';
 		}
-		
+
 		while($s <= 5)
 		{
 			if($s <= $rate) $rating .= '<i class="fa fa-star text-'. $cls .' text-xs"></i>';
 			else
 			$rating .= '<i class="fa fa-star-o text-xs"></i>';
-			
+
 			$s++;
 		}
-		
+
 		return $rating;
 	}
-	
+
 	// https://www.php.net/manual/en/function.shuffle.php#94697
 	function shuffle_assoc(&$array) {
 		$keys = array_keys($array);
-		
+
 		shuffle($keys);
-		
+
 		foreach($keys as $key) {
 			$new[$key] = $array[$key];
 		}
-		
+
 		$array = $new;
-		
+
 		return true;
 	}
 	function isPendamping($lokasi_id, $authable_id, $data)
@@ -186,7 +193,7 @@
 				}
 			}
 		}
-		
+
 		return false;
 	}
 	function formatPendamping($key, $data)
@@ -204,10 +211,10 @@
 				$r .= '</ol>';
 			}
 		}
-		
+
 		return $r;
 	}
-	
+
 	function formatLokasiPkm($data, $user)
 	{
 		$n = 0;
@@ -222,7 +229,7 @@
 				{
 					foreach($d -> pendamping as $p)
 					{
-						if($p -> dosen_id == $user -> authable_id) 
+						if($p -> dosen_id == $user -> authable_id)
 						{
 							$found = true;
 							break;
@@ -232,8 +239,8 @@
 				}
 				if(!$found) continue;
 			}
-			
-			
+
+
 			$r .= $d -> nama . ' (' . $d -> peserta -> count() . '/' . $d -> kuota . ') ';
 			if(in_array($user -> role_id, [1,2,8,257]))
 			{
@@ -244,7 +251,7 @@
 				<a href="'. route('mahasiswa.pkm.lokasi.delete', $d -> id) .'" title="Hapus lokasi" class="btn btn-danger btn-xs btn-flat has-confirmation"><i class="fa fa-trash"></i></a>
 				';
 			}
-			
+
 			if($d -> pendamping -> count())
 			{
 				$r .= '<ol class="pendamping">';
@@ -262,29 +269,29 @@
 				$r .= '</ol>';
 			}
 			$lokasi[$n]['lokasi'] = $r;
-			
+
 			//Matkul
 			foreach($d -> matkul as $lm)
 			{
 				$lokasi[$n]['matkul'][] = [
-				'id' => $lm -> id, 
-				'prodi' => $lm -> prodi -> strata . ' ' . $lm -> prodi -> singkatan, 
+				'id' => $lm -> id,
+				'prodi' => $lm -> prodi -> strata . ' ' . $lm -> prodi -> singkatan,
 				'nama' => $lm -> mk -> nama . ' (' . $lm -> mk -> kode .')'
 				];
 			}
-			
+
 			$n++;
 		}
-		
+
 		return $lokasi;
 	}
-	
+
 	function formatLokasi($data, $user, $mode='pkm')
 	{
 		$r = '<ol class="lokasi">';
 		foreach($data as $d)
 		{
-			
+
 			// Hanya menampilkan Lokasi untuk dosen ybs pada login dosen
 			if($user -> role_id == 128)
 			{
@@ -292,7 +299,7 @@
 				{
 					foreach($d -> pendamping as $p)
 					{
-						if($p -> dosen_id == $user -> authable_id) 
+						if($p -> dosen_id == $user -> authable_id)
 						{
 							$found = true;
 							break;
@@ -302,8 +309,8 @@
 				}
 				if(!$found) continue;
 			}
-			
-			
+
+
 			$r .= '<li>' . $d -> nama . ' (' . $d -> peserta -> count() . '/' . $d -> kuota . ') ';
 			if(in_array($user -> role_id, [1,2,8,257]))
 			{
@@ -324,7 +331,7 @@
 					';
 				}
 			}
-			
+
 			if($d -> pendamping -> count())
 			{
 				$r .= '<ol class="pendamping">';
@@ -350,14 +357,14 @@
 				}
 				$r .= '</ol>';
 			}
-			
+
 			$r .= '</li>';
 		}
 		$r .= '</ol>';
-		
+
 		return $r;
 	}
-	
+
 	function getIPK($akm)
 	{
 		$ipk = 0;
@@ -371,10 +378,10 @@
 				$smt = $a -> semester;
 			}
 		}
-		
+
 		return $ipk;
 	}
-	
+
 	function hitungSemester($tapel_masuk, $tapel_sekarang)
 	{
 		if($tapel_sekarang < $tapel_masuk) return 'Invalid';
@@ -391,7 +398,7 @@
 				$smt++;
 			}
 		}
-		
+
 		return $smt;
 	}
 	function cekHer($tapel, $tagihan)
@@ -405,7 +412,7 @@
 		}
 		return '<i class="fa fa-times text-danger"></i>';
 	}
-	
+
 	function formatRupiah($angka)
 	{
 		return 'Rp ' . number_format($angka, 0, ',', '.');
@@ -413,7 +420,7 @@
 	function formatJadwal($data)
 	{
 		$hari = config('custom.hari');
-		
+
 		if($data -> count() > 1)
 		{
 			$r = '<ol class="tim_dosen">';
@@ -435,7 +442,7 @@
 			else
 			$r = 'Jadwal Menyusul';
 		}
-		
+
 		return $r;
 	}
 	function formatTimDosen($data)
@@ -456,10 +463,10 @@
 			else
 			$r = 'Tim Dosen';
 		}
-		
+
 		return $r;
 	}
-	
+
 	function getRoleName($json, $roles)
 	{
 		$json = json_decode($json);
@@ -485,7 +492,7 @@
 	{
 		return sha1($no . date('YmdH') . csrf_token());
 	}
-	
+
 	function convertKuotaProdi($prodi, $kuota)
 	{
 		foreach(json_decode($kuota) as $k => $v) $tmp[] = $prodi[$k] . ': ' . intval($v);
@@ -512,7 +519,7 @@
 					$msg .= 'Aplikasi ' . config('custom.app.abbr') .' '. config('custom.app.version') .' sedang dalam perbaikan. Beberapa fungsi mungkin tidak dapat digunakan.';
 				}
 				$div_c = '</div>';
-				
+
 				if($message['message'] != '') $msg = $message['message'];
 				return $div_o . $msg . $div_c;
 			}
@@ -531,7 +538,7 @@
 		}
 		echo $str;
 	}
-	
+
 	function terbilang($numb){
 		$huruf = array("", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan", "sepuluh", "sebelas");
 		if($numb < 12)
@@ -553,34 +560,34 @@
 		elseif ($numb >= 1000000000)
 		return false;
 	}
-	
+
 	/* http://mattsenior.com/2013/08/arabic-to-roman-numerals-conversion-with-PHP-and-regex */
 	function arabicToRoman($n)
 	{
 		$n = str_repeat('I', $n);
-		
+
 		foreach (array('/I{5}/ V /V{2}/ X', '/I{4}/ IV /VIV/ IX') as $p) {
 			foreach (array('IVX', 'XLC', 'CDM') as $r) {
 				$a = explode(' ', strtr($p, 'IVX', $r));
 				$n = preg_replace(array($a[0], $a[2]), array($a[1], $a[3]), $n);
 			}
 		}
-		
+
 		return $n;
 	}
-	
+
 	function cutStr($str, $l=5)
 	{
 		if(strlen($str) <= $l) return $str;
 		return substr($str, 0, $l) . ' ...';
 	}
-	
+
 	function predikat($skala, $angka){
 		if($angka > 4 or $angka < 0) return '';
 		foreach($skala as $k => $v)
 		if($angka <= floatval($v['max']) and $angka >= floatval($v['min'])) return $v['predikat'];
 	}
-	
+
 	function numberToLetter($number, $base = 'base_4'){
 		return 'Error - Moved to Skala';
 		$number = intval($number);
@@ -588,34 +595,34 @@
 			switch($number){
 				case ($number <= 100 and $number > 90):
 				$ret = 'A+';break;
-				
+
 				case ($number <= 90 and $number > 85):
 				$ret = 'A';break;
-				
+
 				case ($number <= 85 and $number > 80):
 				$ret = 'A-';break;
-				
+
 				case ($number <= 80 and $number > 75):
 				$ret = 'B+';break;
-				
+
 				case ($number <= 75 and $number > 70):
 				$ret = 'B';break;
-				
+
 				case ($number <= 70 and $number > 65):
 				$ret = 'B-';break;
-				
+
 				case ($number <= 65 and $number > 60):
 				$ret = 'C+';break;
-				
+
 				case ($number <= 60 and $number > 55):
 				$ret = 'C';break;
-				
+
 				case ($number <= 55 and $number > 50):
 				$ret = 'C-';break;
-				
+
 				case ($number <= 50 and $number > 0):
 				$ret = 'D';break;
-				
+
 				default:
 				$ret = '-';
 			}
@@ -646,13 +653,13 @@
 		}
 		return $ret;
 	}
-	
+
 	function validateDate($date, $format = 'Y-m-d H:i:s')
 	{
 		$d = DateTime::createFromFormat($format, $date);
 		return $d && $d->format($format) == $date;
 	}
-	
+
 	function formatTanggal($Ymd)
 	{
 		if(!validateDate($Ymd, 'Y-m-d')) return '-';
@@ -660,14 +667,14 @@
 		$bln = $date[1];
 		return $date[2] . ' ' . config('custom.bulan')[$bln] . ' ' . $date[0];
 	}
-	
+
 	function formatTanggalWaktu($time) //Y-m-d H:i:s
 	{
 		if(!validateDate($time)) return '-';
 		$time = strtotime($time);
 		return config('custom.hari')[date('N', $time)] . ', ' . date('d', $time) . ' ' . config('custom.bulan')[date('m', $time)] . ' ' . date('Y', $time) . ' ' . date('H:i:s', $time);
 	}
-	
+
 	//13-12-2000 -> 2000-12-13
 	function toYmd($dmY)
 	{

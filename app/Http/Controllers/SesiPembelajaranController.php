@@ -16,30 +16,35 @@ class SesiPembelajaranController extends Controller
 		'judul' => 'required',
 		'tanggal' => 'required|date|date_format:d-m-Y'
 	];
+	protected $allowed = [1,2,8,128];
 
-	private function checkDosen($kelas) //Check Jika dosen tidak mengajar Kelas Kuliah
+	private function checkDosen($kelas, $view = false) //Check Jika dosen tidak mengajar Kelas Kuliah
 	{
 		$authorized = false;
 		$user = \Auth::user();
 
-		if ($user->role_id <= 8) return true;
+		if ($user->role_id <= 8) return true; //allow admin
+		if (!$view) return abort(401);
 
-		$dosen_id = $user->authable->id;
-		foreach ($kelas->tim_dosen as $d) {
-			if ($d->id == $dosen_id) $authorized = true;
+		if ($user->role_id == 128) { //check if dosen
+			$dosen_id = $user->authable->id;
+			foreach ($kelas->tim_dosen as $d) {
+				if ($d->id == $dosen_id) $authorized = true;
+			}
+			if (!$authorized) return abort(401);
 		}
-		if (!$authorized) return abort(401);
-
 		return true;
 	}
 
 	public function index(MatkulTapel $kelas)
 	{
-		$this->checkDosen($kelas);
+		$this->checkDosen($kelas, true); //allow mhs
 		$sesip = SesiPembelajaran::where('matkul_tapel_id', $kelas->id)
 			->orderBy('sesi_ke')
 			->get();
-		return view('matkul.tapel.sesi.index', compact('kelas', 'sesip'));
+		$user = \Auth::user();
+		$allowed = $this -> allowed;
+		return view('matkul.tapel.sesi.index', compact('kelas', 'sesip', 'user', 'allowed'));
 	}
 
 	/**
