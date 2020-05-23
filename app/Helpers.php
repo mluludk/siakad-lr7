@@ -1,4 +1,22 @@
 <?php
+// https://stackoverflow.com/a/27078384/6934844
+function getContents($str, $startDelimiter, $endDelimiter) {
+    $contents = array();
+    $startDelimiterLength = strlen($startDelimiter);
+    $endDelimiterLength = strlen($endDelimiter);
+    $startFrom = $contentStart = $contentEnd = 0;
+    while (false !== ($contentStart = strpos($str, $startDelimiter, $startFrom))) {
+      $contentStart += $startDelimiterLength;
+      $contentEnd = strpos($str, $endDelimiter, $contentStart);
+      if (false === $contentEnd) {
+        break;
+      }
+      $contents[] = substr($str, $contentStart, $contentEnd - $contentStart);
+      $startFrom = $contentEnd + $endDelimiterLength;
+    }
+
+    return $contents;
+  }
 function getThumbnail($fn)
 {
     $part = explode('/', $fn);

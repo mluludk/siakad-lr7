@@ -4,7 +4,7 @@ namespace Siakad\Http\Controllers;
 
 use Redirect;
 use Illuminate\Http\Request;
-
+use Siakad\FileEntry;
 use Siakad\Komentar;
 
 use Siakad\Http\Controllers\Controller;
@@ -16,13 +16,60 @@ class KomentarController extends Controller
     {
         $auth = \Auth::user();
         $waktu = date('Y-m-d H:i:s');
+        $komentar = $request->get('komentar');
+        $attachment = json_decode($request->get('attachment'), true);
+
+        // extract attachment
+        $img = getContents($komentar, '[i]', '[/i]');
+        if (count($img)) {
+            foreach ($img as $value) {
+                $komentar = str_ireplace(
+                    '[i]' . $value . '[/i]',
+                    '<a target="_blank" href="' . url('/getfile' . $attachment[$value]['f']) . '" class="att"><img src="' . url('/getfile' . getThumbnail($attachment[$value]['f'])) . '"></a>',
+                    $komentar
+                );
+            }
+        }
+        $doc = getContents($komentar, '[d]', '[/d]');
+        if (count($doc)) {
+            foreach ($doc as $value) {
+                $komentar = str_ireplace(
+                    '[d]' . $value . '[/d]',
+                    '<a target="_blank" href="' . url('/getfile' . $attachment[$value]['f']) . '" class="att"><i class="fa fa-file-text-o"></i> ' . substr($attachment[$value]['f'], 12) . '</a>',
+                    $komentar
+                );
+            }
+        }
+        $vid = getContents($komentar, '[v]', '[/v]');
+        if (count($vid)) {
+            foreach ($vid as $value) {
+                $komentar = str_ireplace(
+                    '[d]' . $value . '[/d]',
+                    '<video controls class="att"><source src="' . url('/getfile' . $attachment[$value]['f']) . '">Your browser does not support the video tag.</video>',
+                    $komentar
+                );
+            }
+        }
+
         $input = [
             'commentable_type' => 'Siakad\\' . $model,
             'commentable_id' => $id,
-            'komentar' => $request->get('komentar'),
+            'komentar' => $komentar,
             'waktu' => $waktu,
             'user_id' => $auth->id
         ];
+
+        // if (substr($input['komentar'], 0, 3) == 'rep') {
+        //     $part = explode(';', $input['komentar']);
+        //     if (isset($part[1])) {
+        //         $input['reply_id'] = substr($part[0], 4);
+        //         $input['komentar'] = substr($part[1], 4);
+        //     }
+        // }
+        if(null !== $request->get('reply_id'))
+        {
+            $input['reply_id'] =$request->get('reply_id');
+        }
 
         $submit = Komentar::create($input);
         if ($submit) {
@@ -37,11 +84,18 @@ class KomentarController extends Controller
         return ['success' => false, 'error' => 'Gagal menyimpan Komentar.'];
     }
 
-    // public function destroy(MatkulTapel $kelas, Komentar $sesi)
-    // {
-    //     $sesi->delete();
-    //     return Redirect::route('matkul.tapel.sesi.index', $kelas->id)->with('success', 'Data Sesi Pembelajaran berhasil dihapus.');
-    // }
+    public function destroy(Komentar $komentar)
+    {
+        if ($komentar->author->role_id > 2) {
+            if ($komentar->author->id != \Auth::user()->id) {
+                return ['success' => false, 'message' => 'Anda tidak berhak menghapus Komentar ini.'];
+            }
+        }
+        if ($komentar->delete())
+            return ['success' => true, 'message' => 'Komentar telah dihapus.'];
+        else
+            return ['success' => false, 'message' => 'Gagal menghapus Komentar.'];
+    }
 
     public function getKomentar($model, $id, $last_id = 0)
     {
@@ -58,43 +112,37 @@ class KomentarController extends Controller
             ->get();
 
         foreach ($new as $n) {
+            $reply = '';
             if ($n->author->authable->foto != '' and file_exists(storage_path('app/upload/images/') . $n->author->authable->foto)) {
                 $foto = $url . '/getimage/' . $n->author->authable->foto;
             }
 
-            //attachment
-            $k = '';
-            if (substr($n->komentar, 0, 3) == 'att') {
-                $att = explode(';', $n->komentar);
-                if ($att[0] == 'att:img') {
-                    foreach (explode(',', substr($att[1], 5)) as $file) {
-                        $k .= '<a target="_blank" href="' . url('/getfile' . $file) . '">';
-                        $k .= '<img src="' . url('/getfile') . getThumbnail($file) . '" style="width: 200px; display: inline-block;"/>';
-                        $k .= '</a>';
-                    }
-                } elseif ($att[0] == 'att:doc') {
-                    foreach (explode(',', substr($att[1], 5)) as $file) {
-                        $k .= '<a target="_blank" href="' . url('/getfile' . $file) . '">';
-                        $k .= '<i class="fa fa-file-text-o"></i> ' . substr($file, 12);
-                        $k .= '</a>';
-                    }
-                } elseif ($att[0] == 'att:vid') {
-                    foreach (explode(',', substr($att[1], 5)) as $file) {
-                        $k .= '<video controls style="display: block; width: 200px;">';
-                        $k .= '<source src="' . url('/getfile' . $file) . '">';
-                        $k .= 'Your browser does not support the video tag.
-							</video>';
-                    }
-                }
-            } else $k = $n->komentar;
+            //Reply
+            if ($n->reply_id > 0) {
+                $r = Komentar::with('author')->find($n->reply_id);
 
+                $pat = [
+                    '/<a[^>]+?><img[^>]+?><\/a>/',
+                    '/<a[^>]+?><i [^>]+?><\/i>([^$]+?)<\/a>/',
+                    '/<video[^>]+?>([^$]+?)<\/video>/'
+                ];
+                $rep = ['[Gambar]', '[Dokumen]', '[Video]'];
+
+                if ($r) {
+                    $reply = '<a href="#komentar-' . $r->id . '" class="reply">
+                    <strong>' . $r->author->authable->nama . '</strong><br/>
+                      ' . preg_replace($pat, $rep, $r->komentar) . '
+                  </a>';
+                }
+            }
             $komentar[] = [
                 'id' => $n->id,
                 'image' => $foto,
                 'user' => $n->author->authable->nama,
                 'status' => strtotime($n->author->last_login) >= strtotime('5 minutes ago') ? 'online' : 'offline',
                 'waktu' => $n->waktu,
-                'komentar' => $k
+                'komentar' => $n->komentar,
+                'reply' => $reply
             ];
         }
 

@@ -2902,6 +2902,11 @@ Route::group(['middleware' => ['web', 'auth', 'roles', 'maintenis', 'profil', 'n
         'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],
         'uses' => 'KomentarController@store'
     ]);
+    Route::get('komentar/{komentar}/delete', [
+        'as' => 'komentar.delete',
+        'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],
+        'uses' => 'KomentarController@destroy'
+    ]);
     Route::get('komentar/{model}/{id}/{last_id?}', [
         'as' => 'komentar.get',
         'roles' => ['administrator', 'akademik', 'mahasiswa', 'dosen'],

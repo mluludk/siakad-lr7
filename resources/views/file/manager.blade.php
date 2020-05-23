@@ -232,36 +232,49 @@
             }
             else if(data_type == 'attachment')
             {
-                var att = [];
-                var mime = [];
+                if($('#' + target + ' input[name=attachment]').val() != '')
+                    var att = JSON.parse($('#' + target + ' input[name=attachment]').val());
+                else
+                    var att = {};
+
                 cb.each(function(){
-                    if('{{ $type }}' == 'gambar')
-                    {
-                        att[att.length] =  $(this).closest('td').next('td').children('img').attr('data-href').substring(base.length);
-                    }
-                    else if('{{ $type }}' == 'video' || '{{ $type }}' == 'dokumen')
+
+                    if('{{ $type }}' == 'video' || '{{ $type }}' == 'dokumen')
                     {
                         var icon = $(this).closest('td').next('td').children('i');
-                        att.push(icon.attr('data-href').substring(base.length));
-                        mime.push(icon.attr('data-mime'));
                     }
-                });
 
                 if('{{ $type }}' == 'gambar')
                 {
-                    str = 'att:img;file:' + att.join(',');
+                    att[$(this).val()] = {
+                        't': 'img',
+                        'f': $(this).closest('td').next('td').children('img').attr('data-href').substring(base.length)
+                    };
+                    str += '[i]' + $(this).val() + '[/i]';
                 }
                 else if('{{ $type }}' == 'video')
                 {
-                    str = 'att:vid;file:' + att.join(',') + ';mime:' + mime.join(',');
+                    att[$(this).val()] = {
+                        't': 'vid',
+                        'f': icon.attr('data-href').substring(base.length)
+                    };
+                    str += '[v]' + $(this).val() + '[/v]';
                 }
                 else if('{{ $type }}' == 'dokumen')
                 {
-                    str = 'att:doc;file:' + att.join(',') + ';mime:' + mime.join(',');
+                    att[$(this).val()] = {
+                        't': 'doc',
+                        'f': icon.attr('data-href').substring(base.length)
+                    };
+                    str += '[d]' + $(this).val() + '[/d]';
                 }
 
-                $('#' + target + ' input[name=komentar]').val(str);
-                $('form#' + target).submit();
+                });
+
+                var k = $('#' + target + ' input[name=komentar]').val();
+                $('#' + target + ' input[name=attachment]').val(JSON.stringify(att));
+                $('#' + target + ' input[name=komentar]').val(k + str);
+                $('#' + target + ' input[name=komentar]').focus();
             }
         else if(data_type == 'form')
         {
