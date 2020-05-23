@@ -309,17 +309,20 @@ class KegiatanController extends Controller
                 $hasil = HasilKegiatan::where('kegiatan_pembelajaran_id', $kegiatan->id)
                     ->where('mahasiswa_id', $user->authable->id)
                     ->first();
+
                 if ($hasil) {
                     $stop = true;
-                    foreach ($hasil->jawaban as $k => $v) {
-                        if ($v['jenis'] == 2) { // only for jenis 2
-                            foreach ($v['jawaban'] as $id) {
-                                $file = FileEntry::find($id);
-                                if ($file) $media_jawaban[$k][] = [
-                                    'fullpath' => $file->namafile,
-                                    'filename' => $file->nama,
-                                    'mime' => $file->mime
-                                ];
+                    if ($kegiatan->jenis == 3) {
+                        foreach ($hasil->jawaban as $k => $v) {
+                            if ($v['jenis'] == 2) { // only for jenis 2
+                                foreach ($v['jawaban'] as $id) {
+                                    $file = FileEntry::find($id);
+                                    if ($file) $media_jawaban[$k][] = [
+                                        'fullpath' => $file->namafile,
+                                        'filename' => $file->nama,
+                                        'mime' => $file->mime
+                                    ];
+                                }
                             }
                         }
                     }

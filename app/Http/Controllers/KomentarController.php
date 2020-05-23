@@ -2,9 +2,7 @@
 
 namespace Siakad\Http\Controllers;
 
-use Redirect;
 use Illuminate\Http\Request;
-use Siakad\FileEntry;
 use Siakad\Komentar;
 
 use Siakad\Http\Controllers\Controller;
@@ -44,7 +42,7 @@ class KomentarController extends Controller
         if (count($vid)) {
             foreach ($vid as $value) {
                 $komentar = str_ireplace(
-                    '[d]' . $value . '[/d]',
+                    '[v]' . $value . '[/v]',
                     '<video controls class="att"><source src="' . url('/getfile' . $attachment[$value]['f']) . '">Your browser does not support the video tag.</video>',
                     $komentar
                 );
@@ -59,13 +57,6 @@ class KomentarController extends Controller
             'user_id' => $auth->id
         ];
 
-        // if (substr($input['komentar'], 0, 3) == 'rep') {
-        //     $part = explode(';', $input['komentar']);
-        //     if (isset($part[1])) {
-        //         $input['reply_id'] = substr($part[0], 4);
-        //         $input['komentar'] = substr($part[1], 4);
-        //     }
-        // }
         if(null !== $request->get('reply_id'))
         {
             $input['reply_id'] =$request->get('reply_id');
@@ -99,6 +90,7 @@ class KomentarController extends Controller
 
     public function getKomentar($model, $id, $last_id = 0)
     {
+        $auth_id = \Auth::user()->id;
         $komentar = [];
         $url = url('/');
         $foto = $url . '/images/logo.png';
@@ -137,8 +129,10 @@ class KomentarController extends Controller
             }
             $komentar[] = [
                 'id' => $n->id,
+                'auth_id' => $auth_id,
                 'image' => $foto,
                 'user' => $n->author->authable->nama,
+                'user_id' => $n->author->id,
                 'status' => strtotime($n->author->last_login) >= strtotime('5 minutes ago') ? 'online' : 'offline',
                 'waktu' => $n->waktu,
                 'komentar' => $n->komentar,

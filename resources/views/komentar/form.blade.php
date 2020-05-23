@@ -276,6 +276,7 @@
 	}
 	function formatKomentar(i)
 	{
+        var btn_del = i.auth_id > 2 && i.user_id != i.auth_id ? '' : '<a href="javascript:" class="pull-right btn-delete btn btn-xs btn-danger btn-flat" id="delete-'+ i.id +'" title="Hapus Komentar"><i class="fa fa-trash"></i></a>';
         return '<div class="item" id="komentar-'+i.id+'">'+
         '<img src="'+ i.image +'" alt="'+ i.user +'" class="'+ i.status +'">'+
         '<p class="message">'+
@@ -286,7 +287,7 @@
         i.reply+
         i.komentar +
         '</p>'+
-        '<a href="javascript:" class="pull-right btn-delete btn btn-xs btn-danger btn-flat" id="delete-'+ i.id +'" title="Hapus Komentar"><i class="fa fa-trash"></i></a>'+
+        btn_del +
         '<a href="javascript:" class="pull-right btn-reply btn btn-xs btn-info btn-flat" id="reply-'+ i.id +'" title="Balas Komentar"><i class="fa fa-reply"></i></a>'+
         '</div>';
     }
