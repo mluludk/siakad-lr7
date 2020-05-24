@@ -346,7 +346,7 @@ class KegiatanController extends Controller
             return view('matkul.tapel.sesi.kegiatan.show_tugas', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons', 'jenis', 'hasil', 'stop', 'media_jawaban'));
         }
 
-        return view('matkul.tapel.sesi.kegiatan.show', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons', 'jenis', 'user', 'allowed'));
+        return view('matkul.tapel.sesi.kegiatan.show_video', compact('sesi', 'kelas', 'kegiatan', 'media', 'icons', 'jenis', 'user', 'allowed'));
     }
 
     private function checkDosen($kelas, $view = false) //Check Jika dosen tidak mengajar Kelas Kuliah
