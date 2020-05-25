@@ -1,9 +1,21 @@
 # SIAKAD V3 Menggunakan Laravel 7
 
-[![N|Solid](https://i.ibb.co/2SLFrGW/head.png)](https://nodesource.com/products/nsolid)
-
 Sistem Informasi Akademik STAIMA Al-Hikam Malang Versi 3
 
+[![Home Admin](https://i.ibb.co/fnZrSHW/s1.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/mCQXJ6Y/s2.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/dgNMpsY/s3.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/MGX4gYD/s4.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/HYhDNFZ/s5.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/mzKbcG1/s6.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/VWzB15p/s7.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/Ltjxrtk/s8.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/PrTWkxF/s9.png)](http://siakad.staima-alhikam.ac.id)
+[![Menu](https://i.ibb.co/85qvTDG/s10.png)](http://siakad.staima-alhikam.ac.id)
+[![Home Dosen](https://i.ibb.co/hDD611S/d1.png)](http://siakad.staima-alhikam.ac.id)
+[![Home Mahasiswa](https://i.ibb.co/XXCfPJj/m1.png)](http://siakad.staima-alhikam.ac.id)
+
+<!-- 
 # Baru !
 
   - Sesi Pembelajaran
@@ -41,7 +53,8 @@ Komponen / Project yang digunakan:
  - Lisensi
 
 Lisensi
-----
+---- 
+-->
 
 
 

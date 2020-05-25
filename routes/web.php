@@ -2,22 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-		|--------------------------------------------------------------------------
-		| Web Routes
-		|--------------------------------------------------------------------------
-		|
-		| Here is where you can register web routes for your application. These
-		| routes are loaded by the RouteServiceProvider within a group which
-		| contains the "web" middleware group. Now create something great!
-		|
-	*/
-
 Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');
-
-
 // Event::listen('illuminate.query', function($sql){echo '<pre>'; var_dump($sql); echo '</pre>'; });
 
 //FIX
@@ -2327,45 +2312,6 @@ Route::group(['middleware' => ['web', 'auth', 'roles', 'maintenis', 'profil', 'n
     Route::get('/jadwalsemua', [
         'roles' => ['dosen'],
         'uses' => 'JadwalController@dosenAllJadwal'
-    ]);
-
-    /**
-     * Transaksi lain
-     **/
-    /*
-			Route::get('/transaksi', [
-			'as' => 'transaksi.index',
-			'roles' => ['keuangan / administrasi', 'administrator'],
-			'uses' => 'TransaksiController@index'
-			]);
-			Route::get('/transaksi/create', [
-			'as' => 'transaksi.create',
-			'roles' => ['keuangan / administrasi', 'administrator'],
-			'uses' => 'TransaksiController@create'
-			]);
-			Route::post('/transaksi', [
-			'as' => 'transaksi.store',
-			'roles' => ['keuangan / administrasi', 'administrator'],
-			'uses' => 'TransaksiController@store'
-			]);
-			Route::get('/transaksi/{transaksi}', [
-			'as' => 'transaksi.edit',
-			'roles' => ['keuangan / administrasi'],
-			'uses' => 'TransaksiController@edit'
-			]);
-			Route::patch('/transaksi/{transaksi}', [
-			'as' => 'transaksi.update',
-			'roles' => ['keuangan / administrasi'],
-			'uses' => 'TransaksiController@update'
-		]); */
-
-    /**
-     * Neraca
-     **/
-    Route::get('/neraca', [
-        'as' => 'neraca.index',
-        'roles' => ['keuangan / administrasi', 'administrator'],
-        'uses' => 'NeracaController@index'
     ]);
 
     /**
