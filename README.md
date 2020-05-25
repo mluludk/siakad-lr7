@@ -4,12 +4,12 @@
 
 Sistem Informasi Akademik STAIMA Al-Hikam Malang Versi 3
 
-# New Features!
+# Baru !
 
   - Sesi Pembelajaran
   - Video Conference via Zoom
 
-### Tech
+### Komponen
 
 Komponen / Project yang digunakan:
 * [Admin LTE](https://adminlte.io) - Free Bootstrap Admin Template | AdminLTE.IO
@@ -34,13 +34,13 @@ Komponen / Project yang digunakan:
 * [Toastr](http://www.toastrjs.com) - Simple javascript toast notifications 
 * [Twitter Bootstrap] - great UI boilerplate for modern web apps
 
-### Installation
+### Instalasi
 
 ### Todos
 
- - Test
+ - Lisensi
 
-License
+Lisensi
 ----
 
 
