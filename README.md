@@ -1,4 +1,4 @@
-# SIAKAD V3
+# SIAKAD V3 Menggunakan Laravel 7
 
 [![N|Solid](https://i.ibb.co/2SLFrGW/head.png)](https://nodesource.com/products/nsolid)
 
