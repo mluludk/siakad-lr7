@@ -1,5 +1,5 @@
 @push('styles')
-<link href="{{ asset('css/jtsage-datebox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('/css/chosen.min.css') }}">
 <style>
 	.radio-inline+.radio-inline, .checkbox-inline+.checkbox-inline {
@@ -28,10 +28,16 @@
 </style>
 @endpush
 @push('scripts')
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.i18n.id.utf8.min.js') }}"></script>
-<script src="{{ asset('js/jquery.mousewheel.min.js') }}"></script>
+<script src="{{ asset('/js/datepicker.min.js') }}"></script>
+<script>
+	$(".date").datepicker({
+	format:"dd-mm-yyyy", 
+	autoHide:true,
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+});
+</script>
 <script src="{{ asset('/js/chosen.jquery.min.js') }}"></script>
 <script>
 	$(function(){
@@ -93,7 +99,7 @@
 			{!! Form::text('no_sk_awal', null, array('class' => 'form-control', 'placeholder' => 'SK Awal')) !!}
 		</div>
 		<div style="display:block; float: left; margin-right: 2px; width: 200px;">
-			{!! Form::text('tmt_sk_awal', null, array('class' => 'form-control', 'placeholder' => 'TMT SK Awal ', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+			{!! Form::text('tmt_sk_awal', null, array('class' => 'form-control date', 'placeholder' => 'TMT SK Awal ', 'autocomplete' => 'off')) !!}
 		</div>
 	</div>
 </div>
@@ -105,7 +111,7 @@
 			{!! Form::text('no_sk_terbaru', null, array('class' => 'form-control', 'placeholder' => 'SK Terbaru')) !!}
 		</div>
 		<div style="display:block; float: left; margin-right: 2px; width: 200px;">
-			{!! Form::text('tmt_sk_terbaru', null, array('class' => 'form-control', 'placeholder' => 'TMT SK Terbaru', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+			{!! Form::text('tmt_sk_terbaru', null, array('class' => 'form-control date', 'placeholder' => 'TMT SK Terbaru', 'autocomplete' => 'off')) !!}
 		</div>
 	</div>
 </div>
@@ -201,7 +207,7 @@
 <div class="form-group">
 	{!! Form::label('tgl_ijasah', 'Tgl Ijasah:', array('class' => 'col-sm-3 control-label')) !!}
 	<div class="col-sm-3">
-		{!! Form::text('tgl_ijasah', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Ijasah', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+		{!! Form::text('tgl_ijasah', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Ijasah', 'autocomplete' => 'off')) !!}
 	</div>
 </div>
 <hr/>
@@ -232,7 +238,7 @@
 			{!! Form::text('tmp_lahir', null, array('class' => 'form-control', 'placeholder' => 'Tempat Lahir')) !!}
 		</div>
 		<div style="display:block; float: left; width: 200px;">
-			{!! Form::text('tgl_lahir', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Lahir', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+			{!! Form::text('tgl_lahir', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Lahir', 'autocomplete' => 'off')) !!}
 		</div>
 	</div>
 </div>

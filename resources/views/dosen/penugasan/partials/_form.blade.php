@@ -1,9 +1,14 @@
 @push('scripts')
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.i18n.id.utf8.min.js') }}"></script>
-<script src="{{ asset('js/jquery.mousewheel.min.js') }}"></script>
-<script src="{{ asset('/js/chosen.jquery.min.js') }}"></script>
+<script src="{{ asset('/js/datepicker.min.js') }}"></script>
+<script>
+	$(".date").datepicker({
+	format:"dd-mm-yyyy", 
+	autoHide:true,
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+});
+</script>
 <script>
 	$(function(){
 		$(".chosen-select").chosen({
@@ -41,7 +46,7 @@
 	display: none;
 	}
 </style>
-<link href="{{ asset('css/jtsage-datebox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 @endpush
 
 <div class="form-group">
@@ -76,19 +81,19 @@
 <div class="form-group">
 {!! Form::label('tgl_surat_tugas', 'Tgl. Surat Tugas:', array('class' => 'col-sm-3 control-label')) !!}
 <div class="col-sm-3">
-{!! Form::text('tgl_surat_tugas', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Surat Tugas', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+{!! Form::text('tgl_surat_tugas', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Surat Tugas', 'autocomplete' => 'off')) !!}
 </div>
 </div>
 <div class="form-group">
 {!! Form::label('tmt_surat_tugas', 'TMT Surat Tugas:', array('class' => 'col-sm-3 control-label')) !!}
 <div class="col-sm-3">
-{!! Form::text('tmt_surat_tugas', null, array('class' => 'form-control', 'placeholder' => 'TMT Surat Tugas', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+{!! Form::text('tmt_surat_tugas', null, array('class' => 'form-control date', 'placeholder' => 'TMT Surat Tugas', 'autocomplete' => 'off')) !!}
 </div>
 </div>
 <div class="form-group">
 {!! Form::label('berlaku_sampai', 'Berlaku sampai:', array('class' => 'col-sm-3 control-label')) !!}
 <div class="col-sm-3">
-{!! Form::text('berlaku_sampai', null, array('class' => 'form-control', 'placeholder' => 'Berlaku sampai', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+{!! Form::text('berlaku_sampai', null, array('class' => 'form-control date', 'placeholder' => 'Berlaku sampai', 'autocomplete' => 'off')) !!}
 </div>
 </div>
 <div class="form-group">

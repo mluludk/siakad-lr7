@@ -1,11 +1,17 @@
 @push('scripts')
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.i18n.id.utf8.min.js') }}"></script>
-<script src="{{ asset('js/jquery.mousewheel.min.js') }}"></script>
+<script src="{{ asset('/js/datepicker.min.js') }}"></script>
+<script>
+	$(".date").datepicker({
+	format:"dd-mm-yyyy", 
+	autoHide:true,
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+});
+</script>
 @endpush
 @push('styles')
-<link href="{{ asset('css/jtsage-datebox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 @endsection
 
 <div class="form-group">
@@ -59,7 +65,7 @@
 <div class="form-group">
 	{!! Form::label('tgl_ijasah', 'Tanggal Ijasah:', array('class' => 'col-sm-3 control-label')) !!}
 	<div class="col-sm-3">
-		{!! Form::text('tgl_ijasah', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Ijasah', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+		{!! Form::text('tgl_ijasah', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Ijasah', 'autocomplete' => 'off')) !!}
 	</div>
 </div>
 <div class="form-group">

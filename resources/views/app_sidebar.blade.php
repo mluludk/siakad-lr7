@@ -13,7 +13,6 @@
 		<title>@yield('title', config('custom.app.name') . ' - ' . config('custom.profil.tipe') . ' ' . config('custom.profil.nama')) - {{ config('custom.app.abbr') }} {{ config('custom.app.version') }}</title>
 		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/ionicons.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/source-sans-pro.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/AdminLTE.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/skin-red.min.css') }}">
@@ -211,7 +210,6 @@
 		<script src="{{ asset('/js/jquery-2.2.3.min.js') }}"></script>
 		<script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 		<script src="{{ asset('/js/app.min.js') }}"></script>
-		<script src="{{ asset('/js/fastclick.min.js') }}"></script>
 		@stack('scripts')
 		<script>
 			$(document).on('click', '.has-confirmation', function(){

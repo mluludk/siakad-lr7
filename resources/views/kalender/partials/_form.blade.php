@@ -1,12 +1,18 @@
 @push('scripts')
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.i18n.id.utf8.min.js') }}"></script>
-<script src="{{ asset('js/jquery.mousewheel.min.js') }}"></script>
+<script src="{{ asset('/js/datepicker.min.js') }}"></script>
+<script>
+	$(".date").datepicker({
+	format:"dd-mm-yyyy", 
+	autoHide:true,
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+});
+</script>
 @endpush
 
 @push('styles')
-<link href="{{ asset('css/jtsage-datebox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 <style>
 	.inline{
 	display: inline-block;
@@ -41,10 +47,10 @@
 	{!! Form::label('mulai1', 'Smt. Ganjil:', array('class' => 'col-sm-2 control-label')) !!}
 	<div class="col-sm-9">
 		<div class="inline">
-			{!! Form::text('mulai1', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Mulai', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}' )) !!}
+			{!! Form::text('mulai1', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Mulai', 'autocomplete' => 'off' )) !!}
 		</div>
 		<div class="inline">
-			{!! Form::text('sampai1', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Selesai', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}' )) !!}
+			{!! Form::text('sampai1', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Selesai', 'autocomplete' => 'off' )) !!}
 		</div>
 	</div>
 </div>
@@ -53,10 +59,10 @@
 	{!! Form::label('mulai2', 'Smt. Genap:', array('class' => 'col-sm-2 control-label')) !!}
 	<div class="col-sm-9">
 		<div class="inline">
-			{!! Form::text('mulai2', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Mulai', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}' )) !!}
+			{!! Form::text('mulai2', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Mulai', 'autocomplete' => 'off' )) !!}
 		</div>
 		<div class="inline">
-			{!! Form::text('sampai2', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Selesai', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}' )) !!}
+			{!! Form::text('sampai2', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Selesai', 'autocomplete' => 'off' )) !!}
 		</div>
 	</div>
 </div>

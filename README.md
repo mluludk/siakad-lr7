@@ -1,79 +1,57 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# SIAKAD V3
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+[![N|Solid](https://i.ibb.co/2SLFrGW/head.png)](https://nodesource.com/products/nsolid)
 
-## About Laravel
+Sistem Informasi Akademik STAIMA Al-Hikam Malang Versi 3
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# New Features!
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  - Sesi Pembelajaran
+  - Video Conference via Zoom
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Tech
 
-## Learning Laravel
+Komponen / Project yang digunakan:
+* [Admin LTE](https://adminlte.io) - Free Bootstrap Admin Template | AdminLTE.IO
+* [Chart.js](chartjs.org) - Simple yet flexible JavaScript charting for designers & developers
+* [Chosen] - Chosen is a jQuery plugin that makes long, unwieldy select boxes much more user-friendly.
+* [Clipboard.js](https://clipboardjs.com/) - A modern approach to copy text to clipboard
+* [Countdown](https://fengyuanchen.github.io/countdown) - A simple jQuery countdown plugin.
+* [DataTables] - DataTables | Table plug-in for jQuery
+* [Datepicker](https://fengyuanchen.github.io/datepicker) - A simple jQuery datepicker plugin.
+* [Flot](https://www.flotcharts.org/) - Attractive JavaScript plotting for jQuery.
+* [Font Awesome](https://fontawesome.com) - Font Awesome
+* [Inputmask](https://github.com/RobinHerbots/Inputmask) - Input Mask plugin 
+* [jQuery] - jQuery
+* [jQuery Clock Timepicker](https://github.com/loebi-ch/jquery-clock-timepicker) - A jQuery Plug-in to select the time with a clock inspired by the Android time picker.
+* [jQuery Form](https://github.com/jquery-form/form) - jQuery Form Plugin
+* [Laravel](https://laravel.com) - The PHP Framework For Web Artisans
+* [Lightbox](http://lokeshdhakar.com/projects/lightbox2/) - The original lightbox script.Eight years later — still going strong!
+* [List.js](listjs.com) - Tiny, invisible and simple, yet powerful and incredibly fast vanilla JavaScript that adds search, sort, filters and flexibility to plain HTML lists, tables, or anything.
+* [MorrisJS](https://morrisjs.github.io/morris.js/) - good-looking charts shouldn't be difficult
+* [Summernote](summernote.org) - Summernote - Super Simple WYSIWYG editor
+* [Timeago](http://timeago.yarp.com/) - Timeago is a jQuery plugin that makes it easy to support automatically updating fuzzy timestamps
+* [Toastr](http://www.toastrjs.com) - Simple javascript toast notifications 
+* [Twitter Bootstrap] - great UI boilerplate for modern web apps
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Installation
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Todos
 
-## Laravel Sponsors
+ - Test
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+License
+----
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-- [云软科技](http://www.yunruan.ltd/)
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
+   [jQuery]: <http://jquery.com>
+   [DataTables]: <https://datatables.net>
+   [Chosen]: <https://harvesthq.github.io/chosen/>
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

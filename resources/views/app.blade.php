@@ -17,7 +17,6 @@
 		</title>
 		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
-		<link rel="stylesheet" href="{{ asset('css/ionicons.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/source-sans-pro.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/AdminLTE.min.css') }}">
 		<link rel="stylesheet" href="{{ asset('css/skin-green.min.css') }}">
@@ -307,7 +306,6 @@
 		<script src="{{ asset('/js/jquery-2.2.3.min.js') }}"></script>
 		<script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 		<script src="{{ asset('/js/app.min.js') }}"></script>
-		<script src="{{ asset('/js/fastclick.min.js') }}"></script>
 		<script src="{{ asset('/js/ddmenu.js') }}" type="text/javascript"></script>
 		<script src="{{ asset('/js/pace.min.js') }}" type="text/javascript"></script>
 		

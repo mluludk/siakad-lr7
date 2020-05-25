@@ -33,7 +33,6 @@
 				<dt>ChartJS 2.3.0</dt>
 				<dt>Morris.Js 0.5.0</dt>
 				<dt>jQuery Form Plugin 3.51.0</dt>
-				<dt>Ionicons 2.0.0</dt>
 				<dt>...</dt>
 			</dl>
 		</div>

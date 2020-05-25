@@ -1,8 +1,14 @@
 @push('scripts')
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.min.js') }}"></script>
-<script src="{{ asset('js/jtsage-datebox.i18n.id.utf8.min.js') }}"></script>
-<script src="{{ asset('js/jquery.mousewheel.min.js') }}"></script>
+<script src="{{ asset('/js/datepicker.min.js') }}"></script>
+<script>
+	$(".date").datepicker({
+	format:"dd-mm-yyyy", 
+	autoHide:true,
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	daysMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sa'],
+	monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
+});
+</script>
 <script src="{{ asset('/js/chosen.jquery.min.js') }}"></script>
 <script>
 	$(function(){
@@ -15,7 +21,7 @@
 @endpush
 
 @push('styles')
-<link href="{{ asset('css/jtsage-datebox.min.css') }}" rel="stylesheet">
+<link href="{{ asset('css/datepicker.min.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('/css/chosen.min.css') }}">
 <style>
 	.chosen-container{
@@ -68,14 +74,14 @@
 <div class="form-group">
 	{!! Form::label('tanggal_mulai', 'Tgl. Mulai Penugasan:', array('class' => 'col-sm-3 control-label')) !!}
 	<div class="col-sm-4">
-		{!! Form::text('tanggal_mulai', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Mulai Penugasan', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+		{!! Form::text('tanggal_mulai', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Mulai Penugasan', 'autocomplete' => 'off')) !!}
 	</div>
 </div>
 
 <div class="form-group">
 	{!! Form::label('tanggal_selesai', 'Tgl. Selesai Penugasan:', array('class' => 'col-sm-3 control-label')) !!}
 	<div class="col-sm-4">
-		{!! Form::text('tanggal_selesai', null, array('class' => 'form-control', 'placeholder' => 'Tanggal Selesai Penugasan', 'data-role' => "datebox", 'data-options' => '{"mode":"datebox", "useTodayButton":"true"}')) !!}
+		{!! Form::text('tanggal_selesai', null, array('class' => 'form-control date', 'placeholder' => 'Tanggal Selesai Penugasan', 'autocomplete' => 'off')) !!}
 	</div>
 </div>
 
